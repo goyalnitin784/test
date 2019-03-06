@@ -14,27 +14,8 @@ import java.util.stream.Stream;
 @ContextConfiguration(locations = {"classpath:spring/spring-core-config.xml"})
 public class PhantomTest extends AbstractTestNGSpringContextTests {
 
-    private static final Logger logger = Logger.getLogger(PhantomTest.class);
-
     @Test
     public void sampleTest() throws Exception {
-
+        System.out.println("Context up");
     }
-
-
-
-
-    private static String readFile(String fileName) {
-
-        StringBuilder sb = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-
-            stream.forEach(sb::append);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
-
 }

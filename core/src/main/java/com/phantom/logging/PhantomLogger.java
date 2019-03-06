@@ -1,9 +1,9 @@
 package com.phantom.logging;
 
-import java.io.Serializable;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.io.Serializable;
 
 public class PhantomLogger implements Serializable {
     /**
@@ -13,7 +13,7 @@ public class PhantomLogger implements Serializable {
     public Logger logger = null;
 
     public PhantomLogger() {
-        logger = LogManager.getLogger(PhantomLogger.class);
+        logger = Logger.getLogger(PhantomLogger.class);
     }
 
     public PhantomLogger(Logger logger1) {

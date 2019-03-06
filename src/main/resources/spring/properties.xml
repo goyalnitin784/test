@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean name="corePropertyManager" class="com.yatra.platform.commons.property.mgr.ChainedAppPropertyManager">
+        <constructor-arg index="0" >
+            <list>
+                <ref bean="centralPropertyChain"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean name="centralPropertyChain" class="com.yatra.platform.commons.property.mgr.ChainedAppPropertyManager">
+        <constructor-arg index="0" >
+            <list>
+                <ref bean="applicationPropertyManager" />
+                <ref bean="interfacePropertyManager"/>
+                <ref bean="threadPoolPropertyManager"/>
+                <ref bean="databasePropertyManager"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean name="applicationPropertyManager" class="com.yatra.platform.commons.property.mgr.ReloadableApplicationPropertyManager">
+        <constructor-arg index="0" value="properties/${environment}/AppProperties.properties"/>
+    </bean>
+
+    <bean name="interfacePropertyManager" class="com.yatra.platform.commons.property.mgr.ReloadableApplicationPropertyManager">
+        <constructor-arg index="0" value="properties/${environment}/interface.properties"/>
+    </bean>
+
+    <bean name="threadPoolPropertyManager" class="com.yatra.platform.commons.property.mgr.ReloadableApplicationPropertyManager">
+        <constructor-arg index="0" value="properties/${environment}/threadPool.properties"/>
+    </bean>
+
+    <bean name="databasePropertyManager" class="com.yatra.platform.commons.property.mgr.ReloadableApplicationPropertyManager">
+        <constructor-arg index="0" value="properties/${environment}/database.properties"/>
+    </bean>
+
+</beans>
