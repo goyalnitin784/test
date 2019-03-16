@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface NewsletterSubscriptionDao {
+import com.phantom.model.entity.NewsletterSubscription;
+
+public interface NewsletterSubscriptionDao extends GenericDAO<NewsletterSubscription,Long>{
 }

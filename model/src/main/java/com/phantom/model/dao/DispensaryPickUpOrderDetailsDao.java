@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface DispensaryPickUpOrderDetailsDao {
+import com.phantom.model.entity.DispensaryPickUpOrderDetails;
+
+public interface DispensaryPickUpOrderDetailsDao extends GenericDAO<DispensaryPickUpOrderDetails,Long>{
 }

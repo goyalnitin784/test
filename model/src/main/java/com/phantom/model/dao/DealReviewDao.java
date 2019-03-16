@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface DealReviewDao {
+import com.phantom.model.entity.DealReview;
+
+public interface DealReviewDao extends GenericDAO<DealReview, Long> {
 }

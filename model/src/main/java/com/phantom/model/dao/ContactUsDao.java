@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface ContactUsDao {
+import com.phantom.model.entity.ContactUs;
+
+public interface ContactUsDao extends GenericDAO<ContactUs,Long>{
 }

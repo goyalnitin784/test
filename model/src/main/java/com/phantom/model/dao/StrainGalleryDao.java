@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface StrainGalleryDao {
+import com.phantom.model.entity.StrainGallery;
+
+public interface StrainGalleryDao extends GenericDAO<StrainGallery,Long>{
 }
