@@ -9,8 +9,8 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
-    private long id;
+    @Column(name = "userId")
+    private long userId;
 
     @Column(name = "type_of_user")
     private int userType;
@@ -39,12 +39,12 @@ public class User {
     @Column(name = "created_on")
     private Date createdOn;
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public int getUserType() {
