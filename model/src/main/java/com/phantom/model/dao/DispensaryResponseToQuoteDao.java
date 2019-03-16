@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface DispensaryResponseToQuoteDao {
+import com.phantom.model.entity.DispensaryResponseToQuote;
+
+public interface DispensaryResponseToQuoteDao extends GenericDAO<DispensaryResponseToQuote,Long>{
 }

@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface StrainEffectsDao {
+import com.phantom.model.entity.StrainEffects;
+
+public interface StrainEffectsDao extends GenericDAO<StrainEffects,Long>{
 }

@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface UserDao {
+import com.phantom.model.entity.User;
+
+public interface UserDao extends GenericDAO<User,Long>{
 }

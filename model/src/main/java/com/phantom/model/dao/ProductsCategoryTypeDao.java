@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface ProductsCategoryTypeDao {
+import com.phantom.model.entity.ProductsCategoryType;
+
+public interface ProductsCategoryTypeDao extends GenericDAO<ProductsCategoryType,Long>{
 }

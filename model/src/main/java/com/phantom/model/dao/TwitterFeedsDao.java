@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface TwitterFeedsDao {
+import com.phantom.model.entity.TwitterFeeds;
+
+public interface TwitterFeedsDao extends GenericDAO<TwitterFeeds,Long>{
 }

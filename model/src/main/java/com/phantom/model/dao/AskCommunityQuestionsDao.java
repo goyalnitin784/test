@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface AskCommunityQuestionsDao {
+import com.phantom.model.entity.AskCommunityQuestions;
+
+public interface AskCommunityQuestionsDao extends GenericDAO<AskCommunityQuestions,Long>{
 }

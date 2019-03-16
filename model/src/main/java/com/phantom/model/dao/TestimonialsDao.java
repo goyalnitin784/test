@@ -1,4 +1,6 @@
 package com.phantom.model.dao;
 
-public interface TestimonialsDao {
+import com.phantom.model.entity.Testimonials;
+
+public interface TestimonialsDao extends GenericDAO<Testimonials,Long>{
 }
