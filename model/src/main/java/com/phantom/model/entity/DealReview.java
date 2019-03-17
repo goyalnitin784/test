@@ -49,10 +49,10 @@ public class DealReview {
     private int willTakeDealFutureCount;
 
     @Column(name = "make_review_private")
-    private boolean makeReviewPrivate;
+    private int makeReviewPrivate;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -161,19 +161,19 @@ public class DealReview {
         this.willTakeDealFutureCount = willTakeDealFutureCount;
     }
 
-    public boolean isMakeReviewPrivate() {
+    public int isMakeReviewPrivate() {
         return makeReviewPrivate;
     }
 
-    public void setMakeReviewPrivate(boolean makeReviewPrivate) {
+    public void setMakeReviewPrivate(int makeReviewPrivate) {
         this.makeReviewPrivate = makeReviewPrivate;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

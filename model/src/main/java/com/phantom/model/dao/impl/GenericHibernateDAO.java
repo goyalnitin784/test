@@ -1,6 +1,7 @@
 package com.phantom.model.dao.impl;
 
 import com.phantom.model.dao.GenericDAO;
+import org.hibernate.FlushMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.CollectionUtils;

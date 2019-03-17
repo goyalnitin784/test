@@ -13,10 +13,10 @@ public class Strain {
     private long id;
 
     @Column(name = "is_trending_strain")
-    private boolean isTrendingStrain;
+    private int isTrendingStrain;
 
     @Column(name = "is_featured_strain")
-    private boolean isFeaturedStrain;
+    private int isFeaturedStrain;
 
     @Column(name = "cbd")
     private String cbd;
@@ -65,19 +65,19 @@ public class Strain {
         this.id = id;
     }
 
-    public boolean isTrendingStrain() {
+    public int isTrendingStrain() {
         return isTrendingStrain;
     }
 
-    public void setTrendingStrain(boolean trendingStrain) {
+    public void setTrendingStrain(int trendingStrain) {
         isTrendingStrain = trendingStrain;
     }
 
-    public boolean isFeaturedStrain() {
+    public int isFeaturedStrain() {
         return isFeaturedStrain;
     }
 
-    public void setFeaturedStrain(boolean featuredStrain) {
+    public void setFeaturedStrain(int featuredStrain) {
         isFeaturedStrain = featuredStrain;
     }
 

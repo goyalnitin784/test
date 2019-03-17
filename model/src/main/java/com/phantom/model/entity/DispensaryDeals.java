@@ -43,13 +43,13 @@ public class DispensaryDeals {
     private String dealImage2;
 
     @Column(name = "is_trending_deal")
-    private boolean isTrendingDeal;
+    private int isTrendingDeal;
 
     @Column(name = "is_featured_deal")
-    private boolean isFeaturedDeal;
+    private int isFeaturedDeal;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "price")
     private int price;
@@ -148,27 +148,27 @@ public class DispensaryDeals {
         this.dealImage2 = dealImage2;
     }
 
-    public boolean isTrendingDeal() {
+    public int isTrendingDeal() {
         return isTrendingDeal;
     }
 
-    public void setTrendingDeal(boolean trendingDeal) {
+    public void setTrendingDeal(int trendingDeal) {
         isTrendingDeal = trendingDeal;
     }
 
-    public boolean isFeaturedDeal() {
+    public int isFeaturedDeal() {
         return isFeaturedDeal;
     }
 
-    public void setFeaturedDeal(boolean featuredDeal) {
+    public void setFeaturedDeal(int featuredDeal) {
         isFeaturedDeal = featuredDeal;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

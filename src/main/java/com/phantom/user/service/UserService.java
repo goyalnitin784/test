@@ -63,16 +63,16 @@ public class UserService {
             user.setProfilePic(userBean.getProfilePic());
             user.setUserType(userBean.getUserType());
             user.setDob(userBean.getDob());
-            user.setAgeAbove21(Boolean.FALSE);
+            user.setIsAgeAbove21(0);
             user.setSsoToken(userBean.getSsoToken());
             if (!StringUtils.isEmpty(userBean.getDob())) {
                 LocalDate birthDate = LocalDate.parse(userBean.getDob());
                 int age = Period.between(birthDate, LocalDate.now()).getYears();
                 if (age >= 21) {
-                    user.setAgeAbove21(Boolean.TRUE);
+                    user.setIsAgeAbove21(1);
                 }
             }
-            userDao.saveOrUpdate(user);
+            userDao.saveUser(user);
 
         } catch (Exception e) {
             logger.error("Exception occured while inserting user details for registeration ", e);

@@ -16,7 +16,7 @@ public class DispensaryGallery {
     private int dispensaryId;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "picture_path")
     private String picturePath;
@@ -40,11 +40,11 @@ public class DispensaryGallery {
         this.dispensaryId = dispensaryId;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

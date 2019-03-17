@@ -97,19 +97,19 @@ public class Dispensary {
     private String sundayClosedOn;
 
     @Column(name = "is_trending_dispensary")
-    private boolean isTrendingDispensary;
+    private int isTrendingDispensary;
 
     @Column(name = "is_featured_dispensary")
-    private boolean isFeaturedDispensary;
+    private int isFeaturedDispensary;
 
     @Column(name = "date_of_joining")
     private Date dateOfJoining;
 
     @Column(name = "is_verified_listing")
-    private boolean isVerifiedListing;
+    private int isVerifiedListing;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "no_of_followers_count")
     private int followersCount;
@@ -349,19 +349,19 @@ public class Dispensary {
         this.sundayClosedOn = sundayClosedOn;
     }
 
-    public boolean isTrendingDispensary() {
+    public int isTrendingDispensary() {
         return isTrendingDispensary;
     }
 
-    public void setTrendingDispensary(boolean trendingDispensary) {
+    public void setTrendingDispensary(int trendingDispensary) {
         isTrendingDispensary = trendingDispensary;
     }
 
-    public boolean isFeaturedDispensary() {
+    public int isFeaturedDispensary() {
         return isFeaturedDispensary;
     }
 
-    public void setFeaturedDispensary(boolean featuredDispensary) {
+    public void setFeaturedDispensary(int featuredDispensary) {
         isFeaturedDispensary = featuredDispensary;
     }
 
@@ -373,19 +373,19 @@ public class Dispensary {
         this.dateOfJoining = dateOfJoining;
     }
 
-    public boolean isVerifiedListing() {
+    public int isVerifiedListing() {
         return isVerifiedListing;
     }
 
-    public void setVerifiedListing(boolean verifiedListing) {
+    public void setVerifiedListing(int verifiedListing) {
         isVerifiedListing = verifiedListing;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

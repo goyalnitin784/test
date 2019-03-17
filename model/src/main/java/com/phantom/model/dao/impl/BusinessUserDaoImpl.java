@@ -5,7 +5,9 @@ import com.phantom.model.entity.BusinessUser;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class BusinessUserDaoImpl extends GenericHibernateDAO<BusinessUser, Long> implements BusinessUserDao {
     @Override
     public BusinessUser getBusinessUserDetailsBySSOToken(String ssoToken) {

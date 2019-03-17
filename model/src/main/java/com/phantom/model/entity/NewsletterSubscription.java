@@ -16,7 +16,7 @@ public class NewsletterSubscription {
     private String email;
 
     @Column(name = "subscribed")
-    private boolean isSubscribed;
+    private int isSubscribed;
 
     @Column(name = "subscribed_on")
     private Date subscribedOn;
@@ -38,11 +38,11 @@ public class NewsletterSubscription {
         this.id = id;
     }
 
-    public boolean isSubscribed() {
+    public int isSubscribed() {
         return isSubscribed;
     }
 
-    public void setSubscribed(boolean subscribed) {
+    public void setSubscribed(int subscribed) {
         isSubscribed = subscribed;
     }
 

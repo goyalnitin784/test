@@ -16,7 +16,7 @@ public class StrainGallery {
     private int strainId;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "image")
     private String imagePath;
@@ -40,11 +40,11 @@ public class StrainGallery {
         this.strainId = strainId;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

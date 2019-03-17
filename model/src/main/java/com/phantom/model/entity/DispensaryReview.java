@@ -40,10 +40,10 @@ public class DispensaryReview {
     private int qualityRating;
 
     @Column(name = "make_review_private")
-    private boolean makeReviewPrivate;
+    private int makeReviewPrivate;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -128,19 +128,19 @@ public class DispensaryReview {
         this.qualityRating = qualityRating;
     }
 
-    public boolean isMakeReviewPrivate() {
+    public int isMakeReviewPrivate() {
         return makeReviewPrivate;
     }
 
-    public void setMakeReviewPrivate(boolean makeReviewPrivate) {
+    public void setMakeReviewPrivate(int makeReviewPrivate) {
         this.makeReviewPrivate = makeReviewPrivate;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 

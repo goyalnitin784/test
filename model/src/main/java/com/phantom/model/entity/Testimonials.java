@@ -16,7 +16,7 @@ public class Testimonials {
     private String description;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "user_id")
     private int userId;
@@ -25,7 +25,7 @@ public class Testimonials {
     private Date UpdatedOn;
 
     @Column(name = "display_on_home_page")
-    private boolean displayOnHomePage;
+    private int displayOnHomePage;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -46,11 +46,11 @@ public class Testimonials {
         this.description = description;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 
@@ -70,11 +70,11 @@ public class Testimonials {
         UpdatedOn = updatedOn;
     }
 
-    public boolean isDisplayOnHomePage() {
+    public int isDisplayOnHomePage() {
         return displayOnHomePage;
     }
 
-    public void setDisplayOnHomePage(boolean displayOnHomePage) {
+    public void setDisplayOnHomePage(int displayOnHomePage) {
         this.displayOnHomePage = displayOnHomePage;
     }
 

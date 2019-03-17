@@ -27,4 +27,13 @@ public class UserDaoImpl extends GenericHibernateDAO<User, Long> implements User
         User user = findByCriteria(criteria).get(0);
         return user;
     }
+
+    public void saveUser(User user) {
+        try{
+            super.saveOrUpdate(user);
+        }catch (Exception e){
+            logger.error("Exception came while saving object",e);
+        }
+
+    }
 }

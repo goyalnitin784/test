@@ -8,7 +8,7 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long userId;
 
@@ -34,7 +34,7 @@ public class User {
     private String dob;
 
     @Column(name = "is_age_above_21")
-    private boolean isAgeAbove21;
+    private int isAgeAbove21;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -112,12 +112,12 @@ public class User {
         this.dob = dob;
     }
 
-    public boolean isAgeAbove21() {
+    public int getIsAgeAbove21() {
         return isAgeAbove21;
     }
 
-    public void setAgeAbove21(boolean ageAbove21) {
-        isAgeAbove21 = ageAbove21;
+    public void setIsAgeAbove21(int isAgeAbove21) {
+        this.isAgeAbove21 = isAgeAbove21;
     }
 
     public Date getCreatedOn() {

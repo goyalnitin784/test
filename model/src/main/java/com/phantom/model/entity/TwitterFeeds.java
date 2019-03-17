@@ -16,7 +16,7 @@ public class TwitterFeeds {
     private String description;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -37,11 +37,11 @@ public class TwitterFeeds {
         this.description = description;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
 
