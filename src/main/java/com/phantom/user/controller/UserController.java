@@ -1,12 +1,12 @@
 package com.phantom.user.controller;
 
 import com.phantom.logging.PhantomLogger;
+import com.phantom.model.dao.UserDao;
 import com.phantom.model.entity.User;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +16,7 @@ public class UserController {
     private static final PhantomLogger logger = PhantomLogger.getLoggerObject(UserController.class);
 
     @Autowired private UserService userService;
+    @Autowired private UserDao userDao;
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public @ResponseBody String registerUser(HttpServletRequest request, HttpServletResponse response){
@@ -23,9 +24,7 @@ public class UserController {
         if(userBean.isValidUser()) {
             logger.info("User : " + userBean.getUserName() + " is registered successfully");
             userService.setCookie(response,userBean);
-
-            //TODO insert user details and user_id & sso tokrn mapping in tables
-
+            userService.insertUserDetails(userBean);
             return "{\"userStatus\": \"true\"}";
         }else{
             return "{\"userStatus\": \"false\"}";
