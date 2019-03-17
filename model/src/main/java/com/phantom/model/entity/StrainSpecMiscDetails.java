@@ -8,7 +8,7 @@ import java.util.Date;
 public class StrainSpecMiscDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 

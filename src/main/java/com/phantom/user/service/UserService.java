@@ -40,7 +40,7 @@ public class UserService {
             if (password.equals(user.getPassword())) { // password matches
                 String ssoToken = UUID.randomUUID().toString();
                 user.setSsoToken(ssoToken);
-                userDao.saveOrUpdate(user);
+                userDao.saveUser(user);
                 return ssoToken;
             }
         }
