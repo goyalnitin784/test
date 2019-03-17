@@ -15,6 +15,9 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -25,11 +28,9 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public void setCookie(HttpServletResponse response, UserBean userBean) {
-        if (userBean.isValidUser()) {
-            requestUtils.addCookie(response, "userName", userBean.getUserName());
-            requestUtils.addCookie(response, "ssoToken", userBean.getSsoToken());
-        }
+    public void setCookie(HttpServletResponse response, String userName, String ssoToken) {
+            requestUtils.addCookie(response, "userName", userName);
+            requestUtils.addCookie(response, "ssoToken", ssoToken);
     }
 
     public User getUserDetails(String id) {
@@ -38,14 +39,17 @@ public class UserService {
         return user;
     }
 
-    public Boolean isValidUser(String userName, String password) {
+    public String isValidUser(String userName, String password) {
         if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
             User user = userDao.getUserDetailsByUserName(userName);
             if (password.equals(user.getPassword())) { // password matches
-                return Boolean.TRUE;
+                String ssoToken = UUID.randomUUID().toString();
+                user.setSsoToken(ssoToken);
+                userDao.saveOrUpdate(user);
+                return ssoToken;
             }
         }
-        return Boolean.FALSE;
+        return null;
     }
 
     public void insertUserDetails(UserBean userBean) {

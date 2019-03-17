@@ -5,7 +5,10 @@ import com.phantom.model.entity.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
+
+@Transactional
 public class UserDaoImpl extends GenericHibernateDAO<User, Long> implements UserDao {
     @Override
     public User getUserDetailsBySSOToken(String ssoToken) {

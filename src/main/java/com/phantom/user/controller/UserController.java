@@ -8,6 +8,7 @@ import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class UserController {
         UserBean userBean = new UserBean(request);
         if (userBean.isValidUser()) {
             logger.info("User : " + userBean.getUserName() + " is registered successfully");
-            userService.setCookie(response, userBean);
+            userService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
             userService.insertUserDetails(userBean);
             return "{\"userStatus\": \"true\"}";
         } else {
@@ -54,10 +55,12 @@ public class UserController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public @ResponseBody
-    Boolean doLogin(HttpServletRequest request, HttpServletRequest response) {
+    Boolean doLogin(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        if (userService.isValidUser(userName, password)) {
+        String ssoToken = userService.isValidUser(userName, password);
+        if (!StringUtils.isEmpty(ssoToken)) {
+            userService.setCookie(response,userName,ssoToken);
             return Boolean.TRUE;
         }
         return Boolean.FALSE;

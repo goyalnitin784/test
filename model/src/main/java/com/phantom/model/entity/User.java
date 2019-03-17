@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_details")
 public class User {
 
     @Id
@@ -15,7 +15,7 @@ public class User {
     @Column(name = "type_of_user")
     private int userType;
 
-    @Column(name = "user_name")
+    @Column(name = "usrname")
     private String userName;
 
     @Column(name = "password")
@@ -41,6 +41,12 @@ public class User {
 
     @Column(name = "uuid")
     private String ssoToken;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "confirmed_on")
+    private Date confirmedOn;
 
     public long getUserId() {
         return userId;
@@ -128,5 +134,21 @@ public class User {
 
     public void setSsoToken(String ssoToken) {
         this.ssoToken = ssoToken;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public Date getConfirmedOn() {
+        return confirmedOn;
+    }
+
+    public void setConfirmedOn(Date confirmedOn) {
+        this.confirmedOn = confirmedOn;
     }
 }
