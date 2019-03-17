@@ -38,9 +38,9 @@ public class BusinessUserController {
             logger.info("User : " + businessUserBean.getUserName() + " is registered successfully");
             businessUserService.setCookie(response, businessUserBean);
             businessUserService.insertUserDetails(businessUserBean);
-            return "{\"userStatus\": \"true\"}";
+            return "{\"businessUserStatus\": \"true\"}";
         } else {
-            return "{\"userStatus\": \"false\"}";
+            return "{\"businessUserStatus\": \"false\"}";
         }
     }
 

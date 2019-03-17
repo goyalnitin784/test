@@ -55,15 +55,15 @@ public class UserController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public @ResponseBody
-    Boolean doLogin(HttpServletRequest request, HttpServletResponse response) {
+    String doLogin(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         String ssoToken = userService.isValidUser(userName, password);
         if (!StringUtils.isEmpty(ssoToken)) {
             userService.setCookie(response,userName,ssoToken);
-            return Boolean.TRUE;
+            return "{\"loginStatus\": \"true\"}";
         }
-        return Boolean.FALSE;
+        return "{\"loginStatus\": \"false\"}";
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
