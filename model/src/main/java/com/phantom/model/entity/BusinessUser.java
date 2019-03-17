@@ -27,7 +27,7 @@ public class BusinessUser {
     @Column(name = "phone")
     private String phoneNo;
 
-    @Column(name = "email")
+    @Column(name = "email_address")
     private String email;
 
     @Column(name = "dispensary_id")
@@ -35,6 +35,12 @@ public class BusinessUser {
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "dob")
+    private String dob;
+
+    @Column(name = "uuid")
+    private String ssoToken;
 
     public long getId() {
         return id;
@@ -106,5 +112,21 @@ public class BusinessUser {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getSsoToken() {
+        return ssoToken;
+    }
+
+    public void setSsoToken(String ssoToken) {
+        this.ssoToken = ssoToken;
     }
 }

@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "userId")
+    @Column(name = "id")
     private long userId;
 
     @Column(name = "type_of_user")
@@ -27,7 +27,7 @@ public class User {
     @Column(name = "phone")
     private String phoneNo;
 
-    @Column(name = "email")
+    @Column(name = "email_address")
     private String email;
 
     @Column(name = "dob")
@@ -38,6 +38,9 @@ public class User {
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "uuid")
+    private String ssoToken;
 
     public long getUserId() {
         return userId;
@@ -117,5 +120,13 @@ public class User {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getSsoToken() {
+        return ssoToken;
+    }
+
+    public void setSsoToken(String ssoToken) {
+        this.ssoToken = ssoToken;
     }
 }

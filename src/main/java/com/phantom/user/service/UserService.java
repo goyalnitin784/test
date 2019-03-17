@@ -40,10 +40,7 @@ public class UserService {
 
     public Boolean isValidUser(String userName, String password) {
         if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
-            DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-            criteria.add(Restrictions.eq("userName", userName));
-            criteria.addOrder(Order.desc("createdOn"));
-            User user = (User) userDao.findByCriteria(criteria);
+            User user = userDao.getUserDetailsByUserName(userName);
             if (password.equals(user.getPassword())) { // password matches
                 return Boolean.TRUE;
             }
@@ -61,7 +58,9 @@ public class UserService {
             user.setPhoneNo(userBean.getPhoneNo());
             user.setProfilePic(userBean.getProfilePic());
             user.setUserType(userBean.getUserType());
+            user.setDob(userBean.getDob());
             user.setAgeAbove21(Boolean.FALSE);
+            user.setSsoToken(userBean.getSsoToken());
             if (!StringUtils.isEmpty(userBean.getDob())) {
                 LocalDate birthDate = LocalDate.parse(userBean.getDob());
                 int age = Period.between(birthDate, LocalDate.now()).getYears();

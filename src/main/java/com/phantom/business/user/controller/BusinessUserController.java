@@ -1,8 +1,11 @@
-package com.phantom.user.controller;
+package com.phantom.business.user.controller;
 
 import com.google.gson.Gson;
+import com.phantom.business.user.request.BusinessUserBean;
+import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.logging.PhantomLogger;
-import com.phantom.model.dao.UserDao;
+import com.phantom.model.dao.BusinessUserDao;
+import com.phantom.model.entity.BusinessUser;
 import com.phantom.model.entity.User;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
@@ -15,26 +18,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping(value = "user")
-public class UserController {
+@RequestMapping(value = "businessUser")
+public class BusinessUserController {
     private static final Gson gson = new Gson();
-    private static final PhantomLogger logger = PhantomLogger.getLoggerObject(UserController.class);
+    private static final PhantomLogger logger = PhantomLogger.getLoggerObject(BusinessUserController.class);
 
     @Autowired
-    private UserService userService;
+    private BusinessUserService businessUserService;
     @Autowired
-    private UserDao userDao;
+    private BusinessUserDao businessUserDao;
     @Autowired
     private RequestUtils requestUtils;
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public @ResponseBody
     String registerUser(HttpServletRequest request, HttpServletResponse response) {
-        UserBean userBean = new UserBean(request);
-        if (userBean.isValidUser()) {
-            logger.info("User : " + userBean.getUserName() + " is registered successfully");
-            userService.setCookie(response, userBean);
-            userService.insertUserDetails(userBean);
+        BusinessUserBean businessUserBean = new BusinessUserBean(request);
+        if (businessUserBean.isValidUser()) {
+            logger.info("User : " + businessUserBean.getUserName() + " is registered successfully");
+            businessUserService.setCookie(response, businessUserBean);
+            businessUserService.insertUserDetails(businessUserBean);
             return "{\"userStatus\": \"true\"}";
         } else {
             return "{\"userStatus\": \"false\"}";
@@ -45,9 +48,9 @@ public class UserController {
     public @ResponseBody
     String getUserDetails(HttpServletRequest request) {
         String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-        User user = userDao.getUserDetailsBySSOToken(ssoToken);
-        if (user != null) {
-            return gson.toJson(user);
+        BusinessUser businessUser = businessUserDao.getBusinessUserDetailsBySSOToken(ssoToken);
+        if (businessUser != null) {
+            return gson.toJson(businessUser);
         }
         return "{\"userStatus\": \"false\"}";
     }
@@ -57,7 +60,7 @@ public class UserController {
     Boolean doLogin(HttpServletRequest request, HttpServletRequest response) {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        if (userService.isValidUser(userName, password)) {
+        if (businessUserService.isValidUser(userName, password)) {
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
