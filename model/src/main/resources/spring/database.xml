@@ -1,146 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-
-
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver.class.name}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="acquireIncrement" value="${acquire.increment}"/>
-        <property name="minPoolSize" value="${min.pool.size}"/>
-        <property name="maxPoolSize" value="${max.pool.size}"/>
-        <property name="maxIdleTime" value="50"/>
-        <property name="maxStatementsPerConnection" value="${max.statements.per.connection}"/>
-        <property name="numHelperThreads" value="${num.helper.threads}"/>
-        <property name="idleConnectionTestPeriod" value="300"/>
-        <property name="preferredTestQuery" value="SELECT 0"/>
-    </bean>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.phantom.model.entity"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-            </props>
-        </property>
-    </bean>
+    <beans:bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <beans:property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <beans:property name="jdbcUrl" value="jdbc:mysql://localhost:3306/the420club?autoReconnect=true"/>
+        <beans:property name="user" value="root"/>
+        <beans:property name="password" value="root"/>
+        <beans:property name="acquireIncrement" value="1"/>
+        <beans:property name="minPoolSize" value="5"/>
+        <beans:property name="maxPoolSize" value="50"/>
+        <beans:property name="maxIdleTime" value="50"/>
+        <beans:property name="maxStatementsPerConnection" value="100"/>
+        <beans:property name="numHelperThreads" value="10"/>
+        <beans:property name="idleConnectionTestPeriod" value="300"/>
+        <beans:property name="preferredTestQuery" value="SELECT 0"/>
+    </beans:bean>
 
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <beans:property name="dataSource" ref="dataSource"/>
+        <beans:property name="packagesToScan" value="com.phantom.model.entity"/>
+        <beans:property name="hibernateProperties">
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
+                <beans:prop key="hibernate.show_sql">true</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+
+
+    <beans:bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
-    <bean id="strainEffectsDao" class="com.phantom.model.dao.impl.StrainEffectsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryResponseToQuoteDao" class="com.phantom.model.dao.impl.DispensaryResponseToQuoteDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="askCommunityQuestionsDao" class="com.phantom.model.dao.impl.AskCommunityQuestionsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainDiseaseCureMasterDao" class="com.phantom.model.dao.impl.StrainDiseaseCureMasterDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryPickUpOrderDetailsDao" class="com.phantom.model.dao.impl.DispensaryPickUpOrderDetailsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dealReviewDao" class="com.phantom.model.dao.impl.DealReviewDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="strainEffectsDao" class="com.phantom.model.dao.impl.StrainEffectsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="strainFlavourMasterDao" class="com.phantom.model.dao.impl.StrainFlavourMasterDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="dispensaryResponseToQuoteDao" class="com.phantom.model.dao.impl.DispensaryResponseToQuoteDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="dispensaryUpdatesDao" class="com.phantom.model.dao.impl.DispensaryUpdatesDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="dispensaryGalleryDao" class="com.phantom.model.dao.impl.DispensaryGalleryDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainCategoryTypeDao" class="com.phantom.model.dao.impl.StrainCategoryTypeDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="twitterFeedsDao" class="com.phantom.model.dao.impl.TwitterFeedsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="testimonialsDao" class="com.phantom.model.dao.impl.TestimonialsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainDao" class="com.phantom.model.dao.impl.StrainDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainFlavoursDao" class="com.phantom.model.dao.impl.StrainFlavoursDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainGalleryDao" class="com.phantom.model.dao.impl.StrainGalleryDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainReviewDao" class="com.phantom.model.dao.impl.StrainReviewDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="quoteRequestDao" class="com.phantom.model.dao.impl.QuoteRequestDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dispensaryDealsDao" class="com.phantom.model.dao.impl.DispensaryDealsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dispensaryFollowersDao" class="com.phantom.model.dao.impl.DispensaryFollowersDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="quoteRequestSentToDao" class="com.phantom.model.dao.impl.QuoteRequestSentToDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="askCommunityAnswerDao" class="com.phantom.model.dao.impl.AskCommunityAnswerDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainEffectsMasterDao" class="com.phantom.model.dao.impl.StrainEffectsMasterDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dispensaryReviewDao" class="com.phantom.model.dao.impl.DispensaryReviewDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="businessUserDao" class="com.phantom.model.dao.impl.BusinessUserDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="userDao" class="com.phantom.model.dao.impl.UserDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dispensaryPickUpOrderDao" class="com.phantom.model.dao.impl.DispensaryPickUpOrderDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainDiseaseDao" class="com.phantom.model.dao.impl.StrainDiseaseDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dispensaryMenu" class="com.phantom.model.dao.impl.DispensaryMenuDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="strainDiseaseCureMasterDao" class="com.phantom.model.dao.impl.StrainDiseaseCureMasterDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="contactUsDao" class="com.phantom.model.dao.impl.ContactUsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="dispensaryPickUpOrderDetailsDao"
+                class="com.phantom.model.dao.impl.DispensaryPickUpOrderDetailsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="dealReviewDao" class="com.phantom.model.dao.impl.DealReviewDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="strainSpecMiscDetailsDao" class="com.phantom.model.dao.impl.StrainSpecMiscDetailsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="strainFlavourMasterDao" class="com.phantom.model.dao.impl.StrainFlavourMasterDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="newsletterSubscriptionDao" class="com.phantom.model.dao.impl.NewsletterSubscriptionDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="dispensaryUpdatesDao" class="com.phantom.model.dao.impl.DispensaryUpdatesDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-    <bean id="strainFlavoursDao" class="com.phantom.model.dao.impl.StrainFlavoursDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainGalleryDao" class="com.phantom.model.dao.impl.StrainGalleryDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainReviewDao" class="com.phantom.model.dao.impl.StrainReviewDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="quoteRequestDao" class="com.phantom.model.dao.impl.QuoteRequestDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryDealsDao" class="com.phantom.model.dao.impl.DispensaryDealsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryFollowersDao" class="com.phantom.model.dao.impl.DispensaryFollowersDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="quoteRequestSentToDao" class="com.phantom.model.dao.impl.QuoteRequestSentToDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="askCommunityAnswerDao" class="com.phantom.model.dao.impl.AskCommunityAnswerDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainEffectsMasterDao" class="com.phantom.model.dao.impl.StrainEffectsMasterDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryReviewDao" class="com.phantom.model.dao.impl.DispensaryReviewDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="businessUserDao" class="com.phantom.model.dao.impl.BusinessUserDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="userDao" class="com.phantom.model.dao.impl.UserDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryPickUpOrderDao" class="com.phantom.model.dao.impl.DispensaryPickUpOrderDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainDiseaseDao" class="com.phantom.model.dao.impl.StrainDiseaseDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryMenu" class="com.phantom.model.dao.impl.DispensaryMenuDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainCategoryTypeDao" class="com.phantom.model.dao.impl.StrainCategoryTypeDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="twitterFeedsDao" class="com.phantom.model.dao.impl.TwitterFeedsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="testimonialsDao" class="com.phantom.model.dao.impl.TestimonialsDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="strainDao" class="com.phantom.model.dao.impl.StrainDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="dispensaryGalleryDao" class="com.phantom.model.dao.impl.DispensaryGalleryDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <beans:bean id="contactUsDao" class="com.phantom.model.dao.impl.ContactUsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
+    <beans:bean id="strainSpecMiscDetailsDao" class="com.phantom.model.dao.impl.StrainSpecMiscDetailsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
 
-</beans>
+    <beans:bean id="newsletterSubscriptionDao" class="com.phantom.model.dao.impl.NewsletterSubscriptionDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+    <beans:bean id="askCommunityQuestionsDao" class="com.phantom.model.dao.impl.AskCommunityQuestionsDaoImpl">
+        <beans:property name="sessionFactory" ref="sessionFactory"/>
+    </beans:bean>
+
+</beans:beans>
