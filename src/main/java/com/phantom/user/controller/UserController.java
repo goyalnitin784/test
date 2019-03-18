@@ -1,6 +1,7 @@
 package com.phantom.user.controller;
 
 import com.google.gson.Gson;
+import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.UserDao;
 import com.phantom.model.entity.User;
@@ -32,10 +33,12 @@ public class UserController {
     public @ResponseBody
     String registerUser(HttpServletRequest request, HttpServletResponse response) {
         UserBean userBean = new UserBean(request);
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         if (userBean.isValidUser()) {
             logger.info("User : " + userBean.getUserName() + " is registered successfully");
             userService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
             userService.insertUserDetails(userBean);
+            baseResponseDTO.setCode("200");
             return "{\"userStatus\": \"true\"}";
         } else {
             return "{\"userStatus\": \"false\"}";

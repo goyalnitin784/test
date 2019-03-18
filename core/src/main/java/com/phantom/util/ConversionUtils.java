@@ -75,16 +75,16 @@ public class ConversionUtils {
         return null;
     }
 
-//    public static <T> T unmarshalJsonNew(String json, Class<T> type) {
-//        if (StringUtils.isNotBlank(json)) {
-//            try {
-//                return mapperNew.readValue(json, type);
-//            } catch (Exception e) {
-//                logger.error("Exception occured while unmarshalling json object." + e.getMessage());
-//            }
-//        }
-//        return null;
-//    }
+    public static <T> T unmarshalJsonNew(String json, Class<T> type) {
+        if (StringUtils.isNotBlank(json)) {
+            try {
+                return mapperNew.readValue(json, type);
+            } catch (Exception e) {
+                logger.error("Exception occured while unmarshalling json object." + e.getMessage());
+            }
+        }
+        return null;
+    }
 
     public static <T> String marshalJsonNew(T object) {
         if (object != null) {
@@ -99,7 +99,7 @@ public class ConversionUtils {
 
     public static void main(String[] args) {
         String json = "{\"userInfo\":{\"userId\":1234,\"email\":\"yatratestbookings@gmail.com\",\"mobile\":\"5795793459\"},\"searchCriteria\":{\"destinationCountry\":\"IN\",\"origin\":\"DEL\",\"destination\":\"BOM\",\"originCountry\":\"IN\",\"tenantId\":17,\"supplierId\":null,\"tripType\":\"R\",\"cabin\":\"Economy\",\"departureDate\":\"2019-01-19\",\"returnDate\":\"2019-01-19\",\"adt\":1,\"chd\":0,\"inf\":0},\"superPnr\":\"25714726\",\"flightInfo\":[{\"id\":\"DELBOMSG159HB20190102\",\"dt\":\"T-1D\",\"at\":\"T-1\",\"vac\":\"SG\"},{\"id\":\"BOMDELSG160HB20190119\",\"dt\":\"T-1\",\"at\":\"T-1C\",\"vac\":\"SG\"}],\"priceInfo\":{\"ttv\":8229,\"ysf\":450},\"promoInfo\":{\"promoCode\":\"TESTPROMOFORBUS\",\"promoAmount\":126},\"ttid\":\"1125714726\",\"rahul\":\"dev\"}";
-        BaseDTO request = ConversionUtils.unmarshalJson(json, BaseDTO.class);
+        BaseDTO request = ConversionUtils.unmarshalJsonNew(json, BaseDTO.class);
         System.out.println(request.toString());
     }
 }
