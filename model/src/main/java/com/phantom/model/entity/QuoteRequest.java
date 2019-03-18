@@ -12,6 +12,9 @@ public class QuoteRequest {
     @Column(name = "id")
     private long id;
 
+    @Column(name = "uuid")
+    private int uuid;
+
     @Column(name = "user_id")
     private int userId;
 
@@ -21,7 +24,7 @@ public class QuoteRequest {
     @Column(name = "strain_details")
     private String strainDetails;
 
-    @Column(name = "Quantity")
+    @Column(name = "quantity")
     private String quantity;
 
     @Column(name = "comments")
@@ -86,5 +89,12 @@ public class QuoteRequest {
         this.createdOn = createdOn;
     }
 
+    public int getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
+    }
 }
 

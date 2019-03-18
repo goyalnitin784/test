@@ -9,15 +9,13 @@ public class BaseResponseDTO extends BaseDTO {
 
 	private String code;
 	private List<String> messages;
-	private String httpCode;
-	
+
 	public BaseResponseDTO() {
 	}
 
-	public BaseResponseDTO(String code, List<String> messages, String httpCode) {
+	public BaseResponseDTO(String code, List<String> messages) {
 		this.code = code;
 		this.messages = messages;
-		this.httpCode = httpCode;
 	}
 	
 	public void addMessage(String message) {
@@ -41,14 +39,6 @@ public class BaseResponseDTO extends BaseDTO {
 
 	public void setMessages(List<String> messages) {
 		this.messages = messages;
-	}
-
-	public String getHttpCode() {
-		return httpCode;
-	}
-
-	public void setHttpCode(String httpCode) {
-		this.httpCode = httpCode;
 	}
 
 }

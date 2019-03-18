@@ -1,11 +1,12 @@
 package com.phantom.response;
 
+import com.google.gson.JsonObject;
 import com.phantom.dto.BaseJsonDTO;
 import com.phantom.dto.BaseResponseDTO;
 
 public class GenericResponse extends BaseJsonDTO {
     private BaseResponseDTO baseResponseDTO;
-    private Response response;
+    private JsonObject response;
 
     public BaseResponseDTO getBaseResponseDTO() {
         return baseResponseDTO;
@@ -15,11 +16,11 @@ public class GenericResponse extends BaseJsonDTO {
         this.baseResponseDTO = baseResponseDTO;
     }
 
-    public Response getResponse() {
+    public JsonObject getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(JsonObject response) {
         this.response = response;
     }
 }
