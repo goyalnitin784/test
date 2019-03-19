@@ -23,7 +23,6 @@ dependencies {
 	compile 'commons-logging:commons-logging:1.1'
 	compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
 	compile 'commons-io:commons-io:2.5'
-	compile 'antlr:antlr:2.7.7'
 	testCompile 'org.testng:testng:6.11'
 }
 

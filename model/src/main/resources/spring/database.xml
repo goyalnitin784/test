@@ -141,6 +141,9 @@
     <bean id="dispensaryGalleryDao" class="com.phantom.model.dao.impl.DispensaryGalleryDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="userSSOTokenMappingDao" class="com.phantom.model.dao.impl.UserSSOTokenMappingDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 
 </beans>

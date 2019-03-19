@@ -1,5 +1,7 @@
 package com.phantom.util;
 
+import com.phantom.prop.templates.PropertyManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 
 @Component
 public class RequestUtils {
+
+    @Autowired private PropertyManager propertyManager;
 
     public static boolean itIsAJSONRequest(Map<String, Object> searchCriteria) {
         return itIsAJSONRequest(searchCriteria.get("JSON"));
@@ -151,7 +155,7 @@ public class RequestUtils {
     public void addCookie(HttpServletResponse response, String name,
                           String value) {
         Cookie cookie = new Cookie(name, value);
-        // cookie.setMaxAge(propertyManager.getPropertyAsInt(AppProperties.SESSION_COOKIE_AGE));
+        cookie.setMaxAge(propertyManager.getPropertyAsInt("session.cookie.age"));  // 1 month
         cookie.setPath("/");
         response.addCookie(cookie);
     }

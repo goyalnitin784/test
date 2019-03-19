@@ -6,7 +6,7 @@ import com.phantom.dto.BaseResponseDTO;
 
 public class GenericResponse extends BaseJsonDTO {
     private BaseResponseDTO baseResponseDTO;
-    private JsonObject response;
+    private String response;
 
     public BaseResponseDTO getBaseResponseDTO() {
         return baseResponseDTO;
@@ -16,11 +16,11 @@ public class GenericResponse extends BaseJsonDTO {
         this.baseResponseDTO = baseResponseDTO;
     }
 
-    public JsonObject getResponse() {
+    public String getResponse() {
         return response;
     }
 
-    public void setResponse(JsonObject response) {
+    public void setResponse(String response) {
         this.response = response;
     }
 }

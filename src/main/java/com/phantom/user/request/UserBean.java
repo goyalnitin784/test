@@ -11,6 +11,7 @@ import java.util.UUID;
 public class UserBean extends MapBasedRequest {
     private static final long serialVersionUID = 7682719590873299457L;
 
+    private long userId;
     private int userType;
     private String title = "";
     private String firstName = "";
@@ -142,6 +143,14 @@ public class UserBean extends MapBasedRequest {
 
     public void setSsoToken(String ssoToken) {
         this.ssoToken = ssoToken;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @Override
