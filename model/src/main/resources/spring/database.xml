@@ -8,16 +8,16 @@
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver.class.name}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="acquireIncrement" value="${acquire.increment}"/>
-        <property name="minPoolSize" value="${min.pool.size}"/>
-        <property name="maxPoolSize" value="${max.pool.size}"/>
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/the420club?autoReconnect=true"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="maxPoolSize" value="100"/>
         <property name="maxIdleTime" value="50"/>
-        <property name="maxStatementsPerConnection" value="${max.statements.per.connection}"/>
-        <property name="numHelperThreads" value="${num.helper.threads}"/>
+        <property name="maxStatementsPerConnection" value="100"/>
+        <property name="numHelperThreads" value="10"/>
         <property name="idleConnectionTestPeriod" value="300"/>
         <property name="preferredTestQuery" value="SELECT 0"/>
     </bean>
@@ -142,6 +142,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="userSSOTokenMappingDao" class="com.phantom.model.dao.impl.UserSSOTokenMappingDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="productsCategoryTypeDao" class="com.phantom.model.dao.impl.ProductsCategoryTypeDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

@@ -21,5 +21,19 @@
 
     <beans:import resource="thread-pool.xml"/>
 
+    <beans:bean id="transformerPropertyPlaceHolder"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="locations">
+            <beans:list>
+                <beans:value>classpath:properties/${environment}/application.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/cache.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/database.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/thread-pool.properties</beans:value>
+                <!--<value>classpath:properties/${environment}/log4j.properties</value>-->
+            </beans:list>
+        </beans:property>
+        <beans:property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </beans:bean>
+
 
 </beans:beans>
