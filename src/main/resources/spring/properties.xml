@@ -37,7 +37,7 @@
     </beans:bean>
 
     <beans:bean name="applicationPropertyManager" class="com.phantom.prop.service.ReloadableApplicationPropertyManager">
-        <beans:constructor-arg index="0" value="properties/${environment}/AppProperties.properties"/>
+        <beans:constructor-arg index="0" value="properties/${environment}/application.properties"/>
     </beans:bean>
 
     <beans:bean name="interfacePropertyManager" class="com.phantom.prop.service.ReloadableApplicationPropertyManager">
@@ -45,7 +45,7 @@
     </beans:bean>
 
     <beans:bean name="threadPoolPropertyManager" class="com.phantom.prop.service.ReloadableApplicationPropertyManager">
-        <beans:constructor-arg index="0" value="properties/${environment}/threadPool.properties"/>
+        <beans:constructor-arg index="0" value="properties/${environment}/thread-pool.properties"/>
     </beans:bean>
 
 

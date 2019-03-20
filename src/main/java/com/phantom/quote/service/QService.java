@@ -11,6 +11,9 @@ import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Service
 public class QService {
 
@@ -19,6 +22,9 @@ public class QService {
 
     @Autowired
     QuoteRequestDao quoteRequestDao;
+
+    @Autowired
+    DispensaryActionService dispensaryActionService;
 
     PhantomLogger logger  = PhantomLogger.getLoggerObject(this.getClass());
 
@@ -50,11 +56,19 @@ public class QService {
 
         try{
             QuoteRequestEntity quoteRequestEntity = new QuoteRequestEntity();
+            quoteRequestEntity.setLocation(quoteRequest.getLocation());
+            quoteRequestEntity.setCreatedOn(new Date());
+            quoteRequestEntity.setComments(quoteRequest.getComments());
+            quoteRequestEntity.setStrainDetails(quoteRequest.getProduct());
+            quoteRequestEntity.setUserId((int)user.getUserId());
+            quoteRequestEntity.setUuid(UUID.randomUUID().toString());
             quoteRequestDao.saveOrUpdate(quoteRequestEntity);
+            //dispensaryActionService.
         }catch (Exception e){
-
+            logger.error("Exception came while saving quoue",e);
+            jsonObject.addProperty("status", 500);
+            jsonObject.addProperty("msg", "Request Could not be Submitted");
         }
-
         jsonObject.addProperty("status", 200);
         jsonObject.addProperty("msg", "Request Submitted");
         return jsonObject.toString();

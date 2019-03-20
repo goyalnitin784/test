@@ -2,5 +2,3 @@ rootProject.name = 'phantom'
 include 'core'
 include 'model'
 include 'cache'
-include 'service'
-

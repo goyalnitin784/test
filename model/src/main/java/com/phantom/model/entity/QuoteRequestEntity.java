@@ -13,7 +13,7 @@ public class QuoteRequestEntity {
     private long id;
 
     @Column(name = "uuid")
-    private int uuid;
+    private String uuid;
 
     @Column(name = "user_id")
     private int userId;
@@ -89,11 +89,11 @@ public class QuoteRequestEntity {
         this.createdOn = createdOn;
     }
 
-    public int getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(int uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 }

@@ -1,3 +1,10 @@
+build/*
+build/
+build
+cache/build/*
+core/build/*
+model/build/*
+build/*
 .gradle/*
 .idea/*
 *.iml
