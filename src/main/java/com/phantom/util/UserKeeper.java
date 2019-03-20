@@ -11,8 +11,8 @@ public class UserKeeper {
     }
 
 
-    public static void setUserDetails(User tenant) {
-        threadLocal.set(tenant);
+    public static void setUserDetails(User user) {
+        threadLocal.set(user);
     }
 
     public static void removeUserDetails() {

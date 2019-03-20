@@ -10,7 +10,7 @@ public class BusinessUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private long businessUserId;
 
     @Column(name = "type_of_user")
     private int userType;
@@ -42,12 +42,12 @@ public class BusinessUser {
     @Column(name = "uuid")
     private String ssoToken;
 
-    public long getId() {
-        return id;
+    public long getBusinessUserId() {
+        return businessUserId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBusinessUserId(long businessUserId) {
+        this.businessUserId = businessUserId;
     }
 
     public int getUserType() {

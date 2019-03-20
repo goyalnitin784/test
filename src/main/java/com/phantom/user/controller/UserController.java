@@ -11,6 +11,7 @@ import com.phantom.response.GenericResponse;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import com.phantom.util.RequestUtils;
+import com.phantom.util.UserKeeper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,10 +59,13 @@ public class UserController {
     @RequestMapping(value = "getUserDetails", method = RequestMethod.GET)
     public @ResponseBody
     String getUserDetails(HttpServletRequest request) {
-        String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-        User user = userService.getUserDetails(ssoToken);
+        User user = UserKeeper.getUserDetails();
         GenericResponse genericResponse = new GenericResponse();
         BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        if(user == null) {
+            String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
+            user = userService.getUserDetails(ssoToken);
+        }
         if (user != null) {
             baseResponseDTO.setCode("200");
             baseResponseDTO.addMessage("SUCCESS");

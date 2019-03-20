@@ -10,6 +10,7 @@ import java.util.UUID;
 public class BusinessUserBean extends MapBasedRequest {
     private static final long serialVersionUID = -6642957764091515832L;
 
+    private long businessUserId;
     private int userType;
     private String title = "";
     private String firstName = "";
@@ -40,6 +41,14 @@ public class BusinessUserBean extends MapBasedRequest {
         dispensaryId = Integer.parseInt(requestParameters.get("dispensaryId"));
         isValidUser = !StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(email)
                 && !StringUtils.isEmpty(dob);
+    }
+
+    public long getBusinessUserId() {
+        return businessUserId;
+    }
+
+    public void setBusinessUserId(long businessUserId) {
+        this.businessUserId = businessUserId;
     }
 
     public int getUserType() {

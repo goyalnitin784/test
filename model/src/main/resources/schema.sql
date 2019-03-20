@@ -1085,6 +1085,66 @@ LOCK TABLES `twitter_feeds` WRITE;
 /*!40000 ALTER TABLE `twitter_feeds` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `user_sso_token_mapping`
+--
+
+DROP TABLE IF EXISTS `user_sso_token_mapping`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_sso_token_mapping` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `usrname` varchar(50) DEFAULT NULL,
+  `sso_token` varchar(50) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id_IDX` (`user_id`) USING BTREE,
+  KEY `is_active_IDX` (`is_active`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_sso_token_mapping`
+--
+
+LOCK TABLES `user_sso_token_mapping` WRITE;
+/*!40000 ALTER TABLE `user_sso_token_mapping` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_sso_token_mapping` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `business_user_sso_token_mapping`
+--
+
+DROP TABLE IF EXISTS `business_user_sso_token_mapping`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `business_user_sso_token_mapping` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `usrname` varchar(50) DEFAULT NULL,
+  `sso_token` varchar(50) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id_IDX` (`user_id`) USING BTREE,
+  KEY `is_active_IDX` (`is_active`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `business_user_sso_token_mapping`
+--
+
+LOCK TABLES `business_user_sso_token_mapping` WRITE;
+/*!40000 ALTER TABLE `business_user_sso_token_mapping` DISABLE KEYS */;
+/*!40000 ALTER TABLE `business_user_sso_token_mapping` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 --
 -- Table structure for table `user_details`
 --
