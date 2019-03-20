@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "quote_request")
-public class QuoteRequest {
+public class QuoteRequestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

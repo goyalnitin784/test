@@ -1,6 +1,6 @@
 package com.phantom.model.dao;
 
-import com.phantom.model.entity.QuoteRequest;
+import com.phantom.model.entity.QuoteRequestEntity;
 
-public interface QuoteRequestDao extends GenericDAO<QuoteRequest,Long>{
+public interface QuoteRequestDao extends GenericDAO<QuoteRequestEntity,Long>{
 }
