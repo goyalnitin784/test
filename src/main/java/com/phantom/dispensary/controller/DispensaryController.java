@@ -46,7 +46,7 @@ public class DispensaryController {
         return gson.toJson(baseResponseDTO);
     }
 
-    @RequestMapping(value = "findDispensary", method = RequestMethod.POST)
+    @RequestMapping(value = "findDispensary", method = RequestMethod.GET)
     public @ResponseBody
     String findDispensary(HttpServletRequest request, HttpServletResponse response) {
         return dispensaryService.find(request.getParameter("lat"), request.getParameter("long"));
