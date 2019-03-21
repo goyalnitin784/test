@@ -7,8 +7,10 @@ import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.util.RequestUtils;
+import com.phantom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,15 +39,7 @@ public class DispensaryController {
         if (dispensaryBean.isValidDispensary()) {
             isRegistered = dispensaryService.addDispensary(dispensaryBean);
         }
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if (isRegistered) {
-            baseResponseDTO.addMessage("SUCCESS");
-            baseResponseDTO.setCode("200");
-        } else {
-            baseResponseDTO.addMessage("FAILURE");
-            baseResponseDTO.setCode("500");
-        }
-        return gson.toJson(baseResponseDTO);
+        return new ResponseUtils().getResponseByFlag(isRegistered);
     }
 
     @RequestMapping(value = "findDispensary", method = RequestMethod.GET)
@@ -56,47 +50,43 @@ public class DispensaryController {
 
     @RequestMapping(value = "reviewDispensary", method = RequestMethod.GET)
     public @ResponseBody
-    String reviewDispensary(HttpServletRequest request, HttpServletResponse response){
+    String reviewDispensary(HttpServletRequest request, HttpServletResponse response) {
         DispReviewBean dispReviewBean = new DispReviewBean(request);
         boolean isReviewed = false;
-        if(dispReviewBean.isValidReview()){
-           isReviewed = dispensaryService.review(dispReviewBean);
+        if (dispReviewBean.isValidReview()) {
+            isReviewed = dispensaryService.review(dispReviewBean);
         }
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if (isReviewed) {
-            baseResponseDTO.addMessage("SUCCESS");
-            baseResponseDTO.setCode("200");
-        } else {
-            baseResponseDTO.addMessage("FAILURE");
-            baseResponseDTO.setCode("500");
-        }
-        return gson.toJson(baseResponseDTO);
+        return new ResponseUtils().getResponseByFlag(isReviewed);
     }
 
     @RequestMapping(value = "getDispensaryQuotes", method = RequestMethod.GET)
     public @ResponseBody
     String getDispensaryQuote(HttpServletRequest request, HttpServletResponse response) {
-        String token = RequestUtils.getCookie(request,"bssoToken");
+        String token = RequestUtils.getCookie(request, "bssoToken");
         return dispensaryService.getDispensaryQuote(token);
     }
 
     @RequestMapping(value = "dispensaryDeals", method = RequestMethod.GET)
     public @ResponseBody
-    String addDispensaryDeals(HttpServletRequest request, HttpServletResponse response){
+    String addDispensaryDeals(HttpServletRequest request, HttpServletResponse response) {
         DispDealsBean dispDealsBean = new DispDealsBean(request);
         boolean isDealAdded = false;
-        if(dispDealsBean.isValidDeal()){
+        if (dispDealsBean.isValidDeal()) {
             isDealAdded = dispensaryService.addDeals(dispDealsBean);
         }
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if (isDealAdded) {
-            baseResponseDTO.addMessage("SUCCESS");
-            baseResponseDTO.setCode("200");
-        } else {
-            baseResponseDTO.addMessage("FAILURE");
-            baseResponseDTO.setCode("500");
+        return new ResponseUtils().getResponseByFlag(isDealAdded);
+    }
+
+    @RequestMapping(value = "addDispFollowers", method = RequestMethod.GET)
+    public @ResponseBody
+    String addDispFollowers(HttpServletRequest request, HttpServletResponse response) {
+        String dispensaryId = request.getParameter("dispId");
+        String userId = request.getParameter("userId");
+        boolean isFollowerAdded = Boolean.FALSE;
+        if(!StringUtils.isEmpty(dispensaryId) && !StringUtils.isEmpty(userId)){
+           isFollowerAdded = dispensaryService.addDispFollowers(Integer.parseInt(dispensaryId), Integer.parseInt(userId));
         }
-        return gson.toJson(baseResponseDTO);
+        return new ResponseUtils().getResponseByFlag(isFollowerAdded);
     }
 
 }

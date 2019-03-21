@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DispensaryService {
@@ -25,7 +26,8 @@ public class DispensaryService {
 
     @Autowired
     private DispensaryDao dispensaryDao;
-    @Autowired private DispensaryReviewDao dispensaryReviewDao;
+    @Autowired
+    private DispensaryReviewDao dispensaryReviewDao;
 
     @Autowired
     QuoteRequestSentToDao quoteRequestSentToDao;
@@ -33,7 +35,11 @@ public class DispensaryService {
     @Autowired
     BusinessUserSSOTokenMappingDao businessUserSSOTokenMappingDao;
 
-    @Autowired private DispensaryDealsDao dispensaryDealsDao;
+    @Autowired
+    private DispensaryDealsDao dispensaryDealsDao;
+
+    @Autowired
+    private DispensaryFollowersDao dispensaryFollowersDao;
 
     public String getProductList() {
         try {
@@ -56,7 +62,7 @@ public class DispensaryService {
         }
     }
 
-    public boolean addDispensary(DispensaryBean dispensaryBean){
+    public boolean addDispensary(DispensaryBean dispensaryBean) {
         try {
             Dispensary dispensary = new Dispensary();
 
@@ -115,7 +121,7 @@ public class DispensaryService {
         return "";
     }
 
-    public boolean review(DispReviewBean dispReviewBean){
+    public boolean review(DispReviewBean dispReviewBean) {
         try {
             DispensaryReview dispensaryReview = new DispensaryReview();
 
@@ -136,7 +142,7 @@ public class DispensaryService {
 
             dispensaryReviewDao.saveReview(dispensaryReview);
             return Boolean.TRUE;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while reviewing dispensary for dispensary id : " + dispReviewBean.getDispensaryId(), e);
             return Boolean.FALSE;
         }
@@ -144,26 +150,26 @@ public class DispensaryService {
 
     public String getDispensaryQuote(String token) {
         JsonObject jsonObject = new JsonObject();
-        if(PhantomUtil.isNullOrEmpty(token)){
+        if (PhantomUtil.isNullOrEmpty(token)) {
             jsonObject.addProperty("status", 400);
             jsonObject.addProperty("msg", "Not a logged in dispensary");
             return jsonObject.toString();
         }
         BusinessUserSSOTokenMapping businessUserSSOTokenMapping = businessUserSSOTokenMappingDao.getBusinessUserDetailsBySSOToken(token);
         long dispenseryId = businessUserSSOTokenMapping.getUserId();
-        List<QuoteRequestSentTo> quoteRequestSentTos = quoteRequestSentToDao.getDispensaryQuoteInLastThreeDays((int)dispenseryId);
-        if(quoteRequestSentTos==null || quoteRequestSentTos.size()==0){
+        List<QuoteRequestSentTo> quoteRequestSentTos = quoteRequestSentToDao.getDispensaryQuoteInLastThreeDays((int) dispenseryId);
+        if (quoteRequestSentTos == null || quoteRequestSentTos.size() == 0) {
             jsonObject.addProperty("status", 200);
             jsonObject.addProperty("msg", "No Quote present in last three days");
             return jsonObject.toString();
         }
         jsonObject.addProperty("status", 200);
         jsonObject.addProperty("msg", "");
-        jsonObject.add("data",new Gson().toJsonTree(quoteRequestSentTos));
+        jsonObject.add("data", new Gson().toJsonTree(quoteRequestSentTos));
         return jsonObject.toString();
     }
 
-    public boolean addDeals(DispDealsBean dispDealsBean){
+    public boolean addDeals(DispDealsBean dispDealsBean) {
         try {
             DispensaryDeals dispensaryDeals = new DispensaryDeals();
 
@@ -187,9 +193,26 @@ public class DispensaryService {
 
             dispensaryDealsDao.saveDeals(dispensaryDeals);
             return Boolean.TRUE;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary deals for dispensary id : " + dispDealsBean.getDispensaryId(), e);
             return Boolean.FALSE;
         }
     }
+
+    public boolean addDispFollowers(int dispensaryId, int userId) {
+        DispensaryFollowers dispensaryFollowers = new DispensaryFollowers();
+        try {
+            dispensaryFollowers.setDispensaryId(dispensaryId);
+            dispensaryFollowers.setUserId(userId);
+            dispensaryFollowers.setUuid(UUID.randomUUID().toString());
+
+            dispensaryFollowersDao.saveFollowers(dispensaryFollowers);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary followers ");
+            return Boolean.FALSE;
+        }
+    }
+
+
 }

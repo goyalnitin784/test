@@ -141,4 +141,14 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
         }
     }
+
+    public void addDispFollowers() {
+        try {
+            int dispensaryId = 3;
+            int userId = 7;
+            dispensaryService.addDispFollowers(dispensaryId,userId);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+        }
+    }
 }
