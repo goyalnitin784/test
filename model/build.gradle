@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':core')
     compile "com.google.code.gson:gson:2.8.1"
     compile 'org.springframework:spring-core:4.3.10.RELEASE'
     compile 'org.springframework:spring-tx:4.3.10.RELEASE'

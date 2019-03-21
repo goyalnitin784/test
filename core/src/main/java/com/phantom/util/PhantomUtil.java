@@ -1,8 +1,5 @@
 package com.phantom.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,16 +112,6 @@ public class PhantomUtil {
 
     public static boolean isNullOrEmpty(String str) {
         return str == null || "".equals(str);
-    }
-
-
-    public static boolean isNullOrEmptyJSON(JsonObject jsonObject) {
-        return jsonObject == null || jsonObject.isJsonNull() || jsonObject.size() == 0;
-    }
-
-
-    public static boolean isNullOrEmptyJSON(JsonArray jsonArray) {
-        return jsonArray == null || jsonArray.size() == 0;
     }
 
 
@@ -287,10 +274,6 @@ public class PhantomUtil {
             e.printStackTrace();
         }
         return newDate;
-    }
-
-    public static boolean isNullOrEmpty(JsonObject json) {
-        return json == null || json.isJsonNull() || json.entrySet().size() == 0;
     }
 
     public static Map<String, String> getHashMapFromString(String value) {

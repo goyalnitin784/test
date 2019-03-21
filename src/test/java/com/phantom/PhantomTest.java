@@ -5,20 +5,14 @@ import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.util.StringUtils;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Test
 @ContextConfiguration(locations = {"classpath:spring/spring-core-config.xml"})
@@ -39,6 +33,11 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void findD(){
+        String output = dispensaryService.find("19.171961","72.872726");
     }
 
     @Test

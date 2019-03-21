@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.phantom"/>
+
+    <beans:import resource="thread-pool.xml"/>
+
+    <beans:bean id="transformerPropertyPlaceHolder"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="locations">
+            <beans:list>
+                <beans:value>classpath:properties/${environment}/application.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/cache.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/database.properties</beans:value>
+                <beans:value>classpath:properties/${environment}/thread-pool.properties</beans:value>
+                <!--<value>classpath:properties/${environment}/log4j.properties</value>-->
+            </beans:list>
+        </beans:property>
+        <beans:property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </beans:bean>
+
+
+</beans:beans>

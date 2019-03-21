@@ -212,7 +212,7 @@ CREATE TABLE `dispensary` (
   `country` varchar(100) NOT NULL,
   `facilities` varchar(200) NOT NULL,
   `longitude` varchar(200) NOT NULL,
-  `lattitude` varchar(200) NOT NULL,
+  `latitude` varchar(200) NOT NULL,
   `timezone` varchar(100) NOT NULL,
   `monday_open_on` varchar(200) DEFAULT NULL,
   `monday_close_on` varchar(200) DEFAULT NULL,
