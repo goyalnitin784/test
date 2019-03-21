@@ -7,6 +7,7 @@ import com.phantom.model.dao.UserDao;
 import com.phantom.model.dao.UserSSOTokenMappingDao;
 import com.phantom.model.entity.User;
 import com.phantom.model.entity.UserSSOTokenMapping;
+import com.phantom.quote.service.QService;
 import com.phantom.response.GenericResponse;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
@@ -36,6 +37,10 @@ public class UserController {
     private RequestUtils requestUtils;
     @Autowired
     private UserSSOTokenMappingDao userSSOTokenMappingDao;
+
+    @Autowired
+    QService qService;
+
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public @ResponseBody
@@ -117,6 +122,12 @@ public class UserController {
             baseResponseDTO.addMessage(e.getMessage());
         }
         return gson.toJson(baseResponseDTO);
+    }
+
+    @RequestMapping(value = "getUserQuote", method = RequestMethod.POST)
+    public @ResponseBody
+    String getQuote(HttpServletRequest request, HttpServletResponse response) {
+        return qService.getUserQuote(RequestUtils.getCookie(request,"ssoToken"));
     }
 
 }

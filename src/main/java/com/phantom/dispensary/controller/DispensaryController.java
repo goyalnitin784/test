@@ -53,7 +53,7 @@ public class DispensaryController {
         return dispensaryService.find(request.getParameter("lat"), request.getParameter("long"));
     }
 
-    @RequestMapping(value = "getDispensaryQuote", method = RequestMethod.GET)
+    @RequestMapping(value = "getDispensaryQuotes", method = RequestMethod.GET)
     public @ResponseBody
     String getDispensaryQuote(HttpServletRequest request, HttpServletResponse response) {
         String token = RequestUtils.getCookie(request,"bssoToken");
