@@ -3,19 +3,12 @@ package com.phantom.dispensary.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.phantom.dispensary.request.DispDealsBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.logging.PhantomLogger;
-import com.phantom.model.dao.BusinessUserSSOTokenMappingDao;
-import com.phantom.model.dao.DispensaryDao;
-import com.phantom.model.dao.DispensaryReviewDao;
-import com.phantom.model.dao.ProductsCategoryTypeDao;
-import com.phantom.model.dao.QuoteRequestSentToDao;
-import com.phantom.model.entity.BusinessUserSSOTokenMapping;
-import com.phantom.model.entity.Dispensary;
-import com.phantom.model.entity.DispensaryReview;
-import com.phantom.model.entity.ProductsCategoryType;
-import com.phantom.model.entity.QuoteRequestSentTo;
+import com.phantom.model.dao.*;
+import com.phantom.model.entity.*;
 import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +32,8 @@ public class DispensaryService {
 
     @Autowired
     BusinessUserSSOTokenMappingDao businessUserSSOTokenMappingDao;
+
+    @Autowired private DispensaryDealsDao dispensaryDealsDao;
 
     public String getProductList() {
         try {
@@ -168,4 +163,33 @@ public class DispensaryService {
         return jsonObject.toString();
     }
 
+    public boolean addDeals(DispDealsBean dispDealsBean){
+        try {
+            DispensaryDeals dispensaryDeals = new DispensaryDeals();
+
+            dispensaryDeals.setDispensaryId(dispDealsBean.getDispensaryId());
+            dispensaryDeals.setDealName(dispDealsBean.getDealName());
+            dispensaryDeals.setValidityBeginDate(dispDealsBean.getValidityBeginDate());
+            dispensaryDeals.setValidEndDate(dispDealsBean.getValidEndDate());
+            dispensaryDeals.setDealDesc(dispDealsBean.getDealDesc());
+            dispensaryDeals.setVoucherCode(dispDealsBean.getVoucherCode());
+            dispensaryDeals.setDealTagLine(dispDealsBean.getDealTagLine());
+            dispensaryDeals.setDiscountPercentage(dispDealsBean.getDiscountPercentage());
+            dispensaryDeals.setDealImage1(dispDealsBean.getDealImage1());
+            dispensaryDeals.setDealImage2(dispDealsBean.getDealImage2());
+            dispensaryDeals.setIsTrendingDeal(dispDealsBean.getIsTrendingDeal());
+            dispensaryDeals.setIsFeaturedDeal(dispDealsBean.getIsFeaturedDeal());
+            dispensaryDeals.setIsActive(dispDealsBean.getIsActive());
+            dispensaryDeals.setPrice(dispDealsBean.getPrice());
+            dispensaryDeals.setSpecialComments(dispDealsBean.getSpecialComments());
+            dispensaryDeals.setUuid(dispDealsBean.getUuid());
+            dispensaryDeals.setFollowers(dispDealsBean.getFollowers());
+
+            dispensaryDealsDao.saveDeals(dispensaryDeals);
+            return Boolean.TRUE;
+        }catch (Exception e){
+            logger.error("Exception occurred while saving dispensary deals for dispensary id : " + dispDealsBean.getDispensaryId(), e);
+            return Boolean.FALSE;
+        }
+    }
 }

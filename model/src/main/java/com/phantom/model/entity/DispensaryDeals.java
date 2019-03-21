@@ -18,13 +18,13 @@ public class DispensaryDeals {
     @Column(name = "deal_name")
     private String dealName;
 
-    @Column(name = "validity_begin_date")
+    @Column(name = "validity_begin")
     private Date validityBeginDate;
 
-    @Column(name = "valid_end_date")
+    @Column(name = "validity_end")
     private Date validEndDate;
 
-    @Column(name = "deal_desc")
+    @Column(name = "Deal_Description")
     private String dealDesc;
 
     @Column(name = "voucher_code")
@@ -36,19 +36,19 @@ public class DispensaryDeals {
     @Column(name = "discount_percentage")
     private String discountPercentage;
 
-    @Column(name = "deal_image1")
+    @Column(name = "deal_image_1")
     private String dealImage1;
 
-    @Column(name = "deal_image2")
+    @Column(name = "deal_image_2")
     private String dealImage2;
 
-    @Column(name = "is_trending_deal")
+    @Column(name = "istrendingdeal")
     private int isTrendingDeal;
 
-    @Column(name = "is_featured_deal")
+    @Column(name = "isfeatureddeal")
     private int isFeaturedDeal;
 
-    @Column(name = "is_active")
+    @Column(name = "isActive")
     private int isActive;
 
     @Column(name = "price")
@@ -59,6 +59,15 @@ public class DispensaryDeals {
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "uuid")
+    private String uuid;
+
+    @Column(name = "no_of_followers_count")
+    private int followers;
 
     public long getId() {
         return id;
@@ -148,28 +157,28 @@ public class DispensaryDeals {
         this.dealImage2 = dealImage2;
     }
 
-    public int isTrendingDeal() {
+    public int getIsTrendingDeal() {
         return isTrendingDeal;
     }
 
-    public void setTrendingDeal(int trendingDeal) {
-        isTrendingDeal = trendingDeal;
+    public void setIsTrendingDeal(int isTrendingDeal) {
+        this.isTrendingDeal = isTrendingDeal;
     }
 
-    public int isFeaturedDeal() {
+    public int getIsFeaturedDeal() {
         return isFeaturedDeal;
     }
 
-    public void setFeaturedDeal(int featuredDeal) {
-        isFeaturedDeal = featuredDeal;
+    public void setIsFeaturedDeal(int isFeaturedDeal) {
+        this.isFeaturedDeal = isFeaturedDeal;
     }
 
-    public int isActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setActive(int active) {
-        isActive = active;
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public int getPrice() {
@@ -195,5 +204,30 @@ public class DispensaryDeals {
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
 }
 

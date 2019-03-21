@@ -1,6 +1,7 @@
 package com.phantom.dispensary.controller;
 
 import com.google.gson.Gson;
+import com.phantom.dispensary.request.DispDealsBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
@@ -77,6 +78,25 @@ public class DispensaryController {
     String getDispensaryQuote(HttpServletRequest request, HttpServletResponse response) {
         String token = RequestUtils.getCookie(request,"bssoToken");
         return dispensaryService.getDispensaryQuote(token);
+    }
+
+    @RequestMapping(value = "dispensaryDeals", method = RequestMethod.GET)
+    public @ResponseBody
+    String addDispensaryDeals(HttpServletRequest request, HttpServletResponse response){
+        DispDealsBean dispDealsBean = new DispDealsBean(request);
+        boolean isDealAdded = false;
+        if(dispDealsBean.isValidDeal()){
+            isDealAdded = dispensaryService.addDeals(dispDealsBean);
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        if (isDealAdded) {
+            baseResponseDTO.addMessage("SUCCESS");
+            baseResponseDTO.setCode("200");
+        } else {
+            baseResponseDTO.addMessage("FAILURE");
+            baseResponseDTO.setCode("500");
+        }
+        return gson.toJson(baseResponseDTO);
     }
 
 }

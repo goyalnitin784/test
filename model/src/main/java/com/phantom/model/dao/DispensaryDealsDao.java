@@ -2,5 +2,7 @@ package com.phantom.model.dao;
 
 import com.phantom.model.entity.DispensaryDeals;
 
-public interface DispensaryDealsDao extends GenericDAO<DispensaryDeals,Long>{
+public interface DispensaryDealsDao extends GenericDAO<DispensaryDeals, Long> {
+    void saveDeals(DispensaryDeals dispensaryDeals);
+
 }

@@ -1,5 +1,6 @@
 package com.phantom;
 
+import com.phantom.dispensary.request.DispDealsBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
@@ -118,6 +119,26 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             dispensaryService.review(dispReviewBean);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensary controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispensaryDeals() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("isActive", "1");
+            requestMap.put("dealName", "Phantom Deal");
+            requestMap.put("dealDesc", "Buy one get one free");
+            requestMap.put("voucherCode", "PHANTOM");
+            requestMap.put("dealTagLine", "it's here");
+            requestMap.put("followers", "3");
+            requestMap.put("price", "50");
+
+            DispDealsBean dispDealsBean = new DispDealsBean(requestMap);
+            dispensaryService.addDeals(dispDealsBean);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
         }
     }
 }
