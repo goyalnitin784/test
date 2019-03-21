@@ -52,7 +52,7 @@ public class BusinessUserController {
             baseResponseDTO.setCode("500");
             baseResponseDTO.addMessage("FAILED");
         }
-        return baseResponseDTO.toString();
+        return gson.toJson(baseResponseDTO);
     }
 
     @RequestMapping(value = "getUserDetails", method = RequestMethod.GET)
@@ -74,7 +74,7 @@ public class BusinessUserController {
             baseResponseDTO.addMessage("FAILED");
             genericResponse.setBaseResponseDTO(baseResponseDTO);
         }
-        return genericResponse.toString();
+        return gson.toJson(genericResponse);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -94,7 +94,7 @@ public class BusinessUserController {
             baseResponseDTO.setCode("500");
             baseResponseDTO.addMessage("FAILED");
         }
-        return baseResponseDTO.toString();
+        return gson.toJson(baseResponseDTO);
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
@@ -114,7 +114,7 @@ public class BusinessUserController {
             baseResponseDTO.addMessage("FAILED");
             baseResponseDTO.addMessage(e.getMessage());
         }
-        return baseResponseDTO.toString();
+        return gson.toJson(baseResponseDTO);
     }
 
 }

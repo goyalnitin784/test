@@ -155,7 +155,8 @@ public class RequestUtils {
     public void addCookie(HttpServletResponse response, String name,
                           String value) {
         Cookie cookie = new Cookie(name, value);
-        cookie.setMaxAge(propertyManager.getPropertyAsInt("session.cookie.age"));  // 1 month
+//        cookie.setMaxAge(propertyManager.getPropertyAsInt("session.cookie.age"));  // 1 month
+        cookie.setMaxAge(2592000);
         cookie.setPath("/");
         response.addCookie(cookie);
     }

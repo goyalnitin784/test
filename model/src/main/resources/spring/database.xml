@@ -149,5 +149,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="businessUserSSOTokenMappingDao" class="com.phantom.model.dao.impl.BusinessUserSSOTokenDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 </beans>

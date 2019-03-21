@@ -1,5 +1,6 @@
 package com.phantom.interceptor;
 
+import com.phantom.model.entity.User;
 import com.phantom.user.service.UserService;
 import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
@@ -28,7 +29,10 @@ public class CallContextInterceptor extends HandlerInterceptorAdapter {
         }
 
         if (!PhantomUtil.isNullOrEmpty(tokenId)) {
-            UserKeeper.setUserDetails(userService.getUserDetails(tokenId));
+            User user = userService.getUserDetails(tokenId);
+            if (user != null) {
+                UserKeeper.setUserDetails(user);
+            }
         }
         return true;
 

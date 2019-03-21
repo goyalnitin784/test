@@ -17,7 +17,7 @@ public class UserSSOTokenMappingDaoImpl extends GenericHibernateDAO<UserSSOToken
             criteria.addOrder(Order.desc("createdOn"));
             return findByCriteria(criteria).get(0);
         } catch (Exception e) {
-            logger.error("Exception occurred while fetching user details by sso token ", e);
+           logger.error("Exception occurred while fetching user details by sso token ", e);
             return null;
         }
     }

@@ -42,15 +42,12 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     public void registrationTest(){
         Map<String, String> requestMap = new HashMap<>();
         try {
-            requestMap.put("userType", "0");
-            requestMap.put("title", "Mr.");
-            requestMap.put("firstName", "Vijay");
-            requestMap.put("lastName", "Saini");
-            requestMap.put("userName", "imvk");
-            requestMap.put("password", "123456");
-            requestMap.put("phoneNo", "8954590099");
-            requestMap.put("email", "abc@gmail.com");
-            requestMap.put("dob", "1997-07-20");
+            requestMap.put("userType", "1");
+            requestMap.put("userName", "yoyo");
+            requestMap.put("password", "pass");
+            requestMap.put("phoneNo", "8954390099");
+            requestMap.put("email", "abcde@gmail.com");
+            requestMap.put("dob", "1996-03-16");
             UserBean userBean = new UserBean(requestMap);
             userService.insertUserDetails(userBean);
         }catch (Exception e){
@@ -63,7 +60,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         try {
             String userName = "imvk";
             String password = "123456";
-            if(!StringUtils.isEmpty(userService.isValidUser(userName,password))){
+            if(userService.isValidUser(userName,password) != null){
                 Reporter.log("Successfully login");
             }else{
                 Reporter.log("Login Failed");

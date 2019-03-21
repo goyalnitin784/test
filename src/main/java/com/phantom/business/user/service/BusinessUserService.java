@@ -30,9 +30,14 @@ public class BusinessUserService {
     }
 
     public BusinessUser getBusinessUserDetails(String ssoToken) {
-        BusinessUserSSOTokenMapping businessUserSSOTokenMapping = businessUserSSOTokenMappingDao.getBusinessUserDetailsBySSOToken(ssoToken);
-        BusinessUser businessUser = businessUserDao.findById(businessUserSSOTokenMapping.getUserId());
-        return businessUser;
+        try {
+            BusinessUserSSOTokenMapping businessUserSSOTokenMapping = businessUserSSOTokenMappingDao.getBusinessUserDetailsBySSOToken(ssoToken);
+            BusinessUser businessUser = businessUserDao.findById(businessUserSSOTokenMapping.getUserId());
+            return businessUser;
+        }catch (Exception e){
+            logger.error("Exception occurred while fetching business user details ");
+            return null;
+        }
     }
 
     public BusinessUser isValidUser(String userName, String password) {
@@ -70,8 +75,9 @@ public class BusinessUserService {
         BusinessUserSSOTokenMapping businessUserSSOTokenMapping = new BusinessUserSSOTokenMapping();
         try {
             businessUserSSOTokenMapping.setUserId(userId);
-            businessUserSSOTokenMapping.setSsoToken(userName);
-            businessUserSSOTokenMapping.setUserName(ssoToken);
+            businessUserSSOTokenMapping.setSsoToken(ssoToken);
+            businessUserSSOTokenMapping.setUserName(userName);
+            businessUserSSOTokenMapping.setIsActive(1);
 
             businessUserSSOTokenMappingDao.saveSSOToken(businessUserSSOTokenMapping);
         } catch (Exception e) {

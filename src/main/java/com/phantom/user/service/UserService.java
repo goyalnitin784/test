@@ -33,9 +33,14 @@ public class UserService {
     }
 
     public User getUserDetails(String ssoToken) {
-        UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
-        User user = userDao.findById(userSSOTokenMapping.getUserId());
-        return user;
+        try {
+            UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
+            User user = userDao.findById(userSSOTokenMapping.getUserId());
+            return user;
+        }catch (Exception e){
+         logger.error("Exception occurred while fetching user details ",e);
+         return null;
+        }
     }
 
     public User isValidUser(String userName, String password) {
@@ -67,6 +72,7 @@ public class UserService {
                     user.setIsAgeAbove21(1);
                 }
             }
+            user.setSsoToken(userBean.getSsoToken());
             userDao.saveUser(user);
             userBean.setUserId(user.getUserId());
 
@@ -79,9 +85,9 @@ public class UserService {
         UserSSOTokenMapping userSSOTokenMapping = new UserSSOTokenMapping();
         try{
             userSSOTokenMapping.setUserId(userId);
-            userSSOTokenMapping.setSsoToken(userName);
-            userSSOTokenMapping.setUserName(ssoToken);
-
+            userSSOTokenMapping.setSsoToken(ssoToken);
+            userSSOTokenMapping.setUserName(userName);
+            userSSOTokenMapping.setIsActive(1);
             userSSOTokenMappingDao.saveSSOToken(userSSOTokenMapping);
         }catch (Exception e){
             logger.error("Exception occurred while persisting sso-token for user : "+ userId, e);
