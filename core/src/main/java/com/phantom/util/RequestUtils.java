@@ -19,7 +19,8 @@ import java.util.Map;
 @Component
 public class RequestUtils {
 
-    @Autowired private PropertyManager propertyManager;
+    @Autowired
+    private PropertyManager propertyManager;
 
     public static boolean itIsAJSONRequest(Map<String, Object> searchCriteria) {
         return itIsAJSONRequest(searchCriteria.get("JSON"));
@@ -30,6 +31,9 @@ public class RequestUtils {
     }
 
     public static String getCookie(HttpServletRequest request, String key) {
+        if (request.getParameter(key) != null) {
+            return request.getParameter(key);
+        }
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {

@@ -1,5 +1,6 @@
 package com.phantom.quote.service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.QuoteRequestDao;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,7 +49,7 @@ public class QService {
             jsonObject.addProperty("msg", "Strain Details can not be blank");
             return jsonObject.toString();
         }
-        if (PhantomUtil.isNullOrEmpty(quoteRequest.getLocation())) {
+        if (PhantomUtil.isNullOrEmpty(quoteRequest.getLocationLat())) {
             jsonObject.addProperty("status", 400);
             jsonObject.addProperty("msg", "User Location can not be blank");
             return jsonObject.toString();
@@ -56,7 +58,8 @@ public class QService {
 
         try {
             QuoteRequestEntity quoteRequestEntity = new QuoteRequestEntity();
-            quoteRequestEntity.setLocation(quoteRequest.getLocation());
+            quoteRequestEntity.setLocationLat(quoteRequest.getLocationLat());
+            quoteRequestEntity.setLocationLong(quoteRequest.getLocationLong());
             quoteRequestEntity.setCreatedOn(new Date());
             quoteRequestEntity.setComments(quoteRequest.getComments());
             quoteRequestEntity.setStrainDetails(quoteRequest.getProduct());
@@ -71,6 +74,26 @@ public class QService {
         }
         jsonObject.addProperty("status", 200);
         jsonObject.addProperty("msg", "Request Submitted");
+        return jsonObject.toString();
+    }
+
+    public String getUserQuote(String ssoToken) {
+        User user = userService.getUserDetails(ssoToken);
+        JsonObject jsonObject = new JsonObject();
+        if (user == null) {
+            jsonObject.addProperty("status", 400);
+            jsonObject.addProperty("msg", "User not logged in");
+            return jsonObject.toString();
+        }
+        List<QuoteRequestEntity> quoteRequestEntityList = quoteRequestDao.getMyQuote((int)user.getUserId());
+        if(quoteRequestEntityList==null || quoteRequestEntityList.size()==0){
+            jsonObject.addProperty("status", 200);
+            jsonObject.addProperty("msg", "No Quote Present");
+            return jsonObject.toString();
+        }
+        jsonObject.addProperty("status", 200);
+        jsonObject.addProperty("msg", "");
+        jsonObject.add("data",new Gson().toJsonTree(quoteRequestEntityList));
         return jsonObject.toString();
     }
 

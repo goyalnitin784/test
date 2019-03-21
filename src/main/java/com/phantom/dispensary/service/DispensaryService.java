@@ -6,12 +6,17 @@ import com.google.gson.JsonObject;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.logging.PhantomLogger;
+import com.phantom.model.dao.BusinessUserSSOTokenMappingDao;
 import com.phantom.model.dao.DispensaryDao;
 import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.dao.ProductsCategoryTypeDao;
+import com.phantom.model.dao.QuoteRequestSentToDao;
+import com.phantom.model.entity.BusinessUserSSOTokenMapping;
 import com.phantom.model.entity.Dispensary;
 import com.phantom.model.entity.DispensaryReview;
 import com.phantom.model.entity.ProductsCategoryType;
+import com.phantom.model.entity.QuoteRequestSentTo;
+import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,12 @@ public class DispensaryService {
     @Autowired
     private DispensaryDao dispensaryDao;
     @Autowired private DispensaryReviewDao dispensaryReviewDao;
+
+    @Autowired
+    QuoteRequestSentToDao quoteRequestSentToDao;
+
+    @Autowired
+    BusinessUserSSOTokenMappingDao businessUserSSOTokenMappingDao;
 
     public String getProductList() {
         try {
@@ -94,15 +105,16 @@ public class DispensaryService {
             dispensaryDao.saveDispensary(dispensary);
             return Boolean.TRUE;
 
-        }catch (Exception e){
-            logger.error("Exception occurred while adding dispensary : "+dispensaryBean.getDispensaryName(), e);
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary : " + dispensaryBean.getDispensaryName(), e);
             return Boolean.FALSE;
         }
     }
+
     public String find(String userLat, String userLong) {
         String distanceInMiles = "20";
-        List<Dispensary> dispensaries = dispensaryDao.findDOnLatLong(userLat,userLong,distanceInMiles,20);
-        if(dispensaries!=null){
+        List<Dispensary> dispensaries = dispensaryDao.findDOnLatLong(userLat, userLong, distanceInMiles, 20);
+        if (dispensaries != null) {
             return new Gson().toJson(dispensaries);
         }
         return "";
@@ -133,6 +145,27 @@ public class DispensaryService {
             logger.error("Exception occurred while reviewing dispensary for dispensary id : " + dispReviewBean.getDispensaryId(), e);
             return Boolean.FALSE;
         }
+    }
+
+    public String getDispensaryQuote(String token) {
+        JsonObject jsonObject = new JsonObject();
+        if(PhantomUtil.isNullOrEmpty(token)){
+            jsonObject.addProperty("status", 400);
+            jsonObject.addProperty("msg", "Not a logged in dispensary");
+            return jsonObject.toString();
+        }
+        BusinessUserSSOTokenMapping businessUserSSOTokenMapping = businessUserSSOTokenMappingDao.getBusinessUserDetailsBySSOToken(token);
+        long dispenseryId = businessUserSSOTokenMapping.getUserId();
+        List<QuoteRequestSentTo> quoteRequestSentTos = quoteRequestSentToDao.getDispensaryQuoteInLastThreeDays((int)dispenseryId);
+        if(quoteRequestSentTos==null || quoteRequestSentTos.size()==0){
+            jsonObject.addProperty("status", 200);
+            jsonObject.addProperty("msg", "No Quote present in last three days");
+            return jsonObject.toString();
+        }
+        jsonObject.addProperty("status", 200);
+        jsonObject.addProperty("msg", "");
+        jsonObject.add("data",new Gson().toJsonTree(quoteRequestSentTos));
+        return jsonObject.toString();
     }
 
 }

@@ -5,6 +5,7 @@ import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.dto.BaseResponseDTO;
+import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +70,13 @@ public class DispensaryController {
             baseResponseDTO.setCode("500");
         }
         return gson.toJson(baseResponseDTO);
+    }
+
+    @RequestMapping(value = "getDispensaryQuotes", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispensaryQuote(HttpServletRequest request, HttpServletResponse response) {
+        String token = RequestUtils.getCookie(request,"bssoToken");
+        return dispensaryService.getDispensaryQuote(token);
     }
 
 }

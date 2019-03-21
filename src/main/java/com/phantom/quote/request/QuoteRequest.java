@@ -9,7 +9,8 @@ public class QuoteRequest extends MapBasedRequest {
     private static final long serialVersionUID = -6642957764091515832L;
 
     private String ssoToken;
-    private String location;
+    private String locationLat;
+    private String locationLong;
     private String product;
     private String quantity;
     private String comments;
@@ -20,7 +21,8 @@ public class QuoteRequest extends MapBasedRequest {
     }
 
     private void postConstruct() {
-        this.location = requestParameters.get("location");
+        this.locationLat = requestParameters.get("locationLat");
+        this.locationLong = requestParameters.get("locationLong");
         this.product = requestParameters.get("product");
         this.quantity = requestParameters.get("quantity");
         this.comments = requestParameters.get("comments");
@@ -38,12 +40,12 @@ public class QuoteRequest extends MapBasedRequest {
         this.ssoToken = ssoToken;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationLat() {
+        return locationLat;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationLat(String locationLat) {
+        this.locationLat = locationLat;
     }
 
     public String getProduct() {
@@ -68,6 +70,14 @@ public class QuoteRequest extends MapBasedRequest {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getLocationLong() {
+        return locationLong;
+    }
+
+    public void setLocationLong(String locationLong) {
+        this.locationLong = locationLong;
     }
 }
 
