@@ -5,7 +5,7 @@ import com.phantom.dispensary.request.DispDealsBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
-import com.phantom.dto.BaseResponseDTO;
+import com.phantom.logging.PhantomLogger;
 import com.phantom.util.RequestUtils;
 import com.phantom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class DispensaryController {
+    private final static PhantomLogger logger = PhantomLogger.getLoggerObject(DispensaryController.class);
 
     @Autowired
     DispensaryService dispensaryService;
@@ -83,10 +84,29 @@ public class DispensaryController {
         String dispensaryId = request.getParameter("dispId");
         String userId = request.getParameter("userId");
         boolean isFollowerAdded = Boolean.FALSE;
-        if(!StringUtils.isEmpty(dispensaryId) && !StringUtils.isEmpty(userId)){
-           isFollowerAdded = dispensaryService.addDispFollowers(Integer.parseInt(dispensaryId), Integer.parseInt(userId));
+        if (!StringUtils.isEmpty(dispensaryId) && !StringUtils.isEmpty(userId)) {
+            isFollowerAdded = dispensaryService.addDispFollowers(Integer.parseInt(dispensaryId), Integer.parseInt(userId));
         }
         return new ResponseUtils().getResponseByFlag(isFollowerAdded);
+    }
+
+    @RequestMapping(value = "dispGallery", method = RequestMethod.GET)
+    public @ResponseBody
+    String addDispGallery(HttpServletRequest request, HttpServletResponse response) {
+        boolean isGalleryAdded = Boolean.FALSE;
+        try {
+            int dispensaryId = Integer.parseInt(request.getParameter("dispId"));
+            String picPath = request.getParameter("picPath");
+            int isActive = Integer.parseInt(request.getParameter("isActive") != null ? request.getParameter("isActive") : "1");
+            if (!StringUtils.isEmpty(picPath)) {
+                isGalleryAdded = dispensaryService.addGallery(dispensaryId, isActive, picPath);
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary gallery ", e);
+            isGalleryAdded = Boolean.FALSE;
+        }
+
+        return new ResponseUtils().getResponseByFlag(isGalleryAdded);
     }
 
 }

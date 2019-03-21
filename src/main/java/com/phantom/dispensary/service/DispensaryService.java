@@ -41,6 +41,9 @@ public class DispensaryService {
     @Autowired
     private DispensaryFollowersDao dispensaryFollowersDao;
 
+    @Autowired
+    private DispensaryGalleryDao dispensaryGalleryDao;
+
     public String getProductList() {
         try {
             List<ProductsCategoryType> productsCategoryTypeList = productsCategoryTypeDao.findAll();
@@ -214,5 +217,19 @@ public class DispensaryService {
         }
     }
 
+    public boolean addGallery(int dispensaryId, int isActive, String picPath){
+        DispensaryGallery dispensaryGallery = new DispensaryGallery();
+        try {
+            dispensaryGallery.setDispensaryId(dispensaryId);
+            dispensaryGallery.setIsActive(isActive);
+            dispensaryGallery.setUuid(UUID.randomUUID().toString());
+            dispensaryGallery.setPicturePath(picPath);
 
+            dispensaryGalleryDao.saveGallery(dispensaryGallery);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary followers ");
+            return Boolean.FALSE;
+        }
+    }
 }
