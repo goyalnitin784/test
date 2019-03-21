@@ -1,6 +1,7 @@
 package com.phantom.dispensary.controller;
 
 import com.google.gson.Gson;
+import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.dto.BaseResponseDTO;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value = "user")
 public class DispensaryController {
 
     @Autowired
@@ -50,6 +50,25 @@ public class DispensaryController {
     public @ResponseBody
     String findDispensary(HttpServletRequest request, HttpServletResponse response) {
         return dispensaryService.find(request.getParameter("lat"), request.getParameter("long"));
+    }
+
+    @RequestMapping(value = "reviewDispensary", method = RequestMethod.GET)
+    public @ResponseBody
+    String reviewDispensary(HttpServletRequest request, HttpServletResponse response){
+        DispReviewBean dispReviewBean = new DispReviewBean(request);
+        boolean isReviewed = false;
+        if(dispReviewBean.isValidReview()){
+           isReviewed = dispensaryService.review(dispReviewBean);
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        if (isReviewed) {
+            baseResponseDTO.addMessage("SUCCESS");
+            baseResponseDTO.setCode("200");
+        } else {
+            baseResponseDTO.addMessage("FAILURE");
+            baseResponseDTO.setCode("500");
+        }
+        return gson.toJson(baseResponseDTO);
     }
 
 }

@@ -15,28 +15,28 @@ public class DispensaryReview {
     @Column(name = "dispensary_id")
     private int dispensaryId;
 
-    @Column(name = "reviewer_user_id")
+    @Column(name = "Reviewer_User_id")
     private int reviewerUserId;
 
     @Column(name = "review_desc")
     private String reviewDesc;
 
-    @Column(name = "service_rating")
+    @Column(name = "Service_Rating")
     private int serviceRating;
 
-    @Column(name = "atmosphere_rating")
+    @Column(name = "Atmosphere_Rating")
     private int atmosphereRating;
 
-    @Column(name = "recommendation_count")
+    @Column(name = "Recommendation_Count")
     private int recommendationCount;
 
-    @Column(name = "is_review_helpful_count")
+    @Column(name = "is_review_Helpful_count")
     private int isReviewHelpfulCount;
 
-    @Column(name = "no_of_shares_count")
+    @Column(name = "Number_Of_Shares_Count")
     private int sharesCount;
 
-    @Column(name = "quality_rating")
+    @Column(name = "Quality_Rating")
     private int qualityRating;
 
     @Column(name = "make_review_private")
@@ -47,6 +47,21 @@ public class DispensaryReview {
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "uuid")
+    private String uuid;
+
+    @Column(name = "overall_quality_rating")
+    private int overAllQualityRating;
+
+    @Column(name = "reviewed_on")
+    private Date reviewedOn;
+
+    @Column(name = "count_of_followers")
+    private int followers;
 
     public long getId() {
         return id;
@@ -128,7 +143,7 @@ public class DispensaryReview {
         this.qualityRating = qualityRating;
     }
 
-    public int isMakeReviewPrivate() {
+    public int getMakeReviewPrivate() {
         return makeReviewPrivate;
     }
 
@@ -136,12 +151,12 @@ public class DispensaryReview {
         this.makeReviewPrivate = makeReviewPrivate;
     }
 
-    public int isActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setActive(int active) {
-        isActive = active;
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public Date getCreatedOn() {
@@ -150,6 +165,46 @@ public class DispensaryReview {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getOverAllQualityRating() {
+        return overAllQualityRating;
+    }
+
+    public void setOverAllQualityRating(int overAllQualityRating) {
+        this.overAllQualityRating = overAllQualityRating;
+    }
+
+    public Date getReviewedOn() {
+        return reviewedOn;
+    }
+
+    public void setReviewedOn(Date reviewedOn) {
+        this.reviewedOn = reviewedOn;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
     }
 }
 

@@ -1,6 +1,9 @@
 package com.phantom.model.dao;
 
 import com.phantom.model.entity.DispensaryReview;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface DispensaryReviewDao extends GenericDAO<DispensaryReview,Long>{
+@Transactional
+public interface DispensaryReviewDao extends GenericDAO<DispensaryReview, Long> {
+    void saveReview(DispensaryReview dispensaryReview);
 }

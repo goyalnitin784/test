@@ -3,11 +3,14 @@ package com.phantom.dispensary.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DispensaryDao;
+import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.dao.ProductsCategoryTypeDao;
 import com.phantom.model.entity.Dispensary;
+import com.phantom.model.entity.DispensaryReview;
 import com.phantom.model.entity.ProductsCategoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,8 @@ public class DispensaryService {
     ProductsCategoryTypeDao productsCategoryTypeDao;
 
     @Autowired
-    DispensaryDao dispensaryDao;
+    private DispensaryDao dispensaryDao;
+    @Autowired private DispensaryReviewDao dispensaryReviewDao;
 
     public String getProductList() {
         try {
@@ -102,6 +106,33 @@ public class DispensaryService {
             return new Gson().toJson(dispensaries);
         }
         return "";
+    }
+
+    public boolean review(DispReviewBean dispReviewBean){
+        try {
+            DispensaryReview dispensaryReview = new DispensaryReview();
+
+            dispensaryReview.setDispensaryId(dispReviewBean.getDispensaryId());
+            dispensaryReview.setReviewerUserId(dispReviewBean.getReviewerUserId());
+            dispensaryReview.setQualityRating(dispReviewBean.getQualityRating());
+            dispensaryReview.setOverAllQualityRating(dispReviewBean.getOverAllQualityRating());
+            dispensaryReview.setServiceRating(dispReviewBean.getServiceRating());
+            dispensaryReview.setAtmosphereRating(dispReviewBean.getAtmosphereRating());
+            dispensaryReview.setRecommendationCount(dispReviewBean.getRecommendationCount());
+            dispensaryReview.setIsReviewHelpfulCount(dispReviewBean.getIsReviewHelpfulCount());
+            dispensaryReview.setSharesCount(dispReviewBean.getSharesCount());
+            dispensaryReview.setMakeReviewPrivate(dispReviewBean.getMakeReviewPrivate());
+            dispensaryReview.setIsActive(dispReviewBean.getIsActive());
+            dispensaryReview.setReviewDesc(dispReviewBean.getReviewDesc());
+            dispensaryReview.setFollowers(dispReviewBean.getFollowers());
+            dispensaryReview.setUuid(dispReviewBean.getUuid());
+
+            dispensaryReviewDao.saveReview(dispensaryReview);
+            return Boolean.TRUE;
+        }catch (Exception e){
+            logger.error("Exception occurred while reviewing dispensary for dispensary id : " + dispReviewBean.getDispensaryId(), e);
+            return Boolean.FALSE;
+        }
     }
 
 }
