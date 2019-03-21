@@ -1,5 +1,7 @@
 package com.phantom;
 
+import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
@@ -26,6 +28,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     UserDao userDao;
 
     @Autowired private UserService userService;
+    @Autowired private DispensaryService dispensaryService;
 
     @Test
     public void sampleTest() throws Exception {
@@ -70,4 +73,28 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         }
     }
 
+    @Test
+    public void addDispensary(){
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispensaryName","dis1");
+            requestMap.put("dispensaryDesc","first dis");
+            requestMap.put("phoneNo","73497939329");
+            requestMap.put("email","dis1@test.com");
+            requestMap.put("website","dis1test.com");
+            requestMap.put("address","dis1 address");
+            requestMap.put("longitude","-82.334178");
+            requestMap.put("latitude","51.433464");
+            requestMap.put("city","LA");
+            requestMap.put("state","LA");
+            requestMap.put("country","USA");
+            requestMap.put("facilities","dis1 facilities");
+            requestMap.put("timeZone","GMT-5");
+
+            DispensaryBean dispensaryBean = new DispensaryBean(requestMap);
+            dispensaryService.addDispensary(dispensaryBean);
+        }catch (Exception e){
+            logger.error("Exception occurred while testing addDispensary controller ",e);
+        }
+    }
 }

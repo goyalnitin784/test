@@ -1,134 +1,127 @@
-package com.phantom.model.entity;
+package com.phantom.dispensary.request;
 
-import javax.persistence.*;
+import com.phantom.logging.PhantomLogger;
+import com.phantom.request.MapBasedRequest;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
-@Entity
-@Table(name = "dispensary")
-public class Dispensary {
+public class DispensaryBean extends MapBasedRequest {
+    PhantomLogger phantomLogger = PhantomLogger.getLoggerObject(DispensaryBean.class);
+    private static final long serialVersionUID = 8628580855471172668L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
-
-    @Column(name = "Dispensary_Name")
+    private long dispensaryId;
     private String dispensaryName;
-
-    @Column(name = "Dispensary_Profile_pic")
     private String dispensaryProfilePic;
-
-    @Column(name = "Dispensary_Desc")
     private String dispensaryDesc;
-
-    @Column(name = "phone")
     private String phoneNo;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "website")
     private String website;
-
-    @Column(name = "address")
     private String address;
-
-    @Column(name = "longitude")
     private String longitude;
-
-    @Column(name = "lattitude")
     private String latitude;
-
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "state")
     private String state;
-
-    @Column(name = "country")
     private String country;
-
-    @Column(name = "facilities")
     private String facilities;
-
-    @Column(name = "timezone")
     private String timeZone;
-
-    @Column(name = "monday_open_on")
     private String mondayOpenOn;
-
-    @Column(name = "monday_close_on")
     private String mondayClosedOn;
-
-    @Column(name = "tuesday_open_on")
     private String tuesdayOpenOn;
-
-    @Column(name = "tuesday_close_on")
     private String tuesdayClosedOn;
-
-    @Column(name = "wednesday_open_on")
     private String wednesdayOpenOn;
-
-    @Column(name = "wednesday_close_on")
     private String wednesdayClosedOn;
-
-    @Column(name = "thursday_open_on")
     private String thursdayOpenOn;
-
-    @Column(name = "thursday_cose_on")
     private String thursdayClosedOn;
-
-    @Column(name = "friday_open_on")
     private String fridayOpenOn;
-
-    @Column(name = "friday_close_on")
     private String fridayClosedOn;
-
-    @Column(name = "saturday_open_on")
     private String saturdayOpenOn;
-
-    @Column(name = "saturday_close_on")
     private String saturdayClosedOn;
-
-    @Column(name = "sunday_open_on")
     private String sundayOpenOn;
-
-    @Column(name = "sunday_close_on")
     private String sundayClosedOn;
-
-    @Column(name = "is_trending_disp")
-    private int isTrendingDispensary;
-
-    @Column(name = "isFeaturedDispensary")
-    private int isFeaturedDispensary;
-
-    @Column(name = "Date_of_Joining")
+    private int isTrendingDispensary = 0;
+    private int isFeaturedDispensary = 0;
     private Date dateOfJoining;
+    private int isVerifiedListing = 0;
+    private int isActive = 0;
+    private int followersCount = 0;
 
-    @Column(name = "is_verified_listing")
-    private int isVerifiedListing;
+    private String uuid = UUID.randomUUID().toString();
+    private boolean isValidDispensary = false;
 
-    @Column(name = "is_active")
-    private int isActive;
-
-    @Column(name = "no_of_followers_count")
-    private int followersCount;
-
-    @Column(name = "created_on")
-    private Date createdOn;
-
-    @Column(name = "last_updated_on")
-    private Date lastUpdatedOn;
-
-    @Column(name = "uuid")
-    private String uuid;
-
-    public long getId() {
-        return id;
+    public DispensaryBean(HttpServletRequest request) {
+        super(request);
+        postConstruct();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public DispensaryBean(Map<String, String> requestMap) {
+        requestParameters = requestMap;
+        postConstruct();
+    }
+
+    private void postConstruct() {
+        dispensaryName = requestParameters.get("dispensaryName");
+        dispensaryProfilePic = requestParameters.get("dispensaryProfilePic");
+        dispensaryDesc = requestParameters.get("dispensaryDesc");
+        phoneNo = requestParameters.get("phoneNo");
+        email = requestParameters.get("email");
+        website = requestParameters.get("website");
+        address = requestParameters.get("address");
+        longitude = requestParameters.get("longitude");
+        latitude = requestParameters.get("latitude");
+        city = requestParameters.get("city");
+        state = requestParameters.get("state");
+        country = requestParameters.get("country");
+        facilities = requestParameters.get("facilities");
+        timeZone = requestParameters.get("timeZone");
+        mondayOpenOn = requestParameters.get("mondayOpenOn");
+        mondayClosedOn = requestParameters.get("mondayClosedOn");
+        tuesdayOpenOn = requestParameters.get("tuesdayOpenOn");
+        tuesdayClosedOn = requestParameters.get("tuesdayClosedOn");
+        wednesdayOpenOn = requestParameters.get("wednesdayOpenOn");
+        wednesdayClosedOn = requestParameters.get("wednesdayClosedOn");
+        thursdayOpenOn = requestParameters.get("thursdayOpenOn");
+        thursdayClosedOn = requestParameters.get("thursdayClosedOn");
+        fridayOpenOn = requestParameters.get("fridayOpenOn");
+        fridayClosedOn = requestParameters.get("fridayClosedOn");
+        saturdayOpenOn = requestParameters.get("saturdayOpenOn");
+        saturdayClosedOn = requestParameters.get("saturdayClosedOn");
+        sundayOpenOn = requestParameters.get("sundayOpenOn");
+        sundayClosedOn = requestParameters.get("sundayClosedOn");
+        if (requestParameters.get("isTrendingDispensary") != null) {
+            isTrendingDispensary = Integer.parseInt(requestParameters.get("isTrendingDispensary"));
+        }
+        if (requestParameters.get("isFeaturedDispensary") != null) {
+            isFeaturedDispensary = Integer.parseInt(requestParameters.get("isFeaturedDispensary"));
+        }
+        try {
+            dateOfJoining = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("dateOfJoining"));
+        } catch (Exception e) {
+            phantomLogger.error("Exception occurred while parsing date of joining ", e);
+        }
+        if (requestParameters.get("isVerifiedListing") != null) {
+            isVerifiedListing = Integer.parseInt(requestParameters.get("isVerifiedListing"));
+        }
+        if (requestParameters.get("isActive") != null) {
+            isActive = Integer.parseInt(requestParameters.get("isActive"));
+        }
+        if (requestParameters.get("followersCount") != null) {
+            followersCount = Integer.parseInt(requestParameters.get("followersCount"));
+        }
+
+        isValidDispensary = !StringUtils.isEmpty(dispensaryName) && !StringUtils.isEmpty(email);
+    }
+
+    public long getDispensaryId() {
+        return dispensaryId;
+    }
+
+    public void setDispensaryId(long dispensaryId) {
+        this.dispensaryId = dispensaryId;
     }
 
     public String getDispensaryName() {
@@ -403,22 +396,6 @@ public class Dispensary {
         this.followersCount = followersCount;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Date getLastUpdatedOn() {
-        return lastUpdatedOn;
-    }
-
-    public void setLastUpdatedOn(Date lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -426,5 +403,14 @@ public class Dispensary {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-}
 
+    public boolean isValidDispensary() {
+        return isValidDispensary;
+    }
+
+    public void setValidDispensary(boolean validDispensary) {
+        isValidDispensary = validDispensary;
+    }
+
+
+}

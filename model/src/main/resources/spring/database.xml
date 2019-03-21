@@ -153,4 +153,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="dispensaryDao" class="com.phantom.model.dao.impl.DispensaryDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 </beans>

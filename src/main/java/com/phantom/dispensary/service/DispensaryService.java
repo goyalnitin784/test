@@ -2,12 +2,16 @@ package com.phantom.dispensary.service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.logging.PhantomLogger;
+import com.phantom.model.dao.DispensaryDao;
 import com.phantom.model.dao.ProductsCategoryTypeDao;
+import com.phantom.model.entity.Dispensary;
 import com.phantom.model.entity.ProductsCategoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,6 +20,7 @@ public class DispensaryService {
     PhantomLogger logger  = PhantomLogger.getLoggerObject(this.getClass());
 
     @Autowired ProductsCategoryTypeDao productsCategoryTypeDao;
+    @Autowired private DispensaryDao dispensaryDao;
 
     public String getProductList(){
         try{
@@ -38,4 +43,53 @@ public class DispensaryService {
         }
     }
 
+    public boolean addDispensary(DispensaryBean dispensaryBean){
+        try {
+            Dispensary dispensary = new Dispensary();
+
+            dispensary.setDispensaryName(dispensaryBean.getDispensaryName());
+            dispensary.setIsActive(dispensaryBean.getIsActive());
+            dispensary.setDispensaryProfilePic(dispensaryBean.getDispensaryProfilePic());
+            dispensary.setDispensaryDesc(dispensaryBean.getDispensaryDesc());
+            dispensary.setPhoneNo(dispensaryBean.getPhoneNo());
+            dispensary.setEmail(dispensaryBean.getEmail());
+            dispensary.setWebsite(dispensaryBean.getWebsite());
+            dispensary.setAddress(dispensaryBean.getAddress());
+            dispensary.setLongitude(dispensaryBean.getLongitude());
+            dispensary.setLatitude(dispensaryBean.getLatitude());
+            dispensary.setCity(dispensaryBean.getCity());
+            dispensary.setState(dispensaryBean.getState());
+            dispensary.setCountry(dispensaryBean.getCountry());
+            dispensary.setFacilities(dispensaryBean.getFacilities());
+            dispensary.setTimeZone(dispensaryBean.getTimeZone());
+            dispensary.setMondayOpenOn(dispensaryBean.getMondayOpenOn());
+            dispensary.setMondayClosedOn(dispensaryBean.getMondayClosedOn());
+            dispensary.setTuesdayOpenOn(dispensaryBean.getTuesdayOpenOn());
+            dispensary.setTuesdayClosedOn(dispensaryBean.getTuesdayClosedOn());
+            dispensary.setWednesdayOpenOn(dispensaryBean.getWednesdayOpenOn());
+            dispensary.setWednesdayClosedOn(dispensaryBean.getWednesdayClosedOn());
+            dispensary.setThursdayOpenOn(dispensaryBean.getThursdayOpenOn());
+            dispensary.setThursdayClosedOn(dispensaryBean.getThursdayClosedOn());
+            dispensary.setFridayOpenOn(dispensaryBean.getFridayOpenOn());
+            dispensary.setFridayClosedOn(dispensaryBean.getFridayClosedOn());
+            dispensary.setSaturdayOpenOn(dispensaryBean.getSaturdayOpenOn());
+            dispensary.setSaturdayClosedOn(dispensaryBean.getSaturdayClosedOn());
+            dispensary.setSundayOpenOn(dispensaryBean.getSundayOpenOn());
+            dispensary.setSundayClosedOn(dispensaryBean.getSundayClosedOn());
+            dispensary.setIsVerifiedListing(dispensaryBean.getIsVerifiedListing());
+            dispensary.setIsTrendingDispensary(dispensaryBean.getIsTrendingDispensary());
+            dispensary.setIsFeaturedDispensary(dispensaryBean.getIsFeaturedDispensary());
+            dispensary.setDateOfJoining(dispensaryBean.getDateOfJoining());
+            dispensary.setFollowersCount(dispensaryBean.getFollowersCount());
+            dispensary.setUuid(dispensaryBean.getUuid());
+
+            // persisting dispensary data
+            dispensaryDao.saveDispensary(dispensary);
+            return Boolean.TRUE;
+
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary : "+dispensaryBean.getDispensaryName(), e);
+            return Boolean.FALSE;
+        }
+    }
 }
