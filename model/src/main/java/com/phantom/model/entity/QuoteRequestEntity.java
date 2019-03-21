@@ -18,8 +18,11 @@ public class QuoteRequestEntity {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "location_lat")
+    private String locationLat;
+
+    @Column(name = "location_long")
+    private String locationLong;
 
     @Column(name = "strain_details")
     private String strainDetails;
@@ -47,14 +50,6 @@ public class QuoteRequestEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getStrainDetails() {
@@ -95,6 +90,22 @@ public class QuoteRequestEntity {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(String locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public String getLocationLong() {
+        return locationLong;
+    }
+
+    public void setLocationLong(String locationLong) {
+        this.locationLong = locationLong;
     }
 }
 
