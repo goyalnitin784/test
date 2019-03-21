@@ -124,7 +124,7 @@ public class UserController {
         return gson.toJson(baseResponseDTO);
     }
 
-    @RequestMapping(value = "getUserQuote", method = RequestMethod.POST)
+    @RequestMapping(value = "getQuote", method = RequestMethod.POST)
     public @ResponseBody
     String getQuote(HttpServletRequest request, HttpServletResponse response) {
         return qService.getUserQuote(RequestUtils.getCookie(request,"ssoToken"));
