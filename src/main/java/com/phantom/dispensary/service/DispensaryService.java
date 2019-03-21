@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.phantom.dispensary.request.DispDealsBean;
+import com.phantom.dispensary.request.DispMenuBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.logging.PhantomLogger;
@@ -43,6 +44,8 @@ public class DispensaryService {
 
     @Autowired
     private DispensaryGalleryDao dispensaryGalleryDao;
+
+    @Autowired private DispensaryMenuDao dispensaryMenuDao;
 
     public String getProductList() {
         try {
@@ -229,6 +232,33 @@ public class DispensaryService {
             return Boolean.TRUE;
         } catch (Exception e) {
             logger.error("Exception occurred while adding dispensary followers ");
+            return Boolean.FALSE;
+        }
+    }
+
+    public boolean addMenu(DispMenuBean dispMenuBean){
+        try {
+            DispensaryMenu dispensaryMenu = new DispensaryMenu();
+
+            dispensaryMenu.setDispensaryId(dispMenuBean.getDispensaryId());
+            dispensaryMenu.setProductName(dispMenuBean.getProductName());
+            dispensaryMenu.setProductCategoryTypeId(dispMenuBean.getProductCategoryTypeId());
+            dispensaryMenu.setStrainCategoryTypeId(dispMenuBean.getStrainCategoryTypeId());
+            dispensaryMenu.setStrainId(dispMenuBean.getStrainId());
+            dispensaryMenu.setBreeder(dispMenuBean.getBreeder());
+            dispensaryMenu.setDescription(dispMenuBean.getDescription());
+            dispensaryMenu.setProfileImage1(dispMenuBean.getProfileImage1());
+            dispensaryMenu.setProfileImage2(dispMenuBean.getProfileImage2());
+            dispensaryMenu.setProfileImage3(dispMenuBean.getProfileImage3());
+            dispensaryMenu.setOtherDetails(dispMenuBean.getOtherDetails());
+            dispensaryMenu.setCbdLevel(dispMenuBean.getCbdLevel());
+            dispensaryMenu.setThcLevel(dispMenuBean.getThcLevel());
+            dispensaryMenu.setUuid(dispMenuBean.getUuid());
+
+            dispensaryMenuDao.saveMenu(dispensaryMenu);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while saving dispensary menu for dispensary id : " + dispMenuBean.getDispensaryId(), e);
             return Boolean.FALSE;
         }
     }

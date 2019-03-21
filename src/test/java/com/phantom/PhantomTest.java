@@ -1,6 +1,7 @@
 package com.phantom;
 
 import com.phantom.dispensary.request.DispDealsBean;
+import com.phantom.dispensary.request.DispMenuBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
@@ -160,6 +161,27 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             int isActive = 1;
             String picPath = "x/y/z";
             dispensaryService.addGallery(dispensaryId,isActive,picPath);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispMenu() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("productName", "test");
+            requestMap.put("productCatTypeId", "5");
+            requestMap.put("strainCatTypeId", "8");
+            requestMap.put("strainId", "1");
+            requestMap.put("breeder", "test breeder");
+            requestMap.put("desc", "its test for test");
+            requestMap.put("image1", "image1");
+            requestMap.put("image2", "image2");
+
+            DispMenuBean dispMenuBean = new DispMenuBean(requestMap);
+            dispensaryService.addMenu(dispMenuBean);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
         }

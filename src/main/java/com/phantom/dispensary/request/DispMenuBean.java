@@ -1,72 +1,71 @@
-package com.phantom.model.entity;
+package com.phantom.dispensary.request;
 
-import javax.persistence.*;
-import java.util.Date;
+import com.phantom.logging.PhantomLogger;
+import com.phantom.request.MapBasedRequest;
+import org.springframework.util.StringUtils;
 
-@Entity
-@Table(name = "dispensary_menu")
-public class DispensaryMenu {
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.UUID;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class DispMenuBean extends MapBasedRequest {
+    private static final PhantomLogger logger = PhantomLogger.getLoggerObject(DispMenuBean.class);
+    private static final long serialVersionUID = 3482944622809281079L;
 
-    @Column(name = "dispensary_id")
     private int dispensaryId;
-
-    @Column(name = "product_name")
     private String productName;
-
-    @Column(name = "product_category_type_id")
     private int productCategoryTypeId;
-
-    @Column(name = "strain_category_type_id")
     private int strainCategoryTypeId;
-
-    @Column(name = "strain_id")
     private int strainId;
-
-    @Column(name = "breeder")
     private String breeder;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "image1")
     private String profileImage1;
-
-    @Column(name = "image2")
     private String profileImage2;
-
-    @Column(name = "image3")
     private String profileImage3;
-
-    @Column(name = "other_details")
     private String otherDetails;
-
-    @Column(name = "cbd_level")
     private String cbdLevel;
-
-    @Column(name = "thc_level")
     private String thcLevel;
 
-    @Column(name = "created_on")
-    private Date createdOn;
+    private String uuid = UUID.randomUUID().toString();
+    private boolean isValidMenu = Boolean.TRUE;
 
-    @Column(name = "last_updated_on")
-    private Date lastUpdatedOn;
-
-    @Column(name = "uuid")
-    private String uuid;
-
-
-    public long getId() {
-        return id;
+    public DispMenuBean(HttpServletRequest request) {
+        super(request);
+        postConstruct();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public DispMenuBean(Map<String, String> requestMap) {
+        requestParameters = requestMap;
+        postConstruct();
+    }
+
+    private void postConstruct() {
+        try {
+            dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
+            productCategoryTypeId = Integer.parseInt(requestParameters.get("productCatTypeId"));
+            strainCategoryTypeId = Integer.parseInt(requestParameters.get("strainCatTypeId"));
+            strainId = Integer.parseInt(requestParameters.get("strainId"));
+
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary menu ", e);
+            isValidMenu = Boolean.FALSE;
+        }
+        if (isValidMenu) {
+            productName = requestParameters.get("productName");
+            breeder = requestParameters.get("breeder");
+            description = requestParameters.get("desc");
+            profileImage1 = requestParameters.get("image1");
+            profileImage2 = requestParameters.get("image2");
+            profileImage3 = requestParameters.get("image3");
+            otherDetails = requestParameters.get("otherDetails");
+            cbdLevel = requestParameters.get("cbdLevel");
+            thcLevel = requestParameters.get("thcLevel");
+
+            if (StringUtils.isEmpty(productName) || StringUtils.isEmpty(breeder)
+                    || StringUtils.isEmpty(profileImage1) || StringUtils.isEmpty(profileImage2)) {
+                isValidMenu = Boolean.FALSE;
+            }
+        }
     }
 
     public int getDispensaryId() {
@@ -173,22 +172,6 @@ public class DispensaryMenu {
         this.thcLevel = thcLevel;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Date getLastUpdatedOn() {
-        return lastUpdatedOn;
-    }
-
-    public void setLastUpdatedOn(Date lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -196,5 +179,12 @@ public class DispensaryMenu {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-}
 
+    public boolean isValidMenu() {
+        return isValidMenu;
+    }
+
+    public void setValidMenu(boolean validMenu) {
+        isValidMenu = validMenu;
+    }
+}

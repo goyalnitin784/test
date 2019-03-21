@@ -2,6 +2,7 @@ package com.phantom.dispensary.controller;
 
 import com.google.gson.Gson;
 import com.phantom.dispensary.request.DispDealsBean;
+import com.phantom.dispensary.request.DispMenuBean;
 import com.phantom.dispensary.request.DispReviewBean;
 import com.phantom.dispensary.request.DispensaryBean;
 import com.phantom.dispensary.service.DispensaryService;
@@ -107,6 +108,17 @@ public class DispensaryController {
         }
 
         return new ResponseUtils().getResponseByFlag(isGalleryAdded);
+    }
+
+    @RequestMapping(value = "dispensaryMenu", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispensaryMenu(HttpServletRequest request, HttpServletResponse response) {
+        DispMenuBean dispMenuBean = new DispMenuBean(request);
+        boolean isMenuAdded = false;
+        if (dispMenuBean.isValidMenu()) {
+            isMenuAdded = dispensaryService.addMenu(dispMenuBean);
+        }
+        return new ResponseUtils().getResponseByFlag(isMenuAdded);
     }
 
 }
