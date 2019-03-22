@@ -27,8 +27,8 @@ public class DispensaryPickUpOrder {
     @Column(name = "pick_up_time_slot")
     private String pickUpTimeSlot;
 
-    @Column(name = "special_commnets")
-    private String specialCommnets;
+    @Column(name = "special_comments")
+    private String specialComments;
 
     @Column(name = "pick_up_order_status")
     private int pickUpOrderStatus;
@@ -93,12 +93,12 @@ public class DispensaryPickUpOrder {
         this.pickUpTimeSlot = pickUpTimeSlot;
     }
 
-    public String getSpecialCommnets() {
-        return specialCommnets;
+    public String getSpecialComments() {
+        return specialComments;
     }
 
-    public void setSpecialCommnets(String specialCommnets) {
-        this.specialCommnets = specialCommnets;
+    public void setSpecialComments(String specialComments) {
+        this.specialComments = specialComments;
     }
 
     public int getPickUpOrderStatus() {

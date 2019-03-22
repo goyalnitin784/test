@@ -57,6 +57,9 @@ public class Strain {
     @Column(name = "created_on")
     private Date createdOn;
 
+    @Column(name = "uuid")
+    private String uuid;
+
     public long getId() {
         return id;
     }
@@ -183,6 +186,30 @@ public class Strain {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public int getIsTrendingStrain() {
+        return isTrendingStrain;
+    }
+
+    public void setIsTrendingStrain(int isTrendingStrain) {
+        this.isTrendingStrain = isTrendingStrain;
+    }
+
+    public int getIsFeaturedStrain() {
+        return isFeaturedStrain;
+    }
+
+    public void setIsFeaturedStrain(int isFeaturedStrain) {
+        this.isFeaturedStrain = isFeaturedStrain;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
 

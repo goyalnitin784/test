@@ -19,13 +19,16 @@ public class AskCommunityAnswer {
     private int strainId;
 
     @Column(name = "question_id")
-    private int questionId;
+    private String questionId;
 
     @Column(name = "user_id")
     private int userId;
 
     @Column(name = "answer")
     private String answer;
+
+    @Column(name = "uuid")
+    private String uuid;
 
     @Column(name = "total_number_of_likes")
     private int totalLikes;
@@ -60,11 +63,11 @@ public class AskCommunityAnswer {
         this.strainId = strainId;
     }
 
-    public int getQuestionId() {
+    public String getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
 
@@ -106,5 +109,13 @@ public class AskCommunityAnswer {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
