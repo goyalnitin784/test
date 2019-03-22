@@ -91,8 +91,8 @@ public class FaqController {
     public @ResponseBody
     String likeAnswer(HttpServletRequest request) {
         try {
-            String questionId = request.getParameter("answerId");
-            return faqService.likeAnswer(questionId, RequestUtils.getCookie(request, "ssoToken"));
+            String answerId = request.getParameter("answerId");
+            return faqService.likeAnswer(answerId, RequestUtils.getCookie(request, "ssoToken"));
         } catch (Exception e) {
             logger.error("Exception came while liking question", e);
             JsonObject jsonObject = new JsonObject();

@@ -163,7 +163,7 @@ public class FaqService {
     public String answerQuestion(String ssoToken, String bssoToken, String questionId, String answer) {
 
         JsonObject jsonObject = new JsonObject();
-        if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(bssoToken)) {
+        if (PhantomUtil.isNullOrEmpty(ssoToken) && PhantomUtil.isNullOrEmpty(bssoToken)) {
             jsonObject.addProperty("status", 400);
             jsonObject.addProperty("msg", "User not logged in");
             return jsonObject.toString();
@@ -194,8 +194,13 @@ public class FaqService {
         askCommunityAnswer.setUuid(UUID.randomUUID().toString());
         try {
             AskCommunityQuestions askCommunityQuestions = askCommunityQuestionsDao.getQuestion(questionId);
-            askCommunityAnswer.setDispensaryId(askCommunityQuestions.getUuid());
-            askCommunityAnswer.setStrainId(askCommunityAnswer.getStrainId());
+            if(askCommunityQuestions==null){
+                jsonObject.addProperty("status", 400);
+                jsonObject.addProperty("msg", "Not a valid Question Id");
+                return jsonObject.toString();
+            }
+            askCommunityAnswer.setDispensaryId(askCommunityQuestions.getDispensaryId());
+            askCommunityAnswer.setStrainId(askCommunityQuestions.getStrainId());
         } catch (Exception e) {
             logger.error("Exception came while fetching community question for question id : " + questionId, e);
         }
@@ -227,10 +232,15 @@ public class FaqService {
             return jsonObject.toString();
         }
 
-        askCommunityAnswerDao.updateAnswerLike((int) user.getUserId(), answerId);
+        boolean status = askCommunityAnswerDao.updateAnswerLike((int) user.getUserId(), answerId);
+        if (status) {
+            jsonObject.addProperty("status", 200);
+            jsonObject.addProperty("msg", "Answer liked successfully");
+        } else {
+            jsonObject.addProperty("status", 500);
+            jsonObject.addProperty("msg", "Answer Could not be liked successfully");
+        }
 
-        jsonObject.addProperty("status", 200);
-        jsonObject.addProperty("msg", "Answer liked successfully");
         return jsonObject.toString();
 
     }
@@ -250,10 +260,17 @@ public class FaqService {
             return jsonObject.toString();
         }
 
-        askCommunityAnswerDao.updateAnswerFollow((int) user.getUserId(), answerId);
-        jsonObject.addProperty("status", 200);
-        jsonObject.addProperty("msg", "Answer liked successfully");
-        return jsonObject.toString();
+        boolean status = askCommunityAnswerDao.updateAnswerFollow((int) user.getUserId(), answerId);
+        if (status) {
+            jsonObject.addProperty("status", 200);
+            jsonObject.addProperty("msg", "Answer followed successfully");
+            return jsonObject.toString();
+        } else {
+            jsonObject.addProperty("status", 500);
+            jsonObject.addProperty("msg", "Answer Could not be followed");
+            return jsonObject.toString();
+        }
+
 
     }
 

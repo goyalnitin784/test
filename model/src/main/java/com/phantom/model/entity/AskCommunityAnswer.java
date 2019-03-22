@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "ask_community_answer")
+@Table(name = "ask_community_answers")
 public class AskCommunityAnswer {
 
     @Id

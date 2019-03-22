@@ -58,7 +58,7 @@ public class AskCommunityAnswerDaoImpl extends GenericHibernateDAO<AskCommunityA
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(AskCommunityAnswer.class);
             criteria.add(Restrictions.eq("questionId", questionId));
-            criteria.add(Restrictions.sqlRestriction("LIMIT " + count));
+            criteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).setMaxResults(count);
             List<AskCommunityAnswer> askCommunityAnswers = findByCriteria(criteria);
             if (askCommunityAnswers == null) {
                 return new ArrayList<>(1);
