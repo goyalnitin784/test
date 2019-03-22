@@ -23,6 +23,16 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `the420club` /*!40100 DEFAULT CHARACTER
 
 USE `the420club`;
 
+CREATE TABLE `user_liked_question` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `question_id` varchar(50) NOT NULL,
+  `like_flag` int(2) DEFAULT 0,
+  `follow_flag` int(2) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+
 --
 -- Table structure for table `ask_community_answers`
 --
@@ -35,29 +45,16 @@ CREATE TABLE `ask_community_answers` (
   `uuid` varchar(50) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Dispensary_id` int(11) DEFAULT NULL,
-  `Strain_Id` int(11) DEFAULT NULL,
-  `Question_id` int(11) NOT NULL,
+  `dispensary_id` varchar(50) DEFAULT NULL,
+  `strain_Id` varchar(50) DEFAULT NULL,
+  `question_id` varchar(50) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `Total_Number_Of_likes` int(11) DEFAULT NULL,
-  `Total_number_followed` int(11) DEFAULT NULL,
+  `total_number_Of_likes` int(11) DEFAULT NULL,
+  `total_number_followed` int(11) DEFAULT NULL,
   `answer` varchar(2000) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ask_community_answers`
---
-
-LOCK TABLES `ask_community_answers` WRITE;
-/*!40000 ALTER TABLE `ask_community_answers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ask_community_answers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ask_community_questions`
---
 
 DROP TABLE IF EXISTS `ask_community_questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -67,16 +64,15 @@ CREATE TABLE `ask_community_questions` (
   `uuid` varchar(50) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Dispensary_id` int(11) DEFAULT NULL,
-  `Strain_Id` int(11) DEFAULT NULL,
-  `Question` varchar(2000) NOT NULL,
+  `dispensary_id` varchar(50) DEFAULT NULL,
+  `strain_Id` varchar(50) DEFAULT NULL,
+  `question` varchar(2000) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `Total_Number_Of_likes` int(11) DEFAULT NULL,
-  `Total_number_followed` int(11) DEFAULT NULL,
+  `total_number_of_likes` int(11) DEFAULT NULL,
+  `total_number_followed` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `ask_community_questions`
 --
