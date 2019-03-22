@@ -161,4 +161,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="userLikedQuestionDao" class="com.phantom.model.dao.impl.UserLikedQuestionDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+
 </beans>
