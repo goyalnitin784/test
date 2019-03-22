@@ -1,10 +1,7 @@
 package com.phantom.dispensary.controller;
 
 import com.google.gson.Gson;
-import com.phantom.dispensary.request.DispDealsBean;
-import com.phantom.dispensary.request.DispMenuBean;
-import com.phantom.dispensary.request.DispReviewBean;
-import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.util.RequestUtils;
@@ -140,6 +137,17 @@ public class DispensaryController {
             isMenuPriceAdded = Boolean.FALSE;
         }
         return new ResponseUtils().getResponseByFlag(isMenuPriceAdded);
+    }
+
+    @RequestMapping(value = "dispPickupOrder", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispPickUpOrder(HttpServletRequest request, HttpServletResponse response) {
+        DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(request);
+        boolean isPickUpOrderAdded = false;
+        if (dispPickUpOrderBean.isValidPickUpOrder()) {
+            isPickUpOrderAdded = dispensaryService.addPickUpOrder(dispPickUpOrderBean);
+        }
+        return new ResponseUtils().getResponseByFlag(isPickUpOrderAdded);
     }
 
 }

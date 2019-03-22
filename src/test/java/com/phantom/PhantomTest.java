@@ -1,9 +1,6 @@
 package com.phantom;
 
-import com.phantom.dispensary.request.DispDealsBean;
-import com.phantom.dispensary.request.DispMenuBean;
-import com.phantom.dispensary.request.DispReviewBean;
-import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
 import com.phantom.user.request.UserBean;
@@ -196,6 +193,23 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             String currency = "$";
 
             dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispPickUpOrder() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("userId", "7");
+            requestMap.put("dispPickUpOrderCode", "Test");
+            requestMap.put("pickUpDate", "2019-03-22");
+            requestMap.put("totalCost", "150");
+
+            DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(requestMap);
+            dispensaryService.addPickUpOrder(dispPickUpOrderBean);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
         }

@@ -3,10 +3,7 @@ package com.phantom.dispensary.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.phantom.dispensary.request.DispDealsBean;
-import com.phantom.dispensary.request.DispMenuBean;
-import com.phantom.dispensary.request.DispReviewBean;
-import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.request.*;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.*;
 import com.phantom.model.entity.*;
@@ -45,9 +42,13 @@ public class DispensaryService {
     @Autowired
     private DispensaryGalleryDao dispensaryGalleryDao;
 
-    @Autowired private DispensaryMenuDao dispensaryMenuDao;
+    @Autowired
+    private DispensaryMenuDao dispensaryMenuDao;
 
-    @Autowired private DispensaryMenuPriceDao dispensaryMenuPriceDao;
+    @Autowired
+    private DispensaryMenuPriceDao dispensaryMenuPriceDao;
+
+    @Autowired private DispensaryPickUpOrderDao dispensaryPickUpOrderDao;
 
 
     public String getProductList() {
@@ -223,7 +224,7 @@ public class DispensaryService {
         }
     }
 
-    public boolean addGallery(int dispensaryId, int isActive, String picPath){
+    public boolean addGallery(int dispensaryId, int isActive, String picPath) {
         DispensaryGallery dispensaryGallery = new DispensaryGallery();
         try {
             dispensaryGallery.setDispensaryId(dispensaryId);
@@ -239,7 +240,7 @@ public class DispensaryService {
         }
     }
 
-    public boolean addMenu(DispMenuBean dispMenuBean){
+    public boolean addMenu(DispMenuBean dispMenuBean) {
         try {
             DispensaryMenu dispensaryMenu = new DispensaryMenu();
 
@@ -266,7 +267,7 @@ public class DispensaryService {
         }
     }
 
-    public boolean addMenuPrice(int dispMenuId, String productPrice, String quantity, String currency){
+    public boolean addMenuPrice(int dispMenuId, String productPrice, String quantity, String currency) {
         try {
             DispensaryMenuPrice dispensaryMenuPrice = new DispensaryMenuPrice();
 
@@ -280,6 +281,31 @@ public class DispensaryService {
             return Boolean.TRUE;
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary menu price for dispensary price menu id : " + dispMenuId, e);
+            return Boolean.FALSE;
+        }
+    }
+
+    public boolean addPickUpOrder(DispPickUpOrderBean dispPickUpOrderBean) {
+        try {
+            DispensaryPickUpOrder dispensaryPickUpOrder = new DispensaryPickUpOrder();
+
+            dispensaryPickUpOrder.setDispensaryId(dispPickUpOrderBean.getDispensaryId());
+            dispensaryPickUpOrder.setDispensaryPickUpOrderCode(dispPickUpOrderBean.getDispensaryPickUpOrderCode());
+            dispensaryPickUpOrder.setUserId(dispPickUpOrderBean.getUserId());
+            dispensaryPickUpOrder.setPickUpDate(dispPickUpOrderBean.getPickUpDate());
+            dispensaryPickUpOrder.setPickUpTimeSlot(dispPickUpOrderBean.getPickUpTimeSlot());
+            dispensaryPickUpOrder.setSpecialComments(dispPickUpOrderBean.getSpecialComments());
+            dispensaryPickUpOrder.setPickUpOrderStatus(dispPickUpOrderBean.getPickUpOrderStatus());
+            dispensaryPickUpOrder.setPickUpRequestedOn(dispPickUpOrderBean.getPickUpRequestedOn());
+            dispensaryPickUpOrder.setPickedUpBy(dispPickUpOrderBean.getPickedUpBy());
+            dispensaryPickUpOrder.setTotalCost(dispPickUpOrderBean.getTotalCost());
+            dispensaryPickUpOrder.setPickedUpBy(dispPickUpOrderBean.getPickUpPickedOn());
+            dispensaryPickUpOrder.setUuid(dispPickUpOrderBean.getUuid());
+
+            dispensaryPickUpOrderDao.savePickUpOrder(dispensaryPickUpOrder);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while saving dispensary pick up order for dispensary id : " + dispPickUpOrderBean.getDispensaryId(), e);
             return Boolean.FALSE;
         }
     }
