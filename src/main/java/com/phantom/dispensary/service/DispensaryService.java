@@ -50,6 +50,8 @@ public class DispensaryService {
 
     @Autowired private DispensaryPickUpOrderDao dispensaryPickUpOrderDao;
 
+    @Autowired private DispensaryPickUpOrderDetailsDao dispensaryPickUpOrderDetailsDao;
+
 
     public String getProductList() {
         try {
@@ -306,6 +308,24 @@ public class DispensaryService {
             return Boolean.TRUE;
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary pick up order for dispensary id : " + dispPickUpOrderBean.getDispensaryId(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    public boolean addPickUpOrderDetails(int dispOrderId,int price,int quantity,String strainName){
+        try {
+            DispensaryPickUpOrderDetails dispensaryPickUpOrderDetails = new DispensaryPickUpOrderDetails();
+
+            dispensaryPickUpOrderDetails.setDispensaryPickUpId(dispOrderId);
+            dispensaryPickUpOrderDetails.setPrice(price);
+            dispensaryPickUpOrderDetails.setQuantity(quantity);
+            dispensaryPickUpOrderDetails.setStrainName(strainName);
+            dispensaryPickUpOrderDetails.setUuid(UUID.randomUUID().toString());
+
+            dispensaryPickUpOrderDetailsDao.savePickUpPrderDetails(dispensaryPickUpOrderDetails);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while saving dispensary order details for dispensary pick up order id : " + dispOrderId, e);
             return Boolean.FALSE;
         }
     }

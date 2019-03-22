@@ -139,7 +139,7 @@ public class DispensaryController {
         return new ResponseUtils().getResponseByFlag(isMenuPriceAdded);
     }
 
-    @RequestMapping(value = "dispPickupOrder", method = RequestMethod.POST)
+    @RequestMapping(value = "dispPickUpOrder", method = RequestMethod.POST)
     public @ResponseBody
     String addDispPickUpOrder(HttpServletRequest request, HttpServletResponse response) {
         DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(request);
@@ -148,6 +148,26 @@ public class DispensaryController {
             isPickUpOrderAdded = dispensaryService.addPickUpOrder(dispPickUpOrderBean);
         }
         return new ResponseUtils().getResponseByFlag(isPickUpOrderAdded);
+    }
+
+    @RequestMapping(value = "dispPickUpOrder/details", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispPickUpOrderDetails(HttpServletRequest request, HttpServletResponse response) {
+        boolean isOrderDetailsAdded = Boolean.FALSE;
+        try {
+            int dispOrderId = Integer.parseInt(request.getParameter("dispOrderId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int price = Integer.parseInt(request.getParameter("price"));
+            String strainName = request.getParameter("strainName");
+
+            if (!StringUtils.isEmpty(strainName)) {
+                isOrderDetailsAdded = dispensaryService.addPickUpOrderDetails(dispOrderId,price,quantity,strainName);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isOrderDetailsAdded = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isOrderDetailsAdded);
     }
 
 }
