@@ -9,6 +9,7 @@ import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.util.RequestUtils;
 import com.phantom.util.ResponseUtils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -119,6 +120,26 @@ public class DispensaryController {
             isMenuAdded = dispensaryService.addMenu(dispMenuBean);
         }
         return new ResponseUtils().getResponseByFlag(isMenuAdded);
+    }
+
+    @RequestMapping(value = "dispensaryMenuPrice", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispensaryMenuPrice(HttpServletRequest request, HttpServletResponse response) {
+        boolean isMenuPriceAdded = Boolean.FALSE;
+        try {
+            int dispMenuId = Integer.parseInt(request.getParameter("dispMenuId"));
+            String productPrice = request.getParameter("productPrice");
+            String quantity = request.getParameter("quantity");
+            String currency = request.getParameter("currency");
+
+            if (!StringUtils.isEmpty(productPrice) && !StringUtils.isEmpty(quantity) && !StringUtils.isEmpty(currency)) {
+                isMenuPriceAdded = dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isMenuPriceAdded = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isMenuPriceAdded);
     }
 
 }

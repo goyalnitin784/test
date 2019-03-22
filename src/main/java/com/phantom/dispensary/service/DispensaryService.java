@@ -47,6 +47,9 @@ public class DispensaryService {
 
     @Autowired private DispensaryMenuDao dispensaryMenuDao;
 
+    @Autowired private DispensaryMenuPriceDao dispensaryMenuPriceDao;
+
+
     public String getProductList() {
         try {
             List<ProductsCategoryType> productsCategoryTypeList = productsCategoryTypeDao.findAll();
@@ -259,6 +262,24 @@ public class DispensaryService {
             return Boolean.TRUE;
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary menu for dispensary id : " + dispMenuBean.getDispensaryId(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    public boolean addMenuPrice(int dispMenuId, String productPrice, String quantity, String currency){
+        try {
+            DispensaryMenuPrice dispensaryMenuPrice = new DispensaryMenuPrice();
+
+            dispensaryMenuPrice.setDispensaryMenuId(dispMenuId);
+            dispensaryMenuPrice.setCurrency(currency);
+            dispensaryMenuPrice.setQuantity(quantity);
+            dispensaryMenuPrice.setProductPrice(productPrice);
+            dispensaryMenuPrice.setUuid(UUID.randomUUID().toString());
+
+            dispensaryMenuPriceDao.saveMenuPrice(dispensaryMenuPrice);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while saving dispensary menu price for dispensary price menu id : " + dispMenuId, e);
             return Boolean.FALSE;
         }
     }

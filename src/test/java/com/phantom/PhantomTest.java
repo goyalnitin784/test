@@ -186,4 +186,18 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
         }
     }
+
+    @Test
+    public void addDispMenuPrice() {
+        try {
+            int dispMenuId = 1;
+            String productPrice = "50";
+            String quantity = "10";
+            String currency = "$";
+
+            dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+        }
+    }
 }
