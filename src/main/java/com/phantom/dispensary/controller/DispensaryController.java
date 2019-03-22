@@ -1,13 +1,12 @@
 package com.phantom.dispensary.controller;
 
 import com.google.gson.Gson;
-import com.phantom.dispensary.request.DispDealsBean;
-import com.phantom.dispensary.request.DispReviewBean;
-import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
-import com.phantom.dto.BaseResponseDTO;
+import com.phantom.logging.PhantomLogger;
 import com.phantom.util.RequestUtils;
 import com.phantom.util.ResponseUtils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,9 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class DispensaryController {
+    private final static PhantomLogger logger = PhantomLogger.getLoggerObject(DispensaryController.class);
 
     @Autowired
     DispensaryService dispensaryService;
@@ -83,10 +85,109 @@ public class DispensaryController {
         String dispensaryId = request.getParameter("dispId");
         String userId = request.getParameter("userId");
         boolean isFollowerAdded = Boolean.FALSE;
-        if(!StringUtils.isEmpty(dispensaryId) && !StringUtils.isEmpty(userId)){
-           isFollowerAdded = dispensaryService.addDispFollowers(Integer.parseInt(dispensaryId), Integer.parseInt(userId));
+        if (!StringUtils.isEmpty(dispensaryId) && !StringUtils.isEmpty(userId)) {
+            isFollowerAdded = dispensaryService.addDispFollowers(Integer.parseInt(dispensaryId), Integer.parseInt(userId));
         }
         return new ResponseUtils().getResponseByFlag(isFollowerAdded);
+    }
+
+    @RequestMapping(value = "dispGallery", method = RequestMethod.GET)
+    public @ResponseBody
+    String addDispGallery(HttpServletRequest request, HttpServletResponse response) {
+        boolean isGalleryAdded = Boolean.FALSE;
+        try {
+            int dispensaryId = Integer.parseInt(request.getParameter("dispId"));
+            String picPath = request.getParameter("picPath");
+            int isActive = Integer.parseInt(request.getParameter("isActive") != null ? request.getParameter("isActive") : "1");
+            if (!StringUtils.isEmpty(picPath)) {
+                isGalleryAdded = dispensaryService.addGallery(dispensaryId, isActive, picPath);
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while adding dispensary gallery ", e);
+            isGalleryAdded = Boolean.FALSE;
+        }
+
+        return new ResponseUtils().getResponseByFlag(isGalleryAdded);
+    }
+
+    @RequestMapping(value = "dispensaryMenu", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispensaryMenu(HttpServletRequest request, HttpServletResponse response) {
+        DispMenuBean dispMenuBean = new DispMenuBean(request);
+        boolean isMenuAdded = false;
+        if (dispMenuBean.isValidMenu()) {
+            isMenuAdded = dispensaryService.addMenu(dispMenuBean);
+        }
+        return new ResponseUtils().getResponseByFlag(isMenuAdded);
+    }
+
+    @RequestMapping(value = "dispensaryMenuPrice", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispensaryMenuPrice(HttpServletRequest request, HttpServletResponse response) {
+        boolean isMenuPriceAdded = Boolean.FALSE;
+        try {
+            int dispMenuId = Integer.parseInt(request.getParameter("dispMenuId"));
+            String productPrice = request.getParameter("productPrice");
+            String quantity = request.getParameter("quantity");
+            String currency = request.getParameter("currency");
+
+            if (!StringUtils.isEmpty(productPrice) && !StringUtils.isEmpty(quantity) && !StringUtils.isEmpty(currency)) {
+                isMenuPriceAdded = dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isMenuPriceAdded = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isMenuPriceAdded);
+    }
+
+    @RequestMapping(value = "dispPickUpOrder", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispPickUpOrder(HttpServletRequest request, HttpServletResponse response) {
+        DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(request);
+        boolean isPickUpOrderAdded = false;
+        if (dispPickUpOrderBean.isValidPickUpOrder()) {
+            isPickUpOrderAdded = dispensaryService.addPickUpOrder(dispPickUpOrderBean);
+        }
+        return new ResponseUtils().getResponseByFlag(isPickUpOrderAdded);
+    }
+
+    @RequestMapping(value = "dispPickUpOrder/details", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispPickUpOrderDetails(HttpServletRequest request, HttpServletResponse response) {
+        boolean isOrderDetailsAdded = Boolean.FALSE;
+        try {
+            int dispOrderId = Integer.parseInt(request.getParameter("dispOrderId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int price = Integer.parseInt(request.getParameter("price"));
+            String strainName = request.getParameter("strainName");
+
+            if (!StringUtils.isEmpty(strainName)) {
+                isOrderDetailsAdded = dispensaryService.addPickUpOrderDetails(dispOrderId,price,quantity,strainName);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isOrderDetailsAdded = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isOrderDetailsAdded);
+    }
+
+    @RequestMapping(value = "dispUpdates", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispUpdates(HttpServletRequest request, HttpServletResponse response) {
+        boolean isDispUpdated = Boolean.FALSE;
+        try {
+            int dispId = Integer.parseInt(request.getParameter("dispId"));
+            String updateDetails = request.getParameter("updateDetails");
+//            Date updatedOn = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("updatedOn"));
+            if (!StringUtils.isEmpty(updateDetails)) {
+                isDispUpdated = dispensaryService.updates(dispId,updateDetails);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isDispUpdated = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isDispUpdated);
     }
 
 }

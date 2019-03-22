@@ -16,7 +16,7 @@ public class DispensaryPickUpOrder {
     private int dispensaryId;
 
     @Column(name = "dispensary_pick_up_order_code")
-    private int dispensaryPickUpOrderCode;
+    private String dispensaryPickUpOrderCode;
 
     @Column(name = "user_id")
     private int userId;
@@ -36,14 +36,23 @@ public class DispensaryPickUpOrder {
     @Column(name = "pick_up_requested_on")
     private Date pickUpRequestedOn;
 
-    @Column(name = "pick_up_by")
-    private String pickUpBy;
+    @Column(name = "picked_up_by")
+    private String pickedUpBy;
 
-    @Column(name = "totalCost")
+    @Column(name = "total_cost")
     private String totalCost;
 
     @Column(name = "pick_up_picked_on")
     private Date pickUpPickedOn;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "created_on")
+    private Date createdOn;
+
+    @Column(name = "uuid")
+    private String uuid;
 
     public long getId() {
         return id;
@@ -61,11 +70,11 @@ public class DispensaryPickUpOrder {
         this.dispensaryId = dispensaryId;
     }
 
-    public int getDispensaryPickUpOrderCode() {
+    public String getDispensaryPickUpOrderCode() {
         return dispensaryPickUpOrderCode;
     }
 
-    public void setDispensaryPickUpOrderCode(int dispensaryPickUpOrderCode) {
+    public void setDispensaryPickUpOrderCode(String dispensaryPickUpOrderCode) {
         this.dispensaryPickUpOrderCode = dispensaryPickUpOrderCode;
     }
 
@@ -117,12 +126,12 @@ public class DispensaryPickUpOrder {
         this.pickUpRequestedOn = pickUpRequestedOn;
     }
 
-    public String getPickUpBy() {
-        return pickUpBy;
+    public String getPickedUpBy() {
+        return pickedUpBy;
     }
 
-    public void setPickUpBy(String pickUpBy) {
-        this.pickUpBy = pickUpBy;
+    public void setPickedUpBy(String pickedUpBy) {
+        this.pickedUpBy = pickedUpBy;
     }
 
     public String getTotalCost() {
@@ -141,5 +150,28 @@ public class DispensaryPickUpOrder {
         this.pickUpPickedOn = pickUpPickedOn;
     }
 
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }
 

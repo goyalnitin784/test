@@ -1,8 +1,6 @@
 package com.phantom;
 
-import com.phantom.dispensary.request.DispDealsBean;
-import com.phantom.dispensary.request.DispReviewBean;
-import com.phantom.dispensary.request.DispensaryBean;
+import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
 import com.phantom.user.request.UserBean;
@@ -142,13 +140,104 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         }
     }
 
+    @Test
     public void addDispFollowers() {
         try {
             int dispensaryId = 3;
             int userId = 7;
             dispensaryService.addDispFollowers(dispensaryId,userId);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispFollowers controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispGallery() {
+        try {
+            int dispensaryId = 3;
+            int isActive = 1;
+            String picPath = "x/y/z";
+            dispensaryService.addGallery(dispensaryId,isActive,picPath);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispGallery controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispMenu() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("productName", "test");
+            requestMap.put("productCatTypeId", "5");
+            requestMap.put("strainCatTypeId", "8");
+            requestMap.put("strainId", "1");
+            requestMap.put("breeder", "test breeder");
+            requestMap.put("desc", "its test for test");
+            requestMap.put("image1", "image1");
+            requestMap.put("image2", "image2");
+
+            DispMenuBean dispMenuBean = new DispMenuBean(requestMap);
+            dispensaryService.addMenu(dispMenuBean);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispMenu controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispMenuPrice() {
+        try {
+            int dispMenuId = 1;
+            String productPrice = "50";
+            String quantity = "10";
+            String currency = "$";
+
+            dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispMenuPrice controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispPickUpOrder() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("userId", "7");
+            requestMap.put("dispPickUpOrderCode", "Test");
+            requestMap.put("pickUpDate", "2019-03-22");
+            requestMap.put("totalCost", "150");
+
+            DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(requestMap);
+            dispensaryService.addPickUpOrder(dispPickUpOrderBean);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispPickUpOrder controller ", e);
+        }
+    }
+
+    @Test
+    public void addDispOrderDetails() {
+        try {
+            int dispOrderId = 1;
+            int price = 50;
+            int quantity = 10;
+            String strainName = "phantom";
+
+            dispensaryService.addPickUpOrderDetails(dispOrderId,price,quantity,strainName);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispOrderDetails controller ", e);
+        }
+    }
+
+    @Test
+    public void dispUpdates() {
+        try {
+            int dispId = 3;
+            String dispUpdates = "new arrivals";
+
+            dispensaryService.updates(dispId,dispUpdates);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing dispUpdates controller ", e);
         }
     }
 }

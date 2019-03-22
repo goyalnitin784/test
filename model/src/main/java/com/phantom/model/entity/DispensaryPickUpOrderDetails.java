@@ -12,20 +12,26 @@ public class DispensaryPickUpOrderDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "dispensary_pick_up_id")
+    @Column(name = "Dispensary_pick_up_order_Id")
     private int dispensaryPickUpId;
 
     @Column(name = "strain_name")
     private String strainName;
 
-    @Column(name = "Quantity")
-    private String quantity;
+    @Column(name = "quantity")
+    private int quantity;
 
     @Column(name = "price")
-    private String price;
+    private int price;
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "uuid")
+    private String uuid;
 
     public long getId() {
         return id;
@@ -51,19 +57,19 @@ public class DispensaryPickUpOrderDetails {
         this.strainName = strainName;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -73,6 +79,22 @@ public class DispensaryPickUpOrderDetails {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
 

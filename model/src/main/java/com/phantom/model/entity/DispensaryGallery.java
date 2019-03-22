@@ -24,6 +24,12 @@ public class DispensaryGallery {
     @Column(name = "created_on")
     private Date createdOn;
 
+    @Column(name = "uuid")
+    private String uuid;
+
+    @Column(name = "added_on")
+    private Date addedOn;
+
     public long getId() {
         return id;
     }
@@ -40,12 +46,12 @@ public class DispensaryGallery {
         this.dispensaryId = dispensaryId;
     }
 
-    public int isActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setActive(int active) {
-        isActive = active;
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public String getPicturePath() {
@@ -62,6 +68,22 @@ public class DispensaryGallery {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getAddedOn() {
+        return addedOn;
+    }
+
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
     }
 }
 
