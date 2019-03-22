@@ -8,6 +8,8 @@ build/*
 .gradle/*
 .idea/*
 *.iml
-
+out/
+model/out/
+core/out/
 /.gradle/
 /bin/

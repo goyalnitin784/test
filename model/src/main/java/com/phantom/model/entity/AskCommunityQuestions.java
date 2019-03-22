@@ -33,6 +33,9 @@ public class AskCommunityQuestions {
     @Column(name = "created_on")
     private Date createdOn;
 
+    @Column(name = "uuid")
+    private String uuid;
+
     public long getQuestionId() {
         return questionId;
     }
@@ -95,5 +98,14 @@ public class AskCommunityQuestions {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
