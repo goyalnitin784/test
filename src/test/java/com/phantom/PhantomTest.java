@@ -27,20 +27,15 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     private DispensaryService dispensaryService;
 
     @Test
-    public void sampleTest() throws Exception {
+    public void healthCheckTest() throws Exception {
         System.out.println("Context up");
         try {
             userDao.findAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    @Test
-    public void findD() {
-        String output = dispensaryService.find("19.171961", "72.872726");
-    }
 
     @Test
     public void registrationTest() {
@@ -100,7 +95,13 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void reviewDispensary() {
+    public void findD() {
+        String output = dispensaryService.find("19.171961", "72.872726");
+    }
+
+
+    @Test
+    public void addDispensaryReview() {
         Map<String, String> requestMap = new HashMap<>();
         try {
             requestMap.put("dispId", "3");
@@ -230,14 +231,13 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void dispUpdates() {
+    public void addDispensaryUpdates() {
         try {
             int dispId = 3;
             String dispUpdates = "new arrivals";
-
             dispensaryService.updates(dispId,dispUpdates);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing dispUpdates controller ", e);
+            logger.error("Exception occurred while testing addDispensaryUpdates controller ", e);
         }
     }
 }
