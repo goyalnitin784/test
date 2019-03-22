@@ -24,6 +24,12 @@ public class DispensaryUpdates {
     @Column(name = "updated_on")
     private Date updatedOn;
 
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "uuid")
+    private String uuid;
+
     public long getId() {
         return id;
     }
@@ -62,6 +68,22 @@ public class DispensaryUpdates {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
     }
 }
 

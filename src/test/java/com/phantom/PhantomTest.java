@@ -147,7 +147,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             int userId = 7;
             dispensaryService.addDispFollowers(dispensaryId,userId);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispFollowers controller ", e);
         }
     }
 
@@ -159,7 +159,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             String picPath = "x/y/z";
             dispensaryService.addGallery(dispensaryId,isActive,picPath);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispGallery controller ", e);
         }
     }
 
@@ -180,7 +180,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             DispMenuBean dispMenuBean = new DispMenuBean(requestMap);
             dispensaryService.addMenu(dispMenuBean);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispMenu controller ", e);
         }
     }
 
@@ -194,7 +194,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
 
             dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispMenuPrice controller ", e);
         }
     }
 
@@ -211,7 +211,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(requestMap);
             dispensaryService.addPickUpOrder(dispPickUpOrderBean);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispPickUpOrder controller ", e);
         }
     }
 
@@ -225,7 +225,19 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
 
             dispensaryService.addPickUpOrderDetails(dispOrderId,price,quantity,strainName);
         } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
+            logger.error("Exception occurred while testing addDispOrderDetails controller ", e);
+        }
+    }
+
+    @Test
+    public void dispUpdates() {
+        try {
+            int dispId = 3;
+            String dispUpdates = "new arrivals";
+
+            dispensaryService.updates(dispId,dispUpdates);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing dispUpdates controller ", e);
         }
     }
 }

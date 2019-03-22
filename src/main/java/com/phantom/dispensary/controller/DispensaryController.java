@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class DispensaryController {
@@ -168,6 +170,24 @@ public class DispensaryController {
             isOrderDetailsAdded = Boolean.FALSE;
         }
         return new ResponseUtils().getResponseByFlag(isOrderDetailsAdded);
+    }
+
+    @RequestMapping(value = "dispUpdates", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispUpdates(HttpServletRequest request, HttpServletResponse response) {
+        boolean isDispUpdated = Boolean.FALSE;
+        try {
+            int dispId = Integer.parseInt(request.getParameter("dispId"));
+            String updateDetails = request.getParameter("updateDetails");
+//            Date updatedOn = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("updatedOn"));
+            if (!StringUtils.isEmpty(updateDetails)) {
+                isDispUpdated = dispensaryService.updates(dispId,updateDetails);
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while adding dispensary menu price ",e);
+            isDispUpdated = Boolean.FALSE;
+        }
+        return new ResponseUtils().getResponseByFlag(isDispUpdated);
     }
 
 }

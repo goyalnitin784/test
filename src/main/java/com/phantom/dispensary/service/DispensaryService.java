@@ -11,6 +11,7 @@ import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +52,8 @@ public class DispensaryService {
     @Autowired private DispensaryPickUpOrderDao dispensaryPickUpOrderDao;
 
     @Autowired private DispensaryPickUpOrderDetailsDao dispensaryPickUpOrderDetailsDao;
+
+    @Autowired private DispensaryUpdatesDao dispensaryUpdatesDao;
 
 
     public String getProductList() {
@@ -326,6 +329,22 @@ public class DispensaryService {
             return Boolean.TRUE;
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary order details for dispensary pick up order id : " + dispOrderId, e);
+            return Boolean.FALSE;
+        }
+    }
+
+    public boolean updates(int dispId,String updateDetails){
+        try {
+            DispensaryUpdates dispensaryUpdates = new DispensaryUpdates();
+
+            dispensaryUpdates.setDispensaryId(dispId);
+            dispensaryUpdates.setUpdateDetails(updateDetails);
+            dispensaryUpdates.setUuid(UUID.randomUUID().toString());
+
+            dispensaryUpdatesDao.saveUpdates(dispensaryUpdates);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            logger.error("Exception occurred while saving dispensary updates for dispensary id : " + dispId, e);
             return Boolean.FALSE;
         }
     }
