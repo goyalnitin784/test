@@ -24,8 +24,8 @@ public class FaqController {
     public @ResponseBody
     String askQuestion(HttpServletRequest request) {
         try {
-            int disId = Integer.parseInt(request.getParameter("disId"));
-            int strainId = Integer.parseInt(request.getParameter("strainId"));
+            String disId = request.getParameter("disId");
+            String strainId = request.getParameter("strainId");
             String question = request.getParameter("question");
             String ssoToken = RequestUtils.getCookie(request, "ssoToken");
             return faqService.askQuestion(disId, strainId, question, ssoToken);
@@ -91,7 +91,7 @@ public class FaqController {
     public @ResponseBody
     String likeAnswer(HttpServletRequest request) {
         try {
-            int questionId = Integer.parseInt(request.getParameter("answerId"));
+            String questionId = request.getParameter("answerId");
             return faqService.likeAnswer(questionId, RequestUtils.getCookie(request, "ssoToken"));
         } catch (Exception e) {
             logger.error("Exception came while liking question", e);
@@ -107,7 +107,7 @@ public class FaqController {
     public @ResponseBody
     String followAnswer(HttpServletRequest request) {
         try {
-            int answerId = Integer.parseInt(request.getParameter("answerId"));
+            String answerId = request.getParameter("answerId");
             return faqService.followAnswer(answerId, RequestUtils.getCookie(request, "ssoToken"));
         } catch (Exception e) {
             logger.error("Exception came while liking answer", e);

@@ -14,5 +14,7 @@ public interface AskCommunityQuestionsDao extends GenericDAO<AskCommunityQuestio
 
     boolean updateQuestionFollow(int userId, String questionId);
 
+    boolean saveQuestion(AskCommunityQuestions askCommunityAnswer);
+
 
 }

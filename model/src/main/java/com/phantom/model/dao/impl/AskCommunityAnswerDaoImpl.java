@@ -43,6 +43,17 @@ public class AskCommunityAnswerDaoImpl extends GenericHibernateDAO<AskCommunityA
         return false;
     }
 
+    @Override
+    public boolean saveAnswer(AskCommunityAnswer askCommunityAnswer) {
+        try{
+            super.saveOrUpdate(askCommunityAnswer);
+            return true;
+        }catch (Exception e){
+            logger.error("Exception came while saving ask community answer",e);
+        }
+        return false;
+    }
+
     public List<AskCommunityAnswer> getAllAnswers(String questionId, int count) {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(AskCommunityAnswer.class);

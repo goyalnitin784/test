@@ -34,7 +34,7 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(AskCommunityQuestions.class);
             if (userId != 0) {
-                criteria.add(Restrictions.eq("dispensaryId", 1));
+                criteria.add(Restrictions.eq("userId", userId));
             }
             if (!PhantomUtil.isNullOrEmpty(dispId)) {
                 criteria.add(Restrictions.eq("dispensaryId", dispId));
@@ -42,7 +42,7 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
             if (!PhantomUtil.isNullOrEmpty(strainId)) {
                 criteria.add(Restrictions.eq("strainId", strainId));
             }
-            criteria.add(Restrictions.sqlRestriction("LIMIT " + count));
+            criteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).setMaxResults(count);
             criteria.addOrder(Order.desc("createdOn"));
             return findByCriteria(criteria);
         } catch (Exception e) {
@@ -77,6 +77,16 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
             }
         } catch (Exception e) {
             logger.error("Exception came while updating question follower for question id : " + questionId, e);
+        }
+        return false;
+    }
+
+    public boolean saveQuestion(AskCommunityQuestions q){
+        try{
+            super.saveOrUpdate(q);
+            return true;
+        }catch (Exception e){
+            logger.error("Exception came while saving ask community question",e);
         }
         return false;
     }

@@ -6,7 +6,6 @@ import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.util.RequestUtils;
 import com.phantom.util.ResponseUtils;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Controller
 public class DispensaryController {

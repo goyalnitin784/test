@@ -37,7 +37,7 @@ public class FaqService {
 
     PhantomLogger logger = PhantomLogger.getLoggerObject(this.getClass());
 
-    public String askQuestion(int disId, int strainId, String question, String ssoToken) {
+    public String askQuestion(String disId, String strainId, String question, String ssoToken) {
 
         JsonObject jsonObject = new JsonObject();
         if (PhantomUtil.isNullOrEmpty(ssoToken)) {
@@ -60,12 +60,14 @@ public class FaqService {
         askCommunityQuestions.setQuestion(question);
         askCommunityQuestions.setUserId((int) user.getUserId());
         askCommunityQuestions.setUuid(UUID.randomUUID().toString());
-        try {
-            askCommunityQuestionsDao.saveOrUpdate(askCommunityQuestions);
+        boolean status = false;
+        status = askCommunityQuestionsDao.saveQuestion(askCommunityQuestions);
+
+        if (status) {
             jsonObject.addProperty("status", 200);
             jsonObject.addProperty("msg", "Question uploaded successfully");
             return jsonObject.toString();
-        } catch (Exception e) {
+        } else {
             jsonObject.addProperty("status", 500);
             jsonObject.addProperty("msg", "Question could not be uploaded");
             return jsonObject.toString();
@@ -96,7 +98,7 @@ public class FaqService {
             userLikedQuestion.setCreatedOn(new Date());
             userLikedQuestion.setUserId((int) user.getUserId());
             userLikedQuestion.setLikeFlag(1);
-            userLikedQuestionDao.saveOrUpdate(userLikedQuestion);
+            userLikedQuestionDao.saveDetails(userLikedQuestion);
         } catch (Exception e) {
             logger.error("Exception while saving user liked question for question id : " + questionId, e);
         }
@@ -129,7 +131,7 @@ public class FaqService {
             userLikedQuestion.setCreatedOn(new Date());
             userLikedQuestion.setUserId((int) user.getUserId());
             userLikedQuestion.setFollowFlag(1);
-            userLikedQuestionDao.saveOrUpdate(userLikedQuestion);
+            userLikedQuestionDao.saveDetails(userLikedQuestion);
         } catch (Exception e) {
             logger.error("Exception while saving user liked question for question id : " + questionId, e);
         }
@@ -152,7 +154,7 @@ public class FaqService {
             }
         }
         int count = 10;
-        List<AskCommunityQuestions> askCommunityQuestionsList = askCommunityQuestionsDao.getTopQuestions(userId, dispId,strainId, count);
+        List<AskCommunityQuestions> askCommunityQuestionsList = askCommunityQuestionsDao.getTopQuestions(userId, dispId, strainId, count);
         jsonObject.addProperty("status", 200);
         jsonObject.add("data", new Gson().toJsonTree(askCommunityQuestionsList));
         return jsonObject.toString();
@@ -187,30 +189,30 @@ public class FaqService {
         AskCommunityAnswer askCommunityAnswer = new AskCommunityAnswer();
         askCommunityAnswer.setCreatedOn(new Date());
         askCommunityAnswer.setAnswer(answer);
-        askCommunityAnswer.setQuestionId(Integer.parseInt(questionId));
+        askCommunityAnswer.setQuestionId(questionId);
         askCommunityAnswer.setUserId(userId);
         askCommunityAnswer.setUuid(UUID.randomUUID().toString());
         try {
             AskCommunityQuestions askCommunityQuestions = askCommunityQuestionsDao.getQuestion(questionId);
-            askCommunityAnswer.setDispensaryId(askCommunityQuestions.getDispensaryId());
+            askCommunityAnswer.setDispensaryId(askCommunityQuestions.getUuid());
             askCommunityAnswer.setStrainId(askCommunityAnswer.getStrainId());
         } catch (Exception e) {
             logger.error("Exception came while fetching community question for question id : " + questionId, e);
         }
-        try {
-            askCommunityAnswerDao.saveOrUpdate(askCommunityAnswer);
+        boolean status = askCommunityAnswerDao.saveAnswer(askCommunityAnswer);
+        if (status) {
             jsonObject.addProperty("status", 200);
             jsonObject.addProperty("msg", "Answer submitted properly");
             return jsonObject.toString();
-        } catch (Exception e) {
-            logger.error("Exception came while saving answer to question id : " + questionId, e);
+        } else {
+            jsonObject.addProperty("status", 500);
+            jsonObject.addProperty("msg", "Answer Could not be submitted properly");
+            return jsonObject.toString();
         }
-        jsonObject.addProperty("status", 200);
-        jsonObject.addProperty("msg", "Answer Could not be submitted properly");
-        return jsonObject.toString();
+
     }
 
-    public String likeAnswer(int answerId, String ssoToken) {
+    public String likeAnswer(String answerId, String ssoToken) {
         JsonObject jsonObject = new JsonObject();
         if (PhantomUtil.isNullOrEmpty(ssoToken)) {
             jsonObject.addProperty("status", 400);
@@ -233,7 +235,7 @@ public class FaqService {
 
     }
 
-    public String followAnswer(int answerId, String ssoToken) {
+    public String followAnswer(String answerId, String ssoToken) {
         JsonObject jsonObject = new JsonObject();
         if (PhantomUtil.isNullOrEmpty(ssoToken)) {
             jsonObject.addProperty("status", 400);
@@ -267,7 +269,7 @@ public class FaqService {
             return jsonObject.toString();
         }
         int count = 10;
-        List<AskCommunityAnswer> askCommunityQuestionsList = askCommunityAnswerDao.getAllAnswers(Integer.parseInt(questionId), count);
+        List<AskCommunityAnswer> askCommunityQuestionsList = askCommunityAnswerDao.getAllAnswers(questionId, count);
         jsonObject.addProperty("status", 200);
         jsonObject.add("data", new Gson().toJsonTree(askCommunityQuestionsList));
         return jsonObject.toString();
