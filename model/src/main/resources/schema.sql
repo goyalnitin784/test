@@ -358,7 +358,7 @@ CREATE TABLE `dispensary_menu` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `uuid` varchar(50) NOT NULL,
   `Dispensary_id` int(11) NOT NULL,
-  `Product Name` varchar(200) NOT NULL,
+  `product_name` varchar(200) NOT NULL,
   `Product_Category_Type_id` int(11) NOT NULL,
   `Strain_Category_Type_id` int(11) NOT NULL,
   `Description` varchar(2000) NOT NULL,
@@ -371,7 +371,7 @@ CREATE TABLE `dispensary_menu` (
   `strain_id` int(11) DEFAULT NULL,
   `breeder` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -500,11 +500,11 @@ CREATE TABLE `dispensary_review` (
   `Number_Of_Shares_Count` int(11) NOT NULL,
   `make_review_private` int(1) DEFAULT NULL,
   `is_active` int(11) NOT NULL DEFAULT '0',
-  `review Description` varchar(2000) NOT NULL,
+  `review_desc` varchar(2000) DEFAULT NULL,
   `reviewed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `count_of_followers` int(11) NOT NULL,
+  `count_of_followers` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,9 +530,9 @@ CREATE TABLE `dispensary_updates` (
   `uuid` varchar(50) NOT NULL,
   `Dispensary_id` int(11) NOT NULL,
   `Update_Details` varchar(2000) NOT NULL,
-  `Updated_on` int(11) NOT NULL,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
