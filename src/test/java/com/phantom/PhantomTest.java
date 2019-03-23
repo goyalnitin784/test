@@ -3,6 +3,7 @@ package com.phantom;
 import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
+import com.phantom.order.service.OrderService;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     private UserService userService;
     @Autowired
     private DispensaryService dispensaryService;
+    @Autowired
+    private OrderService orderService;
 
     @Test
     public void healthCheckTest() throws Exception {
@@ -238,6 +241,26 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             dispensaryService.updates(dispId,dispUpdates);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensaryUpdates controller ", e);
+        }
+    }
+
+    @Test
+    public void myOrdersForUser() {
+        try {
+            String ssoToken = "7ba6b0d1-4798-4954-b014-9ce6d230e571";
+            orderService.getMyOrdersForUser(ssoToken);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing myOrdersForUser controller ", e);
+        }
+    }
+
+    @Test
+    public void myOrdersForDisp() {
+        try {
+            String dispId = "3";
+            orderService.getMyOrdersForDisp(dispId);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing myOrdersForUser controller ", e);
         }
     }
 }

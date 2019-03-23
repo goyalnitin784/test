@@ -130,4 +130,5 @@ public class UserController {
         return qService.getUserQuote(RequestUtils.getCookie(request,"ssoToken"));
     }
 
+
 }

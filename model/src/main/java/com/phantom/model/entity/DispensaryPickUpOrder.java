@@ -31,7 +31,7 @@ public class DispensaryPickUpOrder {
     private String specialComments;
 
     @Column(name = "pick_up_order_status")
-    private int pickUpOrderStatus;
+    private String pickUpOrderStatus;
 
     @Column(name = "pick_up_requested_on")
     private Date pickUpRequestedOn;
@@ -110,11 +110,11 @@ public class DispensaryPickUpOrder {
         this.specialComments = specialComments;
     }
 
-    public int getPickUpOrderStatus() {
+    public String getPickUpOrderStatus() {
         return pickUpOrderStatus;
     }
 
-    public void setPickUpOrderStatus(int pickUpOrderStatus) {
+    public void setPickUpOrderStatus(String pickUpOrderStatus) {
         this.pickUpOrderStatus = pickUpOrderStatus;
     }
 

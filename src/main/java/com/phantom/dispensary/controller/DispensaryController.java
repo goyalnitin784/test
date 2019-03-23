@@ -47,7 +47,7 @@ public class DispensaryController {
         return dispensaryService.find(request.getParameter("lat"), request.getParameter("long"));
     }
 
-    @RequestMapping(value = "reviewDispensary", method = RequestMethod.GET)
+    @RequestMapping(value = "reviewDispensary", method = RequestMethod.POST)
     public @ResponseBody
     String reviewDispensary(HttpServletRequest request, HttpServletResponse response) {
         DispReviewBean dispReviewBean = new DispReviewBean(request);
@@ -65,7 +65,7 @@ public class DispensaryController {
         return dispensaryService.getDispensaryQuote(token);
     }
 
-    @RequestMapping(value = "dispensaryDeals", method = RequestMethod.GET)
+    @RequestMapping(value = "dispensaryDeals", method = RequestMethod.POST)
     public @ResponseBody
     String addDispensaryDeals(HttpServletRequest request, HttpServletResponse response) {
         DispDealsBean dispDealsBean = new DispDealsBean(request);

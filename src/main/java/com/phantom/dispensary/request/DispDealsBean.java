@@ -80,9 +80,6 @@ public class DispDealsBean extends MapBasedRequest {
             if (requestParameters.get("price") != null) {
                 price = Integer.parseInt(requestParameters.get("price"));
             }
-            if (requestParameters.get("isFeaturedDeal") != null) {
-                isFeaturedDeal = Integer.parseInt(requestParameters.get("isFeaturedDeal"));
-            }
 
             if(StringUtils.isEmpty(dealDesc) || StringUtils.isEmpty(dealName) ){
                 isValidDeal = Boolean.FALSE;

@@ -157,4 +157,14 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="dispensaryMenuPriceDao" class="com.phantom.model.dao.impl.DispensaryMenuPriceDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="userLikedQuestionDao" class="com.phantom.model.dao.impl.UserLikedQuestionDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+
 </beans>

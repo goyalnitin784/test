@@ -20,7 +20,7 @@ public class DispPickUpOrderBean extends MapBasedRequest {
     private Date pickUpDate;
     private String pickUpTimeSlot;
     private String specialComments;
-    private int pickUpOrderStatus;
+    private String pickUpOrderStatus;
     private Date pickUpRequestedOn;
     private String pickedUpBy;
     private String totalCost;
@@ -55,7 +55,7 @@ public class DispPickUpOrderBean extends MapBasedRequest {
             try{
                 pickUpDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("pickUpDate"));
                 pickUpRequestedOn = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("pickUpRequestedOn"));
-                pickUpOrderStatus = Integer.parseInt(requestParameters.get("pickUpOrderStatus"));
+                pickUpOrderStatus = requestParameters.get("pickUpOrderStatus");
             }catch (Exception e){
             }
             pickUpTimeSlot = requestParameters.get("pickUpTimeSlot");
@@ -114,11 +114,11 @@ public class DispPickUpOrderBean extends MapBasedRequest {
         this.specialComments = specialComments;
     }
 
-    public int getPickUpOrderStatus() {
+    public String getPickUpOrderStatus() {
         return pickUpOrderStatus;
     }
 
-    public void setPickUpOrderStatus(int pickUpOrderStatus) {
+    public void setPickUpOrderStatus(String pickUpOrderStatus) {
         this.pickUpOrderStatus = pickUpOrderStatus;
     }
 
