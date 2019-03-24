@@ -1,5 +1,7 @@
 package com.phantom.dto;
 
+import com.google.gson.JsonElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ public class BaseResponseDTO extends BaseDTO {
 
 	private String code;
 	private List<String> messages;
+	JsonElement response;
 
 	public BaseResponseDTO() {
 	}
@@ -41,4 +44,11 @@ public class BaseResponseDTO extends BaseDTO {
 		this.messages = messages;
 	}
 
+	public JsonElement getResponse() {
+		return response;
+	}
+
+	public void setResponse(JsonElement response) {
+		this.response = response;
+	}
 }

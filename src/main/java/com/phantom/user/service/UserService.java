@@ -1,11 +1,17 @@
 package com.phantom.user.service;
 
+import com.google.gson.Gson;
+import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
+import com.phantom.model.dao.DealReviewDao;
 import com.phantom.model.dao.UserDao;
 import com.phantom.model.dao.UserSSOTokenMappingDao;
+import com.phantom.model.entity.DealReview;
 import com.phantom.model.entity.User;
 import com.phantom.model.entity.UserSSOTokenMapping;
+import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
+import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +25,15 @@ import java.util.UUID;
 @Service
 public class UserService {
     private final static PhantomLogger logger = PhantomLogger.getLoggerObject(UserService.class);
-
+    private final static Gson gson = new Gson();
     @Autowired
     private RequestUtils requestUtils;
     @Autowired
     private UserDao userDao;
     @Autowired
     private UserSSOTokenMappingDao userSSOTokenMappingDao;
+    @Autowired
+    private DealReviewDao dealReviewDao;
 
     public void setCookie(HttpServletResponse response, String userName, String ssoToken) {
             requestUtils.addCookie(response, "userName", userName);
@@ -92,6 +100,50 @@ public class UserService {
         }catch (Exception e){
             logger.error("Exception occurred while persisting sso-token for user : "+ userId, e);
         }
+    }
+
+    public String giveDealReview(DealReviewBean dealReviewBean,String ssoToken){
+        String msg = "";
+        String code = "200";
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken)) {
+                code = "404";
+                msg = "user not logged in";
+            } else {
+                UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
+                if (userSSOTokenMapping == null) {
+                    code = "404";
+                    msg = "user not logged in";
+                } else {
+                    DealReview dealReview = new DealReview();
+                    dealReview.setReviewerUserId((int) userSSOTokenMapping.getUserId());
+                    dealReview.setDispensaryId(dealReviewBean.getDispensaryId());
+                    dealReview.setRecommendationCount(dealReviewBean.getRecommendationCount());
+                    dealReview.setIsReviewHelpfulCount(dealReviewBean.getIsReviewHelpfulCount());
+                    dealReview.setSharesCount(dealReviewBean.getSharesCount());
+                    dealReview.setMakeReviewPrivate(dealReviewBean.getMakeReviewPrivate());
+                    dealReview.setIsActive(dealReviewBean.getIsActive());
+                    dealReview.setReviewDesc(dealReviewBean.getReviewDesc());
+                    dealReview.setFollowers(dealReviewBean.getFollowers());
+                    dealReview.setOverAllRating(dealReviewBean.getOverAllRating());
+                    dealReview.setValueForMoneyRating(dealReviewBean.getValueForMoneyRating());
+                    dealReview.setDealCorrectnessRating(dealReviewBean.getDealCorrectnessRating());
+                    dealReview.setRecommendForFuture(dealReviewBean.getRecommendForFuture());
+                    dealReview.setUuid(dealReviewBean.getUuid());
+
+                    dealReviewDao.saveReview(dealReview);
+                    msg = "Deal Review Saved Successfully";
+                }
+            }
+        }catch(Exception e){
+            logger.error("Exception occured while giving deal review ",e);
+            code = "500";
+            msg = e.getMessage();
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
 }

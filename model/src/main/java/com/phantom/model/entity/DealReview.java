@@ -1,5 +1,7 @@
 package com.phantom.model.entity;
 
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -24,8 +26,8 @@ public class DealReview {
     @Column(name = "review_desc")
     private String reviewDesc;
 
-    @Column(name = "overall_rating")
-    private double overAllRating;
+    @Column(name = "overall_quality_rating")
+    private int overAllRating;
 
     @Column(name = "recommendation_count")
     private int recommendationCount;
@@ -33,20 +35,17 @@ public class DealReview {
     @Column(name = "is_review_helpful_count")
     private int isReviewHelpfulCount;
 
-    @Column(name = "no_of_shares_count")
+    @Column(name = "Number_Of_Shares_Count")
     private int sharesCount;
 
     @Column(name = "value_for_money_rating")
     private int valueForMoneyRating;
 
-    @Column(name = "deal_correctness")
-    private int dealCorrectness;
+    @Column(name = "deal_correctness_Rating")
+    private int dealCorrectnessRating;
 
-    @Column(name = "quality_rating")
-    private int qualityRating;
-
-    @Column(name = "will_take_deal_future_count")
-    private int willTakeDealFutureCount;
+    @Column(name = "recommend_for_future")
+    private int recommendForFuture;
 
     @Column(name = "make_review_private")
     private int makeReviewPrivate;
@@ -56,6 +55,18 @@ public class DealReview {
 
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
+
+    @Column(name = "uuid")
+    private String uuid;
+
+    @Column(name = "reviewed_on")
+    private Date reviewedOn;
+
+    @Column(name = "count_of_followers")
+    private int followers;
 
     public long getId() {
         return id;
@@ -97,11 +108,11 @@ public class DealReview {
         this.reviewDesc = reviewDesc;
     }
 
-    public double getOverAllRating() {
+    public int getOverAllRating() {
         return overAllRating;
     }
 
-    public void setOverAllRating(double overAllRating) {
+    public void setOverAllRating(int overAllRating) {
         this.overAllRating = overAllRating;
     }
 
@@ -137,31 +148,23 @@ public class DealReview {
         this.valueForMoneyRating = valueForMoneyRating;
     }
 
-    public int getDealCorrectness() {
-        return dealCorrectness;
+    public int getDealCorrectnessRating() {
+        return dealCorrectnessRating;
     }
 
-    public void setDealCorrectness(int dealCorrectness) {
-        this.dealCorrectness = dealCorrectness;
+    public void setDealCorrectnessRating(int dealCorrectnessRating) {
+        this.dealCorrectnessRating = dealCorrectnessRating;
     }
 
-    public int getQualityRating() {
-        return qualityRating;
+    public int getRecommendForFuture() {
+        return recommendForFuture;
     }
 
-    public void setQualityRating(int qualityRating) {
-        this.qualityRating = qualityRating;
+    public void setRecommendForFuture(int recommendForFuture) {
+        this.recommendForFuture = recommendForFuture;
     }
 
-    public int getWillTakeDealFutureCount() {
-        return willTakeDealFutureCount;
-    }
-
-    public void setWillTakeDealFutureCount(int willTakeDealFutureCount) {
-        this.willTakeDealFutureCount = willTakeDealFutureCount;
-    }
-
-    public int isMakeReviewPrivate() {
+    public int getMakeReviewPrivate() {
         return makeReviewPrivate;
     }
 
@@ -169,12 +172,12 @@ public class DealReview {
         this.makeReviewPrivate = makeReviewPrivate;
     }
 
-    public int isActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setActive(int active) {
-        isActive = active;
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public Date getCreatedOn() {
@@ -183,6 +186,38 @@ public class DealReview {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getReviewedOn() {
+        return reviewedOn;
+    }
+
+    public void setReviewedOn(Date reviewedOn) {
+        this.reviewedOn = reviewedOn;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
     }
 }
 

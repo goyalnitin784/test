@@ -3,7 +3,9 @@ package com.phantom;
 import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
+import com.phantom.model.entity.DealReview;
 import com.phantom.order.service.OrderService;
+import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -261,6 +263,29 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             orderService.getMyOrdersForDisp(dispId);
         } catch (Exception e) {
             logger.error("Exception occurred while testing myOrdersForUser controller ", e);
+        }
+    }
+
+    @Test
+    public void giveDealReview(){
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("dispId", "3");
+            requestMap.put("dealId", "1");
+            requestMap.put("overAllRating", "2");
+            requestMap.put("qualityRating", "4");
+            requestMap.put("recommendationCount", "2");
+            requestMap.put("isReviewHelpfulCount", "1");
+            requestMap.put("sharesCount", "2");
+            requestMap.put("reviewDesc", "It was good");
+            requestMap.put("valueForMoneyRating","4");
+            requestMap.put("dealCorrectnessRating","3");
+            requestMap.put("recommendForFuture","2");
+
+            DealReviewBean dealReviewBean = new DealReviewBean(requestMap);
+            userService.giveDealReview(dealReviewBean,"7ba6b0d1-4798-4954-b014-9ce6d230e571");
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing addDispensary controller ", e);
         }
     }
 }

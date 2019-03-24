@@ -9,6 +9,7 @@ import com.phantom.model.entity.User;
 import com.phantom.model.entity.UserSSOTokenMapping;
 import com.phantom.quote.service.QService;
 import com.phantom.response.GenericResponse;
+import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
 import com.phantom.util.RequestUtils;
@@ -130,5 +131,10 @@ public class UserController {
         return qService.getUserQuote(RequestUtils.getCookie(request,"ssoToken"));
     }
 
-
+    @RequestMapping(value = "dealReview", method = RequestMethod.POST)
+    public @ResponseBody
+    String giveDealReview(HttpServletRequest request, HttpServletResponse response) {
+        DealReviewBean dealReviewBean = new DealReviewBean(request);
+        return userService.giveDealReview(dealReviewBean,RequestUtils.getCookie(request,"ssoToken"));
+    }
 }

@@ -166,7 +166,7 @@ CREATE TABLE `deal_review` (
   `Number_Of_Shares_Count` int(11) NOT NULL,
   `make_review_private` int(1) DEFAULT NULL,
   `is_active` int(11) NOT NULL DEFAULT '0',
-  `review Description` varchar(2000) NOT NULL,
+  `review_desc` varchar(2000) NOT NULL,
   `recommend_for_future` int(11) DEFAULT NULL,
   `reviewed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `count_of_followers` int(11) DEFAULT NULL,
