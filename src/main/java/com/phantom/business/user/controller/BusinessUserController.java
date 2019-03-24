@@ -36,45 +36,19 @@ public class BusinessUserController {
     @Autowired
     private BusinessUserSSOTokenMappingDao businessUserSSOTokenMappingDao;
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "registerDispensary", method = RequestMethod.POST)
     public @ResponseBody
     String registerUser(HttpServletRequest request, HttpServletResponse response) {
         BusinessUserBean businessUserBean = new BusinessUserBean(request);
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if (businessUserBean.isValidUser()) {
-            logger.info("User : " + businessUserBean.getUserName() + " is registered successfully");
-            businessUserService.setCookie(response, businessUserBean.getUserName(), businessUserBean.getSsoToken());
-            businessUserService.insertUserDetails(businessUserBean);
-            businessUserService.setSSOToken(businessUserBean.getBusinessUserId(), businessUserBean.getUserName(), businessUserBean.getSsoToken());
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-        } else {
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-        }
-        return gson.toJson(baseResponseDTO);
+        businessUserService.setCookie(response, businessUserBean.getUserName(), businessUserBean.getSsoToken());
+        return businessUserService.insertUserDetails(businessUserBean);
     }
 
     @RequestMapping(value = "getUserDetails", method = RequestMethod.GET)
     public @ResponseBody
     String getBusinessUserDetails(HttpServletRequest request) {
-        GenericResponse genericResponse = new GenericResponse();
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-
-        String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-        BusinessUser businessUser = businessUserService.getBusinessUserDetails(ssoToken);
-
-        if (businessUser != null) {
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-            genericResponse.setBaseResponseDTO(baseResponseDTO);
-            genericResponse.setResponse(gson.toJson(businessUser));
-        } else {
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-            genericResponse.setBaseResponseDTO(baseResponseDTO);
-        }
-        return gson.toJson(genericResponse);
+        String ssoToken = requestUtils.getCookieValue(request, "bssoToken");
+        return businessUserService.getBusinessUserDetailsAsJson(ssoToken);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -97,24 +71,11 @@ public class BusinessUserController {
         return gson.toJson(baseResponseDTO);
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
     public @ResponseBody
     String logout(HttpServletRequest request) {
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        try {
-            String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-            BusinessUserSSOTokenMapping businessUserSSOTokenMapping = businessUserSSOTokenMappingDao.getBusinessUserDetailsBySSOToken(ssoToken);
-            businessUserSSOTokenMapping.setIsActive(0);
-            businessUserSSOTokenMappingDao.saveSSOToken(businessUserSSOTokenMapping);
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-        } catch (Exception e) {
-            logger.error("Exception occurred while logging out user ", e);
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-            baseResponseDTO.addMessage(e.getMessage());
-        }
-        return gson.toJson(baseResponseDTO);
+        String ssoToken = requestUtils.getCookieValue(request, "bssoToken");
+        return businessUserService.logout(ssoToken);
     }
 
 }

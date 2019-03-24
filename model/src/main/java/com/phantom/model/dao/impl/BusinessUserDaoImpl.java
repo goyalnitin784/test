@@ -26,4 +26,13 @@ public class BusinessUserDaoImpl extends GenericHibernateDAO<BusinessUser, Long>
         BusinessUser businessUser = findByCriteria(criteria).get(0);
         return businessUser;
     }
+
+    @Override
+    public void saveBusinessUser(BusinessUser businessUser) {
+        try{
+            super.saveOrUpdate(businessUser);
+        }catch (Exception e){
+            logger.error("Exception came while saving object",e);
+        }
+    }
 }

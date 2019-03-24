@@ -1,6 +1,8 @@
 package com.phantom.user.controller;
 
 import com.google.gson.Gson;
+import com.phantom.business.user.request.BusinessUserBean;
+import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.UserDao;
@@ -41,48 +43,22 @@ public class UserController {
 
     @Autowired
     QService qService;
+    @Autowired private BusinessUserService businessUserService;
 
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public @ResponseBody
     String registerUser(HttpServletRequest request, HttpServletResponse response) {
         UserBean userBean = new UserBean(request);
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if (userBean.isValidUser()) {
-            logger.info("User : " + userBean.getUserName() + " is registered successfully");
-            userService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
-            userService.insertUserDetails(userBean);
-            userService.setSSOToken(userBean.getUserId(), userBean.getUserName(), userBean.getSsoToken());
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-        } else {
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-        }
-        return gson.toJson(baseResponseDTO);
+        businessUserService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
+        return userService.insertUserDetails(userBean);
     }
 
     @RequestMapping(value = "getUserDetails", method = RequestMethod.GET)
     public @ResponseBody
     String getUserDetails(HttpServletRequest request) {
-        User user = UserKeeper.getUserDetails();
-        GenericResponse genericResponse = new GenericResponse();
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        if(user == null) {
-            String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-            user = userService.getUserDetails(ssoToken);
-        }
-        if (user != null) {
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-            genericResponse.setBaseResponseDTO(baseResponseDTO);
-            genericResponse.setResponse(gson.toJson(user));
-        } else {
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-            genericResponse.setBaseResponseDTO(baseResponseDTO);
-        }
-        return gson.toJson(genericResponse);
+        String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
+        return userService.getUserDetailsAsJson(ssoToken);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -105,24 +81,11 @@ public class UserController {
         return gson.toJson(baseResponseDTO);
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
     public @ResponseBody
     String logout(HttpServletRequest request) {
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
-        try {
-            String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
-            UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
-            userSSOTokenMapping.setIsActive(0);
-            userSSOTokenMappingDao.saveSSOToken(userSSOTokenMapping);
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
-        } catch (Exception e) {
-            logger.error("Exception occurred while logging out user ", e);
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
-            baseResponseDTO.addMessage(e.getMessage());
-        }
-        return gson.toJson(baseResponseDTO);
+        String ssoToken = requestUtils.getCookieValue(request, "ssoToken");
+        return userService.logout(ssoToken);
     }
 
     @RequestMapping(value = "getQuote", method = RequestMethod.POST)
@@ -135,6 +98,8 @@ public class UserController {
     public @ResponseBody
     String giveDealReview(HttpServletRequest request, HttpServletResponse response) {
         DealReviewBean dealReviewBean = new DealReviewBean(request);
-        return userService.giveDealReview(dealReviewBean,RequestUtils.getCookie(request,"ssoToken"));
+        int userId = userService.getUserId(RequestUtils.getCookie(request,"ssoToken"));
+        dealReviewBean.setReviewerUserId(userId);
+        return userService.giveDealReview(dealReviewBean);
     }
 }

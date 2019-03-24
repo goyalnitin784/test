@@ -2,6 +2,7 @@ package com.phantom.dispensary.request;
 
 import com.phantom.logging.PhantomLogger;
 import com.phantom.request.MapBasedRequest;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -16,11 +17,11 @@ public class DispReviewBean extends MapBasedRequest {
     private String reviewDesc;
     private int serviceRating;
     private int atmosphereRating;
-    private int recommendationCount;
-    private int isReviewHelpfulCount;
-    private int sharesCount;
+    private int recommendationCount = 0;
+    private int isReviewHelpfulCount = 0;
+    private int sharesCount = 0;
     private int qualityRating;
-    private int makeReviewPrivate;
+    private int makeReviewPrivate = 0;
     private int isActive = 0;
     private int overAllQualityRating;
     private int followers = 0;
@@ -41,13 +42,9 @@ public class DispReviewBean extends MapBasedRequest {
     private void postConstruct() {
         try {
             dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
-            reviewerUserId = Integer.parseInt(requestParameters.get("reviewerUserId"));
             serviceRating = Integer.parseInt(requestParameters.get("serviceRating"));
             atmosphereRating = Integer.parseInt(requestParameters.get("atmosphereRating"));
             qualityRating = Integer.parseInt(requestParameters.get("qualityRating"));
-            recommendationCount = Integer.parseInt(requestParameters.get("recommendationCount"));
-            isReviewHelpfulCount = Integer.parseInt(requestParameters.get("isReviewHelpfulCount"));
-            sharesCount = Integer.parseInt(requestParameters.get("sharesCount"));
 
         } catch (Exception e) {
             logger.error("Exception occurred while reviewing dispensary ", e);
@@ -55,12 +52,6 @@ public class DispReviewBean extends MapBasedRequest {
         }
         if (isValidReview) {
             reviewDesc = requestParameters.get("reviewDesc");
-            if (requestParameters.get("followers") != null) {
-                followers = Integer.parseInt(requestParameters.get("followers"));
-            }
-            if (requestParameters.get("isActive") != null) {
-                isActive = Integer.parseInt(requestParameters.get("isActive"));
-            }
             if (requestParameters.get("makeReviewPrivate") != null) {
                 makeReviewPrivate = Integer.parseInt(requestParameters.get("makeReviewPrivate"));
             }

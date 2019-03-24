@@ -14,17 +14,18 @@ public class DealReviewBean extends MapBasedRequest {
     private static final long serialVersionUID = 2941389692170682413L;
 
     private int dealId;
+    private int reviewerUserId;
     private int dispensaryId;
     private String reviewDesc;
     private int overAllRating;
-    private int recommendationCount;
-    private int isReviewHelpfulCount;
-    private int sharesCount;
+    private int recommendationCount = 0;
+    private int isReviewHelpfulCount = 0;
+    private int sharesCount = 0;
     private int valueForMoneyRating;
     private int makeReviewPrivate;
     private int isActive = 0;
     private int dealCorrectnessRating;
-    private int recommendForFuture;
+    private int recommendForFuture = 0;
     private int followers = 0;
     private String uuid = UUID.randomUUID().toString();
 
@@ -42,13 +43,11 @@ public class DealReviewBean extends MapBasedRequest {
 
     private void postConstruct() {
         try {
-            dealId = Integer.parseInt(requestParameters.get("dealId"));
             dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
+            dealId = Integer.parseInt(requestParameters.get("dealId"));
             overAllRating = Integer.parseInt(requestParameters.get("overAllRating"));
             valueForMoneyRating = Integer.parseInt(requestParameters.get("valueForMoneyRating"));
             dealCorrectnessRating = Integer.parseInt(requestParameters.get("dealCorrectnessRating"));
-            isReviewHelpfulCount = Integer.parseInt(requestParameters.get("isReviewHelpfulCount"));
-            sharesCount = Integer.parseInt(requestParameters.get("sharesCount"));
 
         } catch (Exception e) {
             logger.error("Exception occurred while reviewing dispensary ", e);
@@ -58,26 +57,8 @@ public class DealReviewBean extends MapBasedRequest {
             reviewDesc = requestParameters.get("reviewDesc");
             if (PhantomUtil.isNullOrEmpty(reviewDesc)) {
                 isValidReview = Boolean.FALSE;
-                if (requestParameters.get("followers") != null) {
-                    followers = Integer.parseInt(requestParameters.get("followers"));
-                }
-                if (requestParameters.get("isActive") != null) {
-                    isActive = Integer.parseInt(requestParameters.get("isActive"));
-                }
-                if (requestParameters.get("makeReviewPrivate") != null) {
-                    makeReviewPrivate = Integer.parseInt(requestParameters.get("makeReviewPrivate"));
-                }
-                if (requestParameters.get("recommendationCount") != null) {
-                    recommendationCount = Integer.parseInt(requestParameters.get("recommendationCount"));
-                }
-                if (requestParameters.get("recommendForFuture") != null) {
-                    recommendForFuture = Integer.parseInt(requestParameters.get("recommendForFuture"));
-                }
             }
-
         }
-
-
     }
 
     public int getDealId() {
@@ -198,5 +179,13 @@ public class DealReviewBean extends MapBasedRequest {
 
     public void setValidReview(boolean validReview) {
         isValidReview = validReview;
+    }
+
+    public int getReviewerUserId() {
+        return reviewerUserId;
+    }
+
+    public void setReviewerUserId(int reviewerUserId) {
+        this.reviewerUserId = reviewerUserId;
     }
 }

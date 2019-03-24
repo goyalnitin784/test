@@ -27,7 +27,7 @@ public class DispDealsBean extends MapBasedRequest {
     private String dealImage2;
     private int isTrendingDeal = 0;
     private int isFeaturedDeal = 0;
-    private int isActive ;
+    private int isActive = 1;
     private int price;
     private String specialComments;
     private int followers = 0;
@@ -45,45 +45,27 @@ public class DispDealsBean extends MapBasedRequest {
     }
 
     private void postConstruct() {
+
+        dealName = requestParameters.get("dealName");
+        dealDesc = requestParameters.get("dealDesc");
+        voucherCode = requestParameters.get("voucherCode");
+        dealTagLine = requestParameters.get("dealTagLine");
+        discountPercentage = requestParameters.get("discountPercentage");
+        dealImage1 = requestParameters.get("dealImage1");
+        dealImage2 = requestParameters.get("dealImage2");
+        specialComments = requestParameters.get("specialComments");
+
         try {
-            dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
-            isActive = Integer.parseInt(requestParameters.get("isActive"));
-
+            validityBeginDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validityBeginDate"));
+            validEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validEndDate"));
         } catch (Exception e) {
-            logger.error("Exception occurred while reviewing dispensary ", e);
-            isValidDeal = Boolean.FALSE;
         }
-        if (isValidDeal) {
-            dealName = requestParameters.get("dealName");
-            dealDesc = requestParameters.get("dealDesc");
-            voucherCode = requestParameters.get("voucherCode");
-            dealTagLine = requestParameters.get("dealTagLine");
-            discountPercentage = requestParameters.get("discountPercentage");
-            dealImage1 = requestParameters.get("dealImage1");
-            dealImage2 = requestParameters.get("dealImage2");
-            specialComments = requestParameters.get("specialComments");
+        if (requestParameters.get("price") != null) {
+            price = Integer.parseInt(requestParameters.get("price"));
+        }
 
-            if (requestParameters.get("followers") != null) {
-                followers = Integer.parseInt(requestParameters.get("followers"));
-            }
-            try {
-                validityBeginDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validityBeginDate"));
-                validEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validEndDate"));
-            }catch (Exception e){
-            }
-            if (requestParameters.get("isTrendingDeal") != null) {
-                isTrendingDeal = Integer.parseInt(requestParameters.get("isTrendingDeal"));
-            }
-            if (requestParameters.get("isFeaturedDeal") != null) {
-                isFeaturedDeal = Integer.parseInt(requestParameters.get("isFeaturedDeal"));
-            }
-            if (requestParameters.get("price") != null) {
-                price = Integer.parseInt(requestParameters.get("price"));
-            }
-
-            if(StringUtils.isEmpty(dealDesc) || StringUtils.isEmpty(dealName) ){
-                isValidDeal = Boolean.FALSE;
-            }
+        if (StringUtils.isEmpty(dealDesc) || StringUtils.isEmpty(dealName)) {
+            isValidDeal = Boolean.FALSE;
         }
     }
 

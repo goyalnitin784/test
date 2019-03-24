@@ -45,7 +45,7 @@ public class DispensaryBean extends MapBasedRequest {
     private String sundayClosedOn;
     private int isTrendingDispensary = 0;
     private int isFeaturedDispensary = 0;
-    private Date dateOfJoining;
+    private Date dateOfJoining = new Date();
     private int isVerifiedListing = 0;
     private int isActive = 0;
     private int followersCount = 0;
@@ -92,26 +92,6 @@ public class DispensaryBean extends MapBasedRequest {
         saturdayClosedOn = requestParameters.get("saturdayClosedOn");
         sundayOpenOn = requestParameters.get("sundayOpenOn");
         sundayClosedOn = requestParameters.get("sundayClosedOn");
-        if (requestParameters.get("isTrendingDispensary") != null) {
-            isTrendingDispensary = Integer.parseInt(requestParameters.get("isTrendingDispensary"));
-        }
-        if (requestParameters.get("isFeaturedDispensary") != null) {
-            isFeaturedDispensary = Integer.parseInt(requestParameters.get("isFeaturedDispensary"));
-        }
-        try {
-            dateOfJoining = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("dateOfJoining"));
-        } catch (Exception e) {
-            phantomLogger.error("Exception occurred while parsing date of joining ", e);
-        }
-        if (requestParameters.get("isVerifiedListing") != null) {
-            isVerifiedListing = Integer.parseInt(requestParameters.get("isVerifiedListing"));
-        }
-        if (requestParameters.get("isActive") != null) {
-            isActive = Integer.parseInt(requestParameters.get("isActive"));
-        }
-        if (requestParameters.get("followersCount") != null) {
-            followersCount = Integer.parseInt(requestParameters.get("followersCount"));
-        }
 
         isValidDispensary = !StringUtils.isEmpty(dispensaryName) && !StringUtils.isEmpty(email);
     }

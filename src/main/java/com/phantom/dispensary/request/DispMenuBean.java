@@ -41,7 +41,6 @@ public class DispMenuBean extends MapBasedRequest {
 
     private void postConstruct() {
         try {
-            dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
             productCategoryTypeId = Integer.parseInt(requestParameters.get("productCatTypeId"));
             strainCategoryTypeId = Integer.parseInt(requestParameters.get("strainCatTypeId"));
             strainId = Integer.parseInt(requestParameters.get("strainId"));

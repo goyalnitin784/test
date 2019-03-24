@@ -1,9 +1,12 @@
 package com.phantom.dispensary.request;
 
+import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.request.MapBasedRequest;
+import com.phantom.util.PhantomUtil;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,7 +27,8 @@ public class DispPickUpOrderBean extends MapBasedRequest {
     private Date pickUpRequestedOn;
     private String pickedUpBy;
     private String totalCost;
-    private String pickUpPickedOn;;
+    private String pickUpPickedOn;
+    ;
 
     private String uuid = UUID.randomUUID().toString();
     private boolean isValidPickUpOrder = Boolean.TRUE;
@@ -40,29 +44,24 @@ public class DispPickUpOrderBean extends MapBasedRequest {
     }
 
     private void postConstruct() {
+
         try {
             dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
-            userId = Integer.parseInt(requestParameters.get("userId"));
-            dispensaryPickUpOrderCode = requestParameters.get("dispPickUpOrderCode");
-            if(StringUtils.isEmpty(dispensaryPickUpOrderCode)){
-                isValidPickUpOrder = Boolean.FALSE;
-            }
-        } catch (Exception e) {
-            logger.error("Exception occurred while adding dispensary pick up order ", e);
+        }catch (Exception e){
             isValidPickUpOrder = Boolean.FALSE;
         }
-        if (isValidPickUpOrder) {
-            try{
-                pickUpDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("pickUpDate"));
-                pickUpRequestedOn = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("pickUpRequestedOn"));
-                pickUpOrderStatus = requestParameters.get("pickUpOrderStatus");
-            }catch (Exception e){
-            }
-            pickUpTimeSlot = requestParameters.get("pickUpTimeSlot");
-            specialComments = requestParameters.get("specialComments");
-            pickedUpBy = requestParameters.get("pickedUpBy");
-            totalCost = requestParameters.get("totalCost");
-            pickUpPickedOn = requestParameters.get("pickUpPickedOn");
+        dispensaryPickUpOrderCode = requestParameters.get("dispPickUpOrderCode");
+        try {
+            pickUpDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("pickUpDate"));
+        } catch (Exception e) {
+        }
+        pickUpRequestedOn = new Date();
+        pickUpTimeSlot = requestParameters.get("pickUpTimeSlot");
+        specialComments = requestParameters.get("specialComments");
+        totalCost = requestParameters.get("totalCost");
+        pickUpPickedOn = requestParameters.get("pickUpPickedOn");
+        if(PhantomUtil.isNullOrEmpty(dispensaryPickUpOrderCode) || pickUpDate.before(new Date())){
+            isValidPickUpOrder = Boolean.FALSE;
         }
     }
 

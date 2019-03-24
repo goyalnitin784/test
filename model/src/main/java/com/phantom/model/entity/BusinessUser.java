@@ -15,7 +15,7 @@ public class BusinessUser {
     @Column(name = "type_of_user")
     private int userType;
 
-    @Column(name = "user_name")
+    @Column(name = "usrname")
     private String userName;
 
     @Column(name = "password")
@@ -41,6 +41,9 @@ public class BusinessUser {
 
     @Column(name = "uuid")
     private String ssoToken;
+
+    @Column(name = "last_updated_on")
+    private Date lastUpdatedOn;
 
     public long getBusinessUserId() {
         return businessUserId;
@@ -128,5 +131,13 @@ public class BusinessUser {
 
     public void setSsoToken(String ssoToken) {
         this.ssoToken = ssoToken;
+    }
+
+    public Date getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
     }
 }

@@ -1,5 +1,6 @@
 package com.phantom.order.controller;
 
+import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.order.service.OrderService;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +15,29 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "order")
 public class OrderController {
-    private RequestUtils requestUtils;
 
     @Autowired private OrderService orderService;
+    @Autowired private BusinessUserService businessUserService;
 
     @RequestMapping(value = "getStatus", method = RequestMethod.GET)
     public @ResponseBody
     String getStatus(HttpServletRequest request, HttpServletResponse response){
         String orderId = request.getParameter("orderId");
-        String ssoToken = requestUtils.getCookieValue(request,"ssoToken");
+        String ssoToken = RequestUtils.getCookie(request,"ssoToken");
         return orderService.getStatus(orderId,ssoToken);
     }
 
     @RequestMapping(value = "user/myOrders", method = RequestMethod.GET)
     public @ResponseBody
     String getMyOrdersForUser (HttpServletRequest request, HttpServletResponse response){
-        String ssoToken = requestUtils.getCookieValue(request,"ssoToken");
+        String ssoToken = RequestUtils.getCookie(request,"ssoToken");
         return orderService.getMyOrdersForUser(ssoToken);
     }
 
     @RequestMapping(value = "disp/myOrders", method = RequestMethod.GET)
     public @ResponseBody
     String getMyOrdersForDisp (HttpServletRequest request, HttpServletResponse response){
-        String dispId = request.getParameter("dispId");
+        int dispId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request,"bssoToken")) ;
         return orderService.getMyOrdersForDisp(dispId);
     }
 }

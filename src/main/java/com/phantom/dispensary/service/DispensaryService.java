@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.phantom.dispensary.request.*;
+import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.*;
 import com.phantom.model.entity.*;
@@ -11,7 +12,6 @@ import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +19,7 @@ import java.util.UUID;
 public class DispensaryService {
 
     PhantomLogger logger = PhantomLogger.getLoggerObject(this.getClass());
+    private static final Gson gson = new Gson();
 
     @Autowired
     ProductsCategoryTypeDao productsCategoryTypeDao;
@@ -49,11 +50,20 @@ public class DispensaryService {
     @Autowired
     private DispensaryMenuPriceDao dispensaryMenuPriceDao;
 
-    @Autowired private DispensaryPickUpOrderDao dispensaryPickUpOrderDao;
+    @Autowired
+    private DispensaryPickUpOrderDao dispensaryPickUpOrderDao;
 
-    @Autowired private DispensaryPickUpOrderDetailsDao dispensaryPickUpOrderDetailsDao;
+    @Autowired
+    private DispensaryPickUpOrderDetailsDao dispensaryPickUpOrderDetailsDao;
 
-    @Autowired private DispensaryUpdatesDao dispensaryUpdatesDao;
+    @Autowired
+    private DispensaryUpdatesDao dispensaryUpdatesDao;
+
+    @Autowired
+    private UserSSOTokenMappingDao userSSOTokenMappingDao;
+
+    @Autowired
+    private UserDao userDao;
 
 
     public String getProductList() {
@@ -77,7 +87,8 @@ public class DispensaryService {
         }
     }
 
-    public boolean addDispensary(DispensaryBean dispensaryBean) {
+    public boolean updateDispensaryDetails(DispensaryBean dispensaryBean) {
+
         try {
             Dispensary dispensary = new Dispensary();
 
@@ -136,31 +147,39 @@ public class DispensaryService {
         return "";
     }
 
-    public boolean review(DispReviewBean dispReviewBean) {
+    public String addReviewForDispensary(DispReviewBean dispReviewBean) {
+        String msg = "SUCCESS";
+        String code = "200";
+        int userId = dispReviewBean.getReviewerUserId();
         try {
-            DispensaryReview dispensaryReview = new DispensaryReview();
+            if (userId == -1) {
+                code = "404";
+                msg = "User Not Logged In";
+            } else if (dispReviewBean.isValidReview()) {
+                DispensaryReview dispensaryReview = new DispensaryReview();
+                dispensaryReview.setDispensaryId(dispReviewBean.getDispensaryId());
+                dispensaryReview.setReviewerUserId(userId);
+                dispensaryReview.setQualityRating(dispReviewBean.getQualityRating());
+                dispensaryReview.setOverAllQualityRating(dispReviewBean.getOverAllQualityRating());
+                dispensaryReview.setServiceRating(dispReviewBean.getServiceRating());
+                dispensaryReview.setAtmosphereRating(dispReviewBean.getAtmosphereRating());
+                dispensaryReview.setReviewDesc(dispReviewBean.getReviewDesc());
+                dispensaryReview.setUuid(dispReviewBean.getUuid());
 
-            dispensaryReview.setDispensaryId(dispReviewBean.getDispensaryId());
-            dispensaryReview.setReviewerUserId(dispReviewBean.getReviewerUserId());
-            dispensaryReview.setQualityRating(dispReviewBean.getQualityRating());
-            dispensaryReview.setOverAllQualityRating(dispReviewBean.getOverAllQualityRating());
-            dispensaryReview.setServiceRating(dispReviewBean.getServiceRating());
-            dispensaryReview.setAtmosphereRating(dispReviewBean.getAtmosphereRating());
-            dispensaryReview.setRecommendationCount(dispReviewBean.getRecommendationCount());
-            dispensaryReview.setIsReviewHelpfulCount(dispReviewBean.getIsReviewHelpfulCount());
-            dispensaryReview.setSharesCount(dispReviewBean.getSharesCount());
-            dispensaryReview.setMakeReviewPrivate(dispReviewBean.getMakeReviewPrivate());
-            dispensaryReview.setIsActive(dispReviewBean.getIsActive());
-            dispensaryReview.setReviewDesc(dispReviewBean.getReviewDesc());
-            dispensaryReview.setFollowers(dispReviewBean.getFollowers());
-            dispensaryReview.setUuid(dispReviewBean.getUuid());
-
-            dispensaryReviewDao.saveReview(dispensaryReview);
-            return Boolean.TRUE;
+                dispensaryReviewDao.saveReview(dispensaryReview);
+            } else {
+                msg = "BAD REQUEST";
+                code = "404";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while reviewing dispensary for dispensary id : " + dispReviewBean.getDispensaryId(), e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
     public String getDispensaryQuote(String token) {
@@ -184,168 +203,277 @@ public class DispensaryService {
         return jsonObject.toString();
     }
 
-    public boolean addDeals(DispDealsBean dispDealsBean) {
+    public String addDeals(DispDealsBean dispDealsBean) {
+        String msg = "SUCCESS";
+        String code = "200";
         try {
-            DispensaryDeals dispensaryDeals = new DispensaryDeals();
+            if (dispDealsBean.getDispensaryId() == -1) {
+                msg = "Business User Not Logged In";
+                code = "404";
+            } else if (dispDealsBean.isValidDeal()) {
+                DispensaryDeals dispensaryDeals = new DispensaryDeals();
 
-            dispensaryDeals.setDispensaryId(dispDealsBean.getDispensaryId());
-            dispensaryDeals.setDealName(dispDealsBean.getDealName());
-            dispensaryDeals.setValidityBeginDate(dispDealsBean.getValidityBeginDate());
-            dispensaryDeals.setValidEndDate(dispDealsBean.getValidEndDate());
-            dispensaryDeals.setDealDesc(dispDealsBean.getDealDesc());
-            dispensaryDeals.setVoucherCode(dispDealsBean.getVoucherCode());
-            dispensaryDeals.setDealTagLine(dispDealsBean.getDealTagLine());
-            dispensaryDeals.setDiscountPercentage(dispDealsBean.getDiscountPercentage());
-            dispensaryDeals.setDealImage1(dispDealsBean.getDealImage1());
-            dispensaryDeals.setDealImage2(dispDealsBean.getDealImage2());
-            dispensaryDeals.setIsTrendingDeal(dispDealsBean.getIsTrendingDeal());
-            dispensaryDeals.setIsFeaturedDeal(dispDealsBean.getIsFeaturedDeal());
-            dispensaryDeals.setIsActive(dispDealsBean.getIsActive());
-            dispensaryDeals.setPrice(dispDealsBean.getPrice());
-            dispensaryDeals.setSpecialComments(dispDealsBean.getSpecialComments());
-            dispensaryDeals.setUuid(dispDealsBean.getUuid());
-            dispensaryDeals.setFollowers(dispDealsBean.getFollowers());
+                dispensaryDeals.setDispensaryId(dispDealsBean.getDispensaryId());
+                dispensaryDeals.setDealName(dispDealsBean.getDealName());
+                dispensaryDeals.setValidityBeginDate(dispDealsBean.getValidityBeginDate());
+                dispensaryDeals.setValidEndDate(dispDealsBean.getValidEndDate());
+                dispensaryDeals.setDealDesc(dispDealsBean.getDealDesc());
+                dispensaryDeals.setVoucherCode(dispDealsBean.getVoucherCode());
+                dispensaryDeals.setDealTagLine(dispDealsBean.getDealTagLine());
+                dispensaryDeals.setDiscountPercentage(dispDealsBean.getDiscountPercentage());
+                dispensaryDeals.setDealImage1(dispDealsBean.getDealImage1());
+                dispensaryDeals.setDealImage2(dispDealsBean.getDealImage2());
+                dispensaryDeals.setIsTrendingDeal(dispDealsBean.getIsTrendingDeal());
+                dispensaryDeals.setIsFeaturedDeal(dispDealsBean.getIsFeaturedDeal());
+                dispensaryDeals.setIsActive(dispDealsBean.getIsActive());
+                dispensaryDeals.setPrice(dispDealsBean.getPrice());
+                dispensaryDeals.setSpecialComments(dispDealsBean.getSpecialComments());
+                dispensaryDeals.setUuid(dispDealsBean.getUuid());
+                dispensaryDeals.setFollowers(dispDealsBean.getFollowers());
 
-            dispensaryDealsDao.saveDeals(dispensaryDeals);
-            return Boolean.TRUE;
+                dispensaryDealsDao.saveDeals(dispensaryDeals);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary deals for dispensary id : " + dispDealsBean.getDispensaryId(), e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean addDispFollowers(int dispensaryId, int userId) {
-        DispensaryFollowers dispensaryFollowers = new DispensaryFollowers();
-        try {
-            dispensaryFollowers.setDispensaryId(dispensaryId);
-            dispensaryFollowers.setUserId(userId);
-            dispensaryFollowers.setUuid(UUID.randomUUID().toString());
+    public String followDispensary(String dispensaryId, int userId) {
+        String code = "200";
+        String msg = "SUCCESS";
 
-            dispensaryFollowersDao.saveFollowers(dispensaryFollowers);
-            return Boolean.TRUE;
+        try {
+            if (userId == -1) {
+                code = "404";
+                msg = "User Not Logged In";
+            } else if (!PhantomUtil.isNullOrEmpty(dispensaryId)) {
+                DispensaryFollowers dispensaryFollowers = new DispensaryFollowers();
+                dispensaryFollowers.setDispensaryId(Integer.parseInt(dispensaryId));
+                dispensaryFollowers.setUserId(userId);
+                dispensaryFollowers.setUuid(UUID.randomUUID().toString());
+
+                dispensaryFollowersDao.saveFollowers(dispensaryFollowers);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while adding dispensary followers ");
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
-    }
+    BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
+}
 
-    public boolean addGallery(int dispensaryId, int isActive, String picPath) {
-        DispensaryGallery dispensaryGallery = new DispensaryGallery();
+    public String updateDispGallery(int dispensaryId, String picPath) {
+        String code = "200";
+        String msg = "SUCCESS";
+
         try {
-            dispensaryGallery.setDispensaryId(dispensaryId);
-            dispensaryGallery.setIsActive(isActive);
-            dispensaryGallery.setUuid(UUID.randomUUID().toString());
-            dispensaryGallery.setPicturePath(picPath);
-
-            dispensaryGalleryDao.saveGallery(dispensaryGallery);
-            return Boolean.TRUE;
+            if (dispensaryId == -1) {
+                msg = "Business User Not Logged In";
+                code = "404";
+            } else if (!PhantomUtil.isNullOrEmpty(picPath)) {
+                DispensaryGallery dispensaryGallery = new DispensaryGallery();
+                dispensaryGallery.setDispensaryId(dispensaryId);
+                dispensaryGallery.setIsActive(1);
+                dispensaryGallery.setUuid(UUID.randomUUID().toString());
+                dispensaryGallery.setPicturePath(picPath);
+                dispensaryGalleryDao.saveGallery(dispensaryGallery);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while adding dispensary followers ");
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean addMenu(DispMenuBean dispMenuBean) {
+    public String addMenu(DispMenuBean dispMenuBean) {
+        String code = "200";
+        String msg = "SUCCESS";
         try {
-            DispensaryMenu dispensaryMenu = new DispensaryMenu();
+            if (dispMenuBean.getDispensaryId() == -1) {
+                msg = "Business User Not Logged In";
+                code = "404";
+            } else if (dispMenuBean.isValidMenu()) {
+                DispensaryMenu dispensaryMenu = new DispensaryMenu();
 
-            dispensaryMenu.setDispensaryId(dispMenuBean.getDispensaryId());
-            dispensaryMenu.setProductName(dispMenuBean.getProductName());
-            dispensaryMenu.setProductCategoryTypeId(dispMenuBean.getProductCategoryTypeId());
-            dispensaryMenu.setStrainCategoryTypeId(dispMenuBean.getStrainCategoryTypeId());
-            dispensaryMenu.setStrainId(dispMenuBean.getStrainId());
-            dispensaryMenu.setBreeder(dispMenuBean.getBreeder());
-            dispensaryMenu.setDescription(dispMenuBean.getDescription());
-            dispensaryMenu.setProfileImage1(dispMenuBean.getProfileImage1());
-            dispensaryMenu.setProfileImage2(dispMenuBean.getProfileImage2());
-            dispensaryMenu.setProfileImage3(dispMenuBean.getProfileImage3());
-            dispensaryMenu.setOtherDetails(dispMenuBean.getOtherDetails());
-            dispensaryMenu.setCbdLevel(dispMenuBean.getCbdLevel());
-            dispensaryMenu.setThcLevel(dispMenuBean.getThcLevel());
-            dispensaryMenu.setUuid(dispMenuBean.getUuid());
+                dispensaryMenu.setDispensaryId(dispMenuBean.getDispensaryId());
+                dispensaryMenu.setProductName(dispMenuBean.getProductName());
+                dispensaryMenu.setProductCategoryTypeId(dispMenuBean.getProductCategoryTypeId());
+                dispensaryMenu.setStrainCategoryTypeId(dispMenuBean.getStrainCategoryTypeId());
+                dispensaryMenu.setStrainId(dispMenuBean.getStrainId());
+                dispensaryMenu.setBreeder(dispMenuBean.getBreeder());
+                dispensaryMenu.setDescription(dispMenuBean.getDescription());
+                dispensaryMenu.setProfileImage1(dispMenuBean.getProfileImage1());
+                dispensaryMenu.setProfileImage2(dispMenuBean.getProfileImage2());
+                dispensaryMenu.setProfileImage3(dispMenuBean.getProfileImage3());
+                dispensaryMenu.setOtherDetails(dispMenuBean.getOtherDetails());
+                dispensaryMenu.setCbdLevel(dispMenuBean.getCbdLevel());
+                dispensaryMenu.setThcLevel(dispMenuBean.getThcLevel());
+                dispensaryMenu.setUuid(dispMenuBean.getUuid());
 
-            dispensaryMenuDao.saveMenu(dispensaryMenu);
-            return Boolean.TRUE;
+                dispensaryMenuDao.saveMenu(dispensaryMenu);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary menu for dispensary id : " + dispMenuBean.getDispensaryId(), e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean addMenuPrice(int dispMenuId, String productPrice, String quantity, String currency) {
+    public String updateDispensaryMenuPrice(String dispMenuId, String productPrice, String quantity, String currency) {
+        String code = "200";
+        String msg = "SUCCESS";
         try {
-            DispensaryMenuPrice dispensaryMenuPrice = new DispensaryMenuPrice();
+            if (PhantomUtil.isNullOrEmpty(dispMenuId)) {
+                code = "404";
+                msg = "BAD REQUEST";
+            } else {
+                DispensaryMenuPrice dispensaryMenuPrice = new DispensaryMenuPrice();
 
-            dispensaryMenuPrice.setDispensaryMenuId(dispMenuId);
-            dispensaryMenuPrice.setCurrency(currency);
-            dispensaryMenuPrice.setQuantity(quantity);
-            dispensaryMenuPrice.setProductPrice(productPrice);
-            dispensaryMenuPrice.setUuid(UUID.randomUUID().toString());
+                dispensaryMenuPrice.setDispensaryMenuId(Integer.parseInt(dispMenuId));
+                dispensaryMenuPrice.setCurrency(currency);
+                dispensaryMenuPrice.setQuantity(quantity);
+                dispensaryMenuPrice.setProductPrice(productPrice);
+                dispensaryMenuPrice.setUuid(UUID.randomUUID().toString());
 
-            dispensaryMenuPriceDao.saveMenuPrice(dispensaryMenuPrice);
-            return Boolean.TRUE;
+                dispensaryMenuPriceDao.saveMenuPrice(dispensaryMenuPrice);
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary menu price for dispensary price menu id : " + dispMenuId, e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean addPickUpOrder(DispPickUpOrderBean dispPickUpOrderBean) {
+    public String placeOrder(DispPickUpOrderBean dispPickUpOrderBean) {
+        String code = "200";
+        String msg = "SUCCESS";
         try {
-            DispensaryPickUpOrder dispensaryPickUpOrder = new DispensaryPickUpOrder();
+            if (dispPickUpOrderBean.getUserId() == -1) {
+               msg = "User Not Logged In" ;
+               code = "404";
+            }
+            else if (dispPickUpOrderBean.isValidPickUpOrder()) {
+                DispensaryPickUpOrder dispensaryPickUpOrder = new DispensaryPickUpOrder();
+                User user = userDao.findById(new Long(dispPickUpOrderBean.getUserId()));
+                dispensaryPickUpOrder.setDispensaryId(dispPickUpOrderBean.getDispensaryId());
+                dispensaryPickUpOrder.setDispensaryPickUpOrderCode(dispPickUpOrderBean.getDispensaryPickUpOrderCode());
+                dispensaryPickUpOrder.setUserId(dispPickUpOrderBean.getUserId());
+                dispensaryPickUpOrder.setPickUpDate(dispPickUpOrderBean.getPickUpDate());
+                dispensaryPickUpOrder.setPickUpTimeSlot(dispPickUpOrderBean.getPickUpTimeSlot());
+                dispensaryPickUpOrder.setSpecialComments(dispPickUpOrderBean.getSpecialComments());
+                dispensaryPickUpOrder.setPickUpOrderStatus(dispPickUpOrderBean.getPickUpOrderStatus());
+                dispensaryPickUpOrder.setPickUpRequestedOn(dispPickUpOrderBean.getPickUpRequestedOn());
+                dispensaryPickUpOrder.setPickedUpBy(dispPickUpOrderBean.getPickedUpBy());
+                dispensaryPickUpOrder.setTotalCost(dispPickUpOrderBean.getTotalCost());
+                dispensaryPickUpOrder.setPickedUpBy(user.getUserName());
+                dispensaryPickUpOrder.setUuid(dispPickUpOrderBean.getUuid());
 
-            dispensaryPickUpOrder.setDispensaryId(dispPickUpOrderBean.getDispensaryId());
-            dispensaryPickUpOrder.setDispensaryPickUpOrderCode(dispPickUpOrderBean.getDispensaryPickUpOrderCode());
-            dispensaryPickUpOrder.setUserId(dispPickUpOrderBean.getUserId());
-            dispensaryPickUpOrder.setPickUpDate(dispPickUpOrderBean.getPickUpDate());
-            dispensaryPickUpOrder.setPickUpTimeSlot(dispPickUpOrderBean.getPickUpTimeSlot());
-            dispensaryPickUpOrder.setSpecialComments(dispPickUpOrderBean.getSpecialComments());
-            dispensaryPickUpOrder.setPickUpOrderStatus(dispPickUpOrderBean.getPickUpOrderStatus());
-            dispensaryPickUpOrder.setPickUpRequestedOn(dispPickUpOrderBean.getPickUpRequestedOn());
-            dispensaryPickUpOrder.setPickedUpBy(dispPickUpOrderBean.getPickedUpBy());
-            dispensaryPickUpOrder.setTotalCost(dispPickUpOrderBean.getTotalCost());
-            dispensaryPickUpOrder.setPickedUpBy(dispPickUpOrderBean.getPickUpPickedOn());
-            dispensaryPickUpOrder.setUuid(dispPickUpOrderBean.getUuid());
-
-            dispensaryPickUpOrderDao.savePickUpOrder(dispensaryPickUpOrder);
-            return Boolean.TRUE;
+                dispensaryPickUpOrderDao.savePickUpOrder(dispensaryPickUpOrder);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary pick up order for dispensary id : " + dispPickUpOrderBean.getDispensaryId(), e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean addPickUpOrderDetails(int dispOrderId,int price,int quantity,String strainName){
+    public String updateDispPickUpOrderDetails(String dispOrderId, String price, String quantity, String strainName) {
+        String code = "200";
+        String msg = "SUCCESS";
         try {
-            DispensaryPickUpOrderDetails dispensaryPickUpOrderDetails = new DispensaryPickUpOrderDetails();
+            if (PhantomUtil.isNullOrEmpty(dispOrderId) || PhantomUtil.isNullOrEmpty(price)
+                    || PhantomUtil.isNullOrEmpty(quantity) || PhantomUtil.isNullOrEmpty(strainName)) {
+                code = "404";
+                msg = "BAD REQUEST";
+            } else {
+                DispensaryPickUpOrderDetails dispensaryPickUpOrderDetails = new DispensaryPickUpOrderDetails();
 
-            dispensaryPickUpOrderDetails.setDispensaryPickUpId(dispOrderId);
-            dispensaryPickUpOrderDetails.setPrice(price);
-            dispensaryPickUpOrderDetails.setQuantity(quantity);
-            dispensaryPickUpOrderDetails.setStrainName(strainName);
-            dispensaryPickUpOrderDetails.setUuid(UUID.randomUUID().toString());
+                dispensaryPickUpOrderDetails.setDispensaryPickUpId(Integer.parseInt(dispOrderId));
+                dispensaryPickUpOrderDetails.setPrice(Integer.parseInt(price));
+                dispensaryPickUpOrderDetails.setQuantity(Integer.parseInt(quantity));
+                dispensaryPickUpOrderDetails.setStrainName(strainName);
+                dispensaryPickUpOrderDetails.setUuid(UUID.randomUUID().toString());
 
-            dispensaryPickUpOrderDetailsDao.savePickUpPrderDetails(dispensaryPickUpOrderDetails);
-            return Boolean.TRUE;
+                dispensaryPickUpOrderDetailsDao.savePickUpPrderDetails(dispensaryPickUpOrderDetails);
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary order details for dispensary pick up order id : " + dispOrderId, e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 
-    public boolean updates(int dispId,String updateDetails){
+    public String updates(int dispId, String updateDetails) {
+        String msg = "SUCCESS";
+        String code = "200";
         try {
-            DispensaryUpdates dispensaryUpdates = new DispensaryUpdates();
+            if (dispId == -1) {
+                msg = "Business User Not Logged In";
+                code = "404";
+            } else if (!PhantomUtil.isNullOrEmpty(updateDetails)) {
+                DispensaryUpdates dispensaryUpdates = new DispensaryUpdates();
 
-            dispensaryUpdates.setDispensaryId(dispId);
-            dispensaryUpdates.setUpdateDetails(updateDetails);
-            dispensaryUpdates.setUuid(UUID.randomUUID().toString());
+                dispensaryUpdates.setDispensaryId(dispId);
+                dispensaryUpdates.setUpdateDetails(updateDetails);
+                dispensaryUpdates.setUuid(UUID.randomUUID().toString());
 
-            dispensaryUpdatesDao.saveUpdates(dispensaryUpdates);
-            return Boolean.TRUE;
+                dispensaryUpdatesDao.saveUpdates(dispensaryUpdates);
+            } else {
+                code = "404";
+                msg = "BAD REQUEST";
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while saving dispensary updates for dispensary id : " + dispId, e);
-            return Boolean.FALSE;
+            code = "500";
+            msg = e.getMessage();
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
     }
 }

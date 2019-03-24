@@ -1,9 +1,10 @@
 package com.phantom;
 
+import com.phantom.business.user.request.BusinessUserBean;
+import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.dispensary.request.*;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
-import com.phantom.model.entity.DealReview;
 import com.phantom.order.service.OrderService;
 import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
@@ -27,6 +28,8 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private UserService userService;
     @Autowired
+    private BusinessUserService businessUserService;
+    @Autowired
     private DispensaryService dispensaryService;
     @Autowired
     private OrderService orderService;
@@ -43,7 +46,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
 
 
     @Test
-    public void registrationTest() {
+    public String registrationTest() {
         Map<String, String> requestMap = new HashMap<>();
         try {
             requestMap.put("userType", "0");
@@ -53,10 +56,30 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             requestMap.put("email", "phantom@phantom.com");
             requestMap.put("dob", "1995-03-16");
             UserBean userBean = new UserBean(requestMap);
-            userService.insertUserDetails(userBean);
+            return userService.insertUserDetails(userBean);
         } catch (Exception e) {
             logger.error("Exception occurred while testing registration controller ", e);
         }
+        return null;
+    }
+
+    @Test
+    public String businessRegistrationTest() {
+        Map<String, String> requestMap = new HashMap<>();
+        try {
+            requestMap.put("userType", "0");
+            requestMap.put("userName", "phantom");
+            requestMap.put("password", "Phantom1!3#2@");
+            requestMap.put("phoneNo", "0987654321");
+            requestMap.put("email", "phantom@phantom.com");
+            requestMap.put("dob", "1995-03-16");
+            requestMap.put("dispensaryId", "3");
+            BusinessUserBean businessUserBean = new BusinessUserBean(requestMap);
+            return businessUserService.insertUserDetails(businessUserBean);
+        } catch (Exception e) {
+            logger.error("Exception occurred while testing registration controller ", e);
+        }
+        return null;
     }
 
     @Test
@@ -93,7 +116,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             requestMap.put("timeZone", "GMT-5");
 
             DispensaryBean dispensaryBean = new DispensaryBean(requestMap);
-            dispensaryService.addDispensary(dispensaryBean);
+            dispensaryService.updateDispensaryDetails(dispensaryBean);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensary controller ", e);
         }
@@ -106,186 +129,141 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
 
 
     @Test
-    public void addDispensaryReview() {
+    public String addDispensaryReview() {
         Map<String, String> requestMap = new HashMap<>();
-        try {
-            requestMap.put("dispId", "3");
-            requestMap.put("reviewerUserId", "7");
-            requestMap.put("serviceRating", "3");
-            requestMap.put("atmosphereRating", "5");
-            requestMap.put("qualityRating", "4");
-            requestMap.put("recommendationCount", "2");
-            requestMap.put("isReviewHelpfulCount", "1");
-            requestMap.put("sharesCount", "2");
-            requestMap.put("reviewDesc", "It was good");
+        requestMap.put("dispId", "3");
+        requestMap.put("reviewerUserId", "7");
+        requestMap.put("serviceRating", "3");
+        requestMap.put("atmosphereRating", "5");
+        requestMap.put("qualityRating", "4");
+        requestMap.put("reviewDesc", "It was good");
 
-            DispReviewBean dispReviewBean = new DispReviewBean(requestMap);
-            dispensaryService.review(dispReviewBean);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensary controller ", e);
-        }
+        DispReviewBean dispReviewBean = new DispReviewBean(requestMap);
+        return dispensaryService.addReviewForDispensary(dispReviewBean);
     }
 
     @Test
-    public void addDispensaryDeals() {
+    public String addDispensaryDeals() {
         Map<String, String> requestMap = new HashMap<>();
-        try {
-            requestMap.put("dispId", "3");
-            requestMap.put("isActive", "1");
-            requestMap.put("dealName", "Phantom Deal");
-            requestMap.put("dealDesc", "Buy one get one free");
-            requestMap.put("voucherCode", "PHANTOM");
-            requestMap.put("dealTagLine", "it's here");
-            requestMap.put("followers", "3");
-            requestMap.put("price", "50");
+        requestMap.put("dispId", "3");
+        requestMap.put("isActive", "1");
+        requestMap.put("dealName", "Phantom Deal");
+        requestMap.put("dealDesc", "Buy one get one free");
+        requestMap.put("voucherCode", "PHANTOM");
+        requestMap.put("dealTagLine", "it's here");
+        requestMap.put("price", "50");
 
-            DispDealsBean dispDealsBean = new DispDealsBean(requestMap);
-            dispensaryService.addDeals(dispDealsBean);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryDeals controller ", e);
-        }
+        DispDealsBean dispDealsBean = new DispDealsBean(requestMap);
+        return dispensaryService.addDeals(dispDealsBean);
+
     }
 
     @Test
-    public void addDispFollowers() {
-        try {
-            int dispensaryId = 3;
-            int userId = 7;
-            dispensaryService.addDispFollowers(dispensaryId,userId);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispFollowers controller ", e);
-        }
+    public String addDispFollowers() {
+        String dispensaryId = "3";
+        int userId = 7;
+        return dispensaryService.followDispensary(dispensaryId, userId);
+
     }
 
     @Test
-    public void addDispGallery() {
-        try {
-            int dispensaryId = 3;
-            int isActive = 1;
-            String picPath = "x/y/z";
-            dispensaryService.addGallery(dispensaryId,isActive,picPath);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispGallery controller ", e);
-        }
+    public String addDispGallery() {
+        int dispensaryId = 3;
+        String picPath = "x/y/z";
+        return dispensaryService.updateDispGallery(dispensaryId, picPath);
     }
 
     @Test
-    public void addDispMenu() {
+    public String addDispMenu() {
         Map<String, String> requestMap = new HashMap<>();
-        try {
-            requestMap.put("dispId", "3");
-            requestMap.put("productName", "test");
-            requestMap.put("productCatTypeId", "5");
-            requestMap.put("strainCatTypeId", "8");
-            requestMap.put("strainId", "1");
-            requestMap.put("breeder", "test breeder");
-            requestMap.put("desc", "its test for test");
-            requestMap.put("image1", "image1");
-            requestMap.put("image2", "image2");
+        requestMap.put("dispId", "3");
+        requestMap.put("productName", "test");
+        requestMap.put("productCatTypeId", "5");
+        requestMap.put("strainCatTypeId", "8");
+        requestMap.put("strainId", "1");
+        requestMap.put("breeder", "test breeder");
+        requestMap.put("desc", "its test for test");
+        requestMap.put("image1", "image1");
+        requestMap.put("image2", "image2");
 
-            DispMenuBean dispMenuBean = new DispMenuBean(requestMap);
-            dispensaryService.addMenu(dispMenuBean);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispMenu controller ", e);
-        }
+        DispMenuBean dispMenuBean = new DispMenuBean(requestMap);
+        return dispensaryService.addMenu(dispMenuBean);
+
     }
 
     @Test
     public void addDispMenuPrice() {
         try {
-            int dispMenuId = 1;
+            String dispMenuId = "1";
             String productPrice = "50";
             String quantity = "10";
             String currency = "$";
 
-            dispensaryService.addMenuPrice(dispMenuId,productPrice,quantity,currency);
+            dispensaryService.updateDispensaryMenuPrice(dispMenuId, productPrice, quantity, currency);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispMenuPrice controller ", e);
         }
     }
 
     @Test
-    public void addDispPickUpOrder() {
+    public String placeOrder() {
         Map<String, String> requestMap = new HashMap<>();
-        try {
-            requestMap.put("dispId", "3");
-            requestMap.put("userId", "7");
-            requestMap.put("dispPickUpOrderCode", "Test");
-            requestMap.put("pickUpDate", "2019-03-22");
-            requestMap.put("totalCost", "150");
+        requestMap.put("dispId", "3");
+        requestMap.put("userId", "7");
+        requestMap.put("dispPickUpOrderCode", "Test");
+        requestMap.put("pickUpDate", "2019-03-22");
+        requestMap.put("totalCost", "150");
 
-            DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(requestMap);
-            dispensaryService.addPickUpOrder(dispPickUpOrderBean);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispPickUpOrder controller ", e);
-        }
+        DispPickUpOrderBean dispPickUpOrderBean = new DispPickUpOrderBean(requestMap);
+        return dispensaryService.placeOrder(dispPickUpOrderBean);
+
     }
 
     @Test
-    public void addDispOrderDetails() {
-        try {
-            int dispOrderId = 1;
-            int price = 50;
-            int quantity = 10;
-            String strainName = "phantom";
+    public String addDispOrderDetails() {
+        String dispOrderId = "1";
+        String price = "50";
+        String quantity = "10";
+        String strainName = "phantom";
 
-            dispensaryService.addPickUpOrderDetails(dispOrderId,price,quantity,strainName);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispOrderDetails controller ", e);
-        }
+        return dispensaryService.updateDispPickUpOrderDetails(dispOrderId, price, quantity, strainName);
     }
 
     @Test
-    public void addDispensaryUpdates() {
-        try {
-            int dispId = 3;
-            String dispUpdates = "new arrivals";
-            dispensaryService.updates(dispId,dispUpdates);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensaryUpdates controller ", e);
-        }
+    public String addDispensaryUpdates() {
+        int dispId = 3;
+        String dispUpdates = "new arrivals";
+        return dispensaryService.updates(dispId, dispUpdates);
     }
 
     @Test
-    public void myOrdersForUser() {
-        try {
-            String ssoToken = "7ba6b0d1-4798-4954-b014-9ce6d230e571";
-            orderService.getMyOrdersForUser(ssoToken);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing myOrdersForUser controller ", e);
-        }
+    public String myOrdersForUser() {
+        String ssoToken = "7ba6b0d1-4798-4954-b014-9ce6d230e571";
+        return orderService.getMyOrdersForUser(ssoToken);
     }
 
     @Test
-    public void myOrdersForDisp() {
-        try {
-            String dispId = "3";
-            orderService.getMyOrdersForDisp(dispId);
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing myOrdersForUser controller ", e);
-        }
+    public String myOrdersForDisp() {
+        int dispId = 3;
+        return orderService.getMyOrdersForDisp(dispId);
     }
 
     @Test
-    public void giveDealReview(){
+    public String giveDealReview() {
         Map<String, String> requestMap = new HashMap<>();
-        try {
-            requestMap.put("dispId", "3");
-            requestMap.put("dealId", "1");
-            requestMap.put("overAllRating", "2");
-            requestMap.put("qualityRating", "4");
-            requestMap.put("recommendationCount", "2");
-            requestMap.put("isReviewHelpfulCount", "1");
-            requestMap.put("sharesCount", "2");
-            requestMap.put("reviewDesc", "It was good");
-            requestMap.put("valueForMoneyRating","4");
-            requestMap.put("dealCorrectnessRating","3");
-            requestMap.put("recommendForFuture","2");
+        requestMap.put("dispId", "3");
+        requestMap.put("dealId", "1");
+        requestMap.put("overAllRating", "2");
+        requestMap.put("qualityRating", "4");
+        requestMap.put("recommendationCount", "2");
+        requestMap.put("isReviewHelpfulCount", "1");
+        requestMap.put("sharesCount", "2");
+        requestMap.put("reviewDesc", "It was good");
+        requestMap.put("valueForMoneyRating", "4");
+        requestMap.put("dealCorrectnessRating", "3");
+        requestMap.put("recommendForFuture", "2");
 
-            DealReviewBean dealReviewBean = new DealReviewBean(requestMap);
-            userService.giveDealReview(dealReviewBean,"7ba6b0d1-4798-4954-b014-9ce6d230e571");
-        } catch (Exception e) {
-            logger.error("Exception occurred while testing addDispensary controller ", e);
-        }
+        DealReviewBean dealReviewBean = new DealReviewBean(requestMap);
+        return userService.giveDealReview(dealReviewBean);
     }
 }

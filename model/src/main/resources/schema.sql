@@ -1118,17 +1118,22 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `business_user_sso_token_mapping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `business_user_sso_token_mapping` (
+CREATE TABLE `business_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
-  `usrname` varchar(50) DEFAULT NULL,
-  `sso_token` varchar(50) NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id_IDX` (`user_id`) USING BTREE,
-  KEY `is_active_IDX` (`is_active`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `uuid` varchar(50) NOT NULL,
+  `Type_Of_user` int(11) NOT NULL DEFAULT '0',
+  `usrname` varchar(50) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `profile_pic` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) NOT NULL,
+  `Dispensary_id` int(11) NOT NULL DEFAULT '0',
+  `confirmed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dob` varchar(20) NOT NULL,
+  `email_address` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

@@ -5,6 +5,7 @@ import com.phantom.request.MapBasedRequest;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.UUID;
 
 public class BusinessUserBean extends MapBasedRequest {
@@ -29,7 +30,10 @@ public class BusinessUserBean extends MapBasedRequest {
         super(request);
         postConstruct();
     }
-
+    public BusinessUserBean(Map<String,String> requestMap){
+        requestParameters = requestMap;
+        postConstruct();
+    }
     private void postConstruct() {
         userType = Integer.parseInt(requestParameters.get("userType"));
         userName = requestParameters.get("userName");

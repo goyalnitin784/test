@@ -1,6 +1,7 @@
 package com.phantom.order.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DispensaryPickUpOrderDao;
@@ -8,7 +9,6 @@ import com.phantom.model.entity.DispensaryPickUpOrder;
 import com.phantom.model.entity.User;
 import com.phantom.user.service.UserService;
 import com.phantom.util.PhantomUtil;
-import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,8 @@ public class OrderService {
 
     public String getStatus(String id, String ssoToken) {
         String code = "200";
-        String msg = "";
+        String msg = "SUCCESS";
+        JsonElement response = null;
         try {
             if (PhantomUtil.isNullOrEmpty(id)) {
                 code = "404";
@@ -35,10 +36,10 @@ public class OrderService {
                 msg = "User not logged in";
             } else {
                 Long orderId = Long.parseLong(id);
-                msg = dispensaryPickUpOrderDao.getStatus(orderId);
+                response = gson.toJsonTree(dispensaryPickUpOrderDao.getStatus(orderId));
             }
 
-            if (PhantomUtil.isNullOrEmpty(msg)) {
+            if (response == null) {
                 code = "500";
                 msg = "Order Status Not Found";
             }
@@ -50,12 +51,14 @@ public class OrderService {
         BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         baseResponseDTO.setCode(code);
         baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
         return gson.toJson(baseResponseDTO);
     }
 
     public String getMyOrdersForUser(String ssoToken) {
         String code = "200";
-        String msg = "";
+        String msg = "SUCCESS";
+        JsonElement response = null;
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken)) {
                 code = "404";
@@ -67,11 +70,11 @@ public class OrderService {
                     msg = "User not logged in";
                 } else {
                     List<DispensaryPickUpOrder> dispensaryPickUpOrders = dispensaryPickUpOrderDao.getOrdersByUserId((int) user.getUserId());
-                    msg = gson.toJson(dispensaryPickUpOrders);
+                    response = gson.toJsonTree(dispensaryPickUpOrders);
                 }
             }
 
-            if (PhantomUtil.isNullOrEmpty(msg)) {
+            if (response == null) {
                 code = "500";
                 msg = "My Orders Not Found";
             }
@@ -83,21 +86,23 @@ public class OrderService {
         BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         baseResponseDTO.setCode(code);
         baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
         return gson.toJson(baseResponseDTO);
     }
 
-    public String getMyOrdersForDisp(String dispId) {
+    public String getMyOrdersForDisp(int dispId) {
         String code = "200";
-        String msg = "" ;
+        String msg = "SUCCESS";
+        JsonElement response = null;
         try {
-            if (PhantomUtil.isNullOrEmpty(dispId)) {
+            if (dispId == -1) {
                 code = "404";
-                msg = "Dispensary Id is not present in request";
+                msg = "Business User Not Logged In";
             } else {
-                List<DispensaryPickUpOrder> dispensaryPickUpOrders = dispensaryPickUpOrderDao.getOrdersByDispId(Integer.parseInt(dispId));
-                msg = gson.toJson(dispensaryPickUpOrders);
+                List<DispensaryPickUpOrder> dispensaryPickUpOrders = dispensaryPickUpOrderDao.getOrdersByDispId(dispId);
+                response = gson.toJsonTree(dispensaryPickUpOrders);
             }
-            if (PhantomUtil.isNullOrEmpty(msg)) {
+            if (response == null) {
                 code = "500";
                 msg = "My Orders Not Found";
             }
@@ -110,6 +115,7 @@ public class OrderService {
         BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         baseResponseDTO.setCode(code);
         baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
         return gson.toJson(baseResponseDTO);
     }
 }
