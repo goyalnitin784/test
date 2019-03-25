@@ -166,3 +166,83 @@ URL : http://localhost:8080/phantom/getProductList
 --API to get quote.When a customer want to place a request for a quotation for any product.This api will place user's request to nearby dispensary based on his location.
 Call Type : POST Call
 URL : http://localhost:8080/phantom/getQuote?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&locationLat=19.171960&locationLong=72.872730Z7product=anyproductfromdropdown&quantity=1&comments=test
+
+
+--API to check dispensary deal is trending or not
+Call Type : GET Call
+URL : http://localhost:8080/phantom/isTrendingDispDeal?dispDealId=8526a310-d417-4186-8b07-3aabec456b10
+
+
+--API to check dispensary deal is featured or not
+Call Type : GET Call
+URL : http://localhost:8080/phantom/isFeaturedDespDeal?dispDealId=8526a310-d417-4186-8b07-3aabec456b10
+
+
+--API to follow dispensary deal
+Call Type : GET Call
+URL : http://localhost:8080/phantom/followDispDeal?dispDealId=8526a310-d417-4186-8b07-3aabec456b10
+
+
+--API to recommend dispensary review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/recommendDispReview?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2
+
+
+--API to update dispensary helpful review count
+Call Type : GET Call
+URL : http://localhost:8080/phantom/isDispReviewHelpful?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2
+
+
+--API to share dispensary review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/shareDispReview?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2
+
+
+--API to make dispensary review private
+Call Type : GET Call
+URL : http://localhost:8080/phantom/makeDispReviewPrivate?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to make dispensary review public
+Call Type : GET Call
+URL : http://localhost:8080/phantom/makeDispReviewPublic?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to follow dispensary review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/followDispReview?dispReviewId=5b4db029-65c2-419d-975e-92d6fe94cbc2&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to recommend deal review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/recommendDealReview?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c
+
+
+--API to update deal helpful review count
+Call Type : GET Call
+URL : http://localhost:8080/phantom/isDealReviewHelpful?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c
+
+
+--API to share deal review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/shareDealReview?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c
+
+
+--API to make deal review private
+Call Type : GET Call
+URL : http://localhost:8080/phantom/makeDealReviewPrivate?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to make deal review public
+Call Type : GET Call
+URL : http://localhost:8080/phantom/makeDealReviewPublic?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to follow deal review
+Call Type : GET Call
+URL : http://localhost:8080/phantom/followDispReview?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to recommend deal review for future
+Call Type : GET Call
+URL : http://localhost:8080/phantom/recommendForFuture?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
