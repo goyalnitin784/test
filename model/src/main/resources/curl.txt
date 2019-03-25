@@ -98,7 +98,7 @@ Call Type : Get Call
 URL :  http://localhost:8080/phantom/order/getStatus?orderId=1&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
---API to see user all orders
+--API to see user all orders for a user
 Call Type : Get Call
 URL :  http://localhost:8080/phantom/order/user/myOrders?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
