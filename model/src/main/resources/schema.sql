@@ -1123,13 +1123,7 @@ LOCK TABLES `user_sso_token_mapping` WRITE;
 /*!40000 ALTER TABLE `user_sso_token_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `business_user_sso_token_mapping`
---
 
-DROP TABLE IF EXISTS `business_user_sso_token_mapping`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `business_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1148,14 +1142,7 @@ CREATE TABLE `business_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `business_user_sso_token_mapping`
---
 
-LOCK TABLES `business_user_sso_token_mapping` WRITE;
-/*!40000 ALTER TABLE `business_user_sso_token_mapping` DISABLE KEYS */;
-/*!40000 ALTER TABLE `business_user_sso_token_mapping` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 --
