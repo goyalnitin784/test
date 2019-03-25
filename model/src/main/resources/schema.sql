@@ -82,9 +82,7 @@ LOCK TABLES `ask_community_questions` WRITE;
 /*!40000 ALTER TABLE `ask_community_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `business_user`
---
+
 
 DROP TABLE IF EXISTS `business_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -97,16 +95,16 @@ CREATE TABLE `business_user` (
   `Type_Of_user` int(11) NOT NULL DEFAULT '0',
   `usrname` varchar(50) NOT NULL,
   `password` varchar(20) NOT NULL,
-  `profile_pic` varchar(100) NOT NULL,
+  `profile_pic` varchar(100) DEFAULT NULL,
   `phone` varchar(20) NOT NULL,
   `Dispensary_id` int(11) NOT NULL DEFAULT '0',
-  `confirmed_on` timestamp NOT NULL DEFAULT current_timestamp(),
+  `confirmed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dob` varchar(20) NOT NULL,
   `email_address` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;/*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `business_user_sso_token_mapping`;
 CREATE TABLE `business_user_sso_token_mapping` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
@@ -1122,28 +1120,6 @@ LOCK TABLES `user_sso_token_mapping` WRITE;
 /*!40000 ALTER TABLE `user_sso_token_mapping` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_sso_token_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-CREATE TABLE `business_user` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `uuid` varchar(50) NOT NULL,
-  `Type_Of_user` int(11) NOT NULL DEFAULT '0',
-  `usrname` varchar(50) NOT NULL,
-  `password` varchar(20) NOT NULL,
-  `profile_pic` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) NOT NULL,
-  `Dispensary_id` int(11) NOT NULL DEFAULT '0',
-  `confirmed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dob` varchar(20) NOT NULL,
-  `email_address` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
-
 
 --
 -- Table structure for table `user_details`
