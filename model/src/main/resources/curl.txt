@@ -1,172 +1,111 @@
-curl -X POST \
-  'http://localhost:8080/phantom/user/register?userType=1&userName=yoyo4&password=pass4&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&profilePic=%22image%22' \
-  -H 'cache-control: no-cache'
+--API to register User
+Call Type : Post Call
+URL :   http://localhost:8080/phantom/user/register?userType=1&userName=yoyo4&password=pass4&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&profilePic=%22image%22
 
 
+--API to get User Details
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/user/getUserDetails?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
-curl -X GET \
-  http://localhost:8080/phantom/user/getUserDetails \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
 
+--API to login User
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/user/login?userName=yoyo4&password=pass4
 
-curl -X POST \
-  'http://localhost:8080/phantom/user/login?userName=yoyo4&password=pass4' \
-  -H 'cache-control: no-cache'
 
+--API to logout User
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/user/logout?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
-curl -X GET \
-  http://localhost:8080/phantom/user/logout \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
+--API to register dispensary
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/registerDispensary?userType=1&userName=business_user&password=passbus&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&dispensaryId=3
 
 
+--API to login dispensary
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/loginDispensary?userName=business_user&password=passbus
 
-curl -X POST \
-  'http://localhost:8080/phantom/registerDispensary?userType=1&userName=business_user&password=passbus&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&dispensaryId=3' \
-  -H 'cache-control: no-cache'
 
+--API to get dispensary details
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/getDispensaryDetails?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
-curl -X POST \
-  'http://localhost:8080/phantom/loginDispensary?userName=business_user&password=passbus' \
-  -H 'cache-control: no-cache'
+--API to logout dispensary
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/logoutDispensary?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
+--API to update dispensary details
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/updateDispensaryDetails?dispensaryName=phantom%20disp&dispensaryProfilePic=NA&dispensaryDesc=for%20culr%20testing&phoneNo=1234567899&email=pqr@xyz.com&website=test.com&address=near%20you&longitude=-17.87565&latitude=65.77655&city=NYC&state=NYC&country=USA&facilities=NA&timeZone=GMT&mondayOpenOn=optional&mondayClosedOn=optional&tuesdayOpenOn=optional&tuesdayClosedOn=optional&wednesdayOpenOn=optional&wednesdayClosedOn=optional&thursdayOpenOn=optional&thursdayClosedOn=optional&fridayOpenOn=optional&fridayClosedOn=optional&saturdayOpenOn=optional&saturdayClosedOn=optional&sundayOpenOn=optional&sundayClosedOn=optional&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
-curl -X GET \
-  http://localhost:8080/phantom/getDispensaryDetails \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
+--API to add review for dispensary
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/addReviewForDispensary?dispId=3&serviceRating=3&atmosphereRating=4&qualityRating=2&reviewDesc=%22just%20for%20testing%22&overAllQualityRating=8&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
+--API to add dispensary deals
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/addDispensaryDeals?dealName=test%20deal&dealDesc=deal%20to%20test&voucherCode=PHANTOM&dealTagLine=awesome&discountPercentage=10%25&dealImage1=image1&dealImage2=image2&specialComments=nothing%20is%20better%20than%20this&validityBeginDate=2019-03-22&validEndDate=2019-06-22&price=210&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
-curl -X GET \
-  http://localhost:8080/phantom/logoutDispensary \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
 
+--API to follow dispensary
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/followDispensary?dispId=3&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
+--API to update dispensary gallery
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/updatedispGallery?picPath=NA&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
-curl -X POST \
-  'http://localhost:8080/phantom/updateDispensaryDetails?dispensaryName=phantom%20disp&dispensaryProfilePic=NA&dispensaryDesc=for%20culr%20testing&phoneNo=1234567899&email=pqr@xyz.com&website=test.com&address=near%20you&longitude=-17.87565&latitude=65.77655&city=NYC&state=NYC&country=USA&facilities=NA&timeZone=GMT&mondayOpenOn=optional&mondayClosedOn=optional&tuesdayOpenOn=optional&tuesdayClosedOn=optional&wednesdayOpenOn=optional&wednesdayClosedOn=optional&thursdayOpenOn=optional&thursdayClosedOn=optional&fridayOpenOn=optional&fridayClosedOn=optional&saturdayOpenOn=optional&saturdayClosedOn=optional&sundayOpenOn=optional&sundayClosedOn=optional' \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
 
+--API to add dispensary menu
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/addDispensaryMenu?productCatTypeId=10&strainCatTypeId=10&strainId=1&productName=phantom&breeder=test&desc=test%20desc&image1=na&image2=na&image3=na&otherDetails=NA&cbdLevel=90&thcLevel=80&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
-curl -X POST \
-  'http://localhost:8080/phantom/addReviewForDispensary?dispId=3&serviceRating=3&atmosphereRating=4&qualityRating=2&reviewDesc=%22just%20for%20testing%22&overAllQualityRating=8' \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
+--API to update dispensary menu price
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/updateDispensaryMenuPrice?dispMenuId=1&productPrice=150&quantity=10&currency=$
 
 
+--API to place order
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/placeOrder?dispId=3&dispPickUpOrderCode=1234&pickUpDate=2019-03-25&pickUpTimeSlot=evening&specialComments=be%20quick&totalCost=10&pickUpPickedOn=na&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
-curl -X POST \
-  'http://localhost:8080/phantom/addDispensaryDeals?dealName=test%20deal&dealDesc=deal%20to%20test&voucherCode=PHANTOM&dealTagLine=awesome&discountPercentage=10%25&dealImage1=image1&dealImage2=image2&specialComments=nothing%20is%20better%20than%20this&validityBeginDate=2019-03-22&validEndDate=2019-06-22&price=210' \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
+--API to update dispensary pick up order details
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/updateDispPickUpOrderDetails?dispOrderId=3&price=150&quantity=10&strainName=test2
 
 
+--API to add dispensary updates
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/dispUpdates?updateDetails=nothin%20to%20update&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
+--API to add deal review
+Call Type : Post Call
+URL :  http://localhost:8080/phantom/user/dealReview?dispId=3&dealId=2&valueForMoneyRating=3&dealCorrectnessRating=4&reviewDesc=%22just%20for%20testing%22&overAllRating=8&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
-curl -X GET \
-  'http://localhost:8080/phantom/followDispensary?dispId=3' \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
 
+--API to get order status
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/order/getStatus?orderId=1&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
+--API to see user all orders
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/order/user/myOrders?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
 
 
-curl -X GET \
-  'http://localhost:8080/phantom/updatedispGallery?picPath=NA' \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
-
-
-
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/addDispensaryMenu?productCatTypeId=10&strainCatTypeId=10&strainId=1&productName=phantom&breeder=test&desc=test%20desc&image1=na&image2=na&image3=na&otherDetails=NA&cbdLevel=90&thcLevel=80' \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
-
-
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/updateDispensaryMenuPrice?dispMenuId=1&productPrice=150&quantity=10&currency=$' \
-  -H 'cache-control: no-cache'
-
-
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/placeOrder?dispId=3&dispPickUpOrderCode=1234&pickUpDate=2019-03-25&pickUpTimeSlot=evening&specialComments=be%20quick&totalCost=10&pickUpPickedOn=na' \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
-
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/updateDispPickUpOrderDetails?dispOrderId=3&price=150&quantity=10&strainName=test2' \
-  -H 'cache-control: no-cache'
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/dispUpdates?updateDetails=nothin%20to%20update' \
-  -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-  -H 'cache-control: no-cache'
-
-
-
-
-curl -X POST \
-  'http://localhost:8080/phantom/user/dealReview?dispId=3&dealId=2&valueForMoneyRating=3&dealCorrectnessRating=4&reviewDesc=%22just%20for%20testing%22&overAllRating=8' \
-  -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-  -H 'cache-control: no-cache'
-
-
-
-
-curl -X GET \
-    'http://localhost:8080/phantom/order/getStatus?orderId=1' \
-    -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-    -H 'cache-control: no-cache'
-
-
-
-
-curl -X GET \
-    http://localhost:8080/phantom/order/user/myOrders \
-    -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
-    -H 'cache-control: no-cache'
-
-
-
-
-
-curl -X GET \
-    http://localhost:8080/phantom/order/disp/myOrders \
-    -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
-    -H 'cache-control: no-cache'
+--API to see dispensary all orders
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/order/disp/myOrders?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
     
 --API to ask any question on community
