@@ -3,6 +3,7 @@ package com.phantom.dispensary.controller;
 import com.google.gson.Gson;
 import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.dispensary.request.*;
+import com.phantom.dispensary.service.DealService;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.user.service.UserService;
@@ -28,6 +29,7 @@ public class DispensaryController {
     private UserService userService;
     @Autowired
     private BusinessUserService businessUserService;
+    @Autowired private DealService dealService;
 
     @RequestMapping(value = "getProductList", method = RequestMethod.POST)
     public @ResponseBody
@@ -141,4 +143,21 @@ public class DispensaryController {
         return dispensaryService.updates(dispensaryId, updateDetails);
     }
 
+    @RequestMapping(value = "isTrendingDispDeal", method = RequestMethod.GET)
+    public @ResponseBody String isTrendingDisp(HttpServletRequest request, HttpServletResponse response){
+        String dispDealId = request.getParameter("dispDealId");
+        return dealService.isTrendingDispDeal(dispDealId);
+    }
+
+    @RequestMapping(value = "isFeaturedDespDeal", method = RequestMethod.GET)
+    public @ResponseBody String isFeaturedDespDeal(HttpServletRequest request, HttpServletResponse response){
+        String dispDealId = request.getParameter("dispDealId");
+        return dealService.isFeaturedDespDeal(dispDealId);
+    }
+
+    @RequestMapping(value = "followDispDeal", method = RequestMethod.GET)
+    public @ResponseBody String followDispDeal(HttpServletRequest request, HttpServletResponse response){
+        String dispDealId = request.getParameter("dispDealId");
+        return dealService.followDispDeal(dispDealId);
+    }
 }

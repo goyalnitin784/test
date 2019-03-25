@@ -2,6 +2,7 @@ package com.phantom.model.dao.impl;
 
 import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.entity.DispensaryReview;
+import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -13,5 +14,95 @@ public class DispensaryReviewDaoImpl extends GenericHibernateDAO<DispensaryRevie
         } catch (Exception e) {
             logger.error("Exception came while saving object", e);
         }
+    }
+
+    @Override
+    public boolean updateRecommendCount(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set recommendationCount = recommendationCount+1 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while updating recommendation count : ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateReviewHelpfulCount(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set isReviewHelpfulCount = isReviewHelpfulCount+1 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while updating isReviewHelpfulCount count : ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateShareCount(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set sharesCount = sharesCount+1 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while updating dispensary review share count : ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean makeDispReviewPrivate(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set makeReviewPrivate = 1 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while making dispensary review private : ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean makeDispReviewPublic(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set makeReviewPrivate = 0 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while making dispensary review private : ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean followDispReview(String uuid) {
+        try {
+            Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryReview set followers = followers + 1 where uuid = :uuid")
+                    .setParameter("uuid", uuid);
+            int noOfUpdatedRows = updateQuery.executeUpdate();
+            if (noOfUpdatedRows > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("Exception came while updating dispensary review followers count : ", e);
+        }
+        return false;
     }
 }

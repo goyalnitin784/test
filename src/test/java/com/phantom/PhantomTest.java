@@ -3,9 +3,12 @@ package com.phantom;
 import com.phantom.business.user.request.BusinessUserBean;
 import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.dispensary.request.*;
+import com.phantom.dispensary.service.DealService;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.model.dao.UserDao;
+import com.phantom.model.entity.DispensaryReview;
 import com.phantom.order.service.OrderService;
+import com.phantom.review.service.ReviewService;
 import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
 import com.phantom.user.service.UserService;
@@ -33,6 +36,8 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     private DispensaryService dispensaryService;
     @Autowired
     private OrderService orderService;
+    @Autowired private DealService dealService;
+    @Autowired private ReviewService reviewService;
 
     @Test
     public void healthCheckTest() throws Exception {
@@ -249,7 +254,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public String giveDealReview() {
+    public void giveDealReview() {
         Map<String, String> requestMap = new HashMap<>();
         requestMap.put("dispId", "3");
         requestMap.put("dealId", "1");
@@ -264,6 +269,80 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         requestMap.put("recommendForFuture", "2");
 
         DealReviewBean dealReviewBean = new DealReviewBean(requestMap);
-        return userService.giveDealReview(dealReviewBean);
+        System.out.println(userService.giveDealReview(dealReviewBean));
+    }
+
+    @Test
+    public void isTrendingDispDeal(){
+        System.out.println( dealService.isTrendingDispDeal("8526a310-d417-4186-8b07-3aabec456b10"));
+    }
+
+    @Test
+    public String isFeaturedDispDeal(){
+        return dealService.isFeaturedDespDeal("8526a310-d417-4186-8b07-3aabec456b10");
+    }
+
+    @Test
+    public String followDispDeal(){
+        return dealService.followDispDeal("8526a310-d417-4186-8b07-3aabec456b10");
+    }
+
+    @Test
+    public String recommendDispReview(){
+        return reviewService.recommendDispReview("5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test
+    public String isDispReviewHelpful(){
+        return reviewService.isDispReviewHelpful("5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test
+    public String shareDispReview(){
+        return reviewService.shareDispReview("5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test
+    public String makeDispReviewPrivate(){
+        return reviewService.makeDispReviewPrivate(7,"5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test
+    public String makeDispReviewPublic(){
+        return reviewService.makeDispReviewPublic(7,"5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test String followDispReview(){
+        return reviewService.followDispReview(7,"5b4db029-65c2-419d-975e-92d6fe94cbc2");
+    }
+
+    @Test
+    public String recommendDealReview(){
+        return reviewService.recommendDealReview("e7053707-2d02-44b2-9fdf-6c974b6ca88c");
+    }
+
+    @Test
+    public String isDealReviewHelpful(){
+        return reviewService.isDealReviewHelpful("e7053707-2d02-44b2-9fdf-6c974b6ca88c");
+    }
+
+    @Test
+    public String shareDealReview(){
+        return reviewService.shareDealReview("e7053707-2d02-44b2-9fdf-6c974b6ca88c");
+    }
+
+    @Test
+    public String makeDealReviewPrivate(){
+        return reviewService.makeDealReviewPrivate(7,"e7053707-2d02-44b2-9fdf-6c974b6ca88c");
+    }
+
+    @Test
+    public String makeDealReviewPublic(){
+        return reviewService.makeDealReviewPublic(7,"e7053707-2d02-44b2-9fdf-6c974b6ca88c");
+    }
+
+    @Test
+    public String followDealReview(){
+        return reviewService.followDealReview(7,"e7053707-2d02-44b2-9fdf-6c974b6ca88c");
     }
 }
