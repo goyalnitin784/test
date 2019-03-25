@@ -20,7 +20,7 @@ dependencies {
     compile 'org.springframework:spring-beans:4.3.10.RELEASE'
     compile 'org.hibernate:hibernate-core:5.2.9.Final'
     compile 'org.hibernate:hibernate-java8:5.2.9.Final'
-    compile 'mysql:mysql-connector-java:6.0.4'
+    compile 'mysql:mysql-connector-java:8.0.15'
     compile 'log4j:log4j:1.2.17'
     compile 'c3p0:c3p0:0.9.1.2'
     compile group: 'commons-lang', name: 'commons-lang', version: '2.2'
