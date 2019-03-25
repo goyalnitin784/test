@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "businessUser")
 public class BusinessUserController {
     private static final Gson gson = new Gson();
     private static final PhantomLogger logger = PhantomLogger.getLoggerObject(BusinessUserController.class);
@@ -44,14 +43,14 @@ public class BusinessUserController {
         return businessUserService.insertUserDetails(businessUserBean);
     }
 
-    @RequestMapping(value = "getUserDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "loginDispensary", method = RequestMethod.GET)
     public @ResponseBody
     String getBusinessUserDetails(HttpServletRequest request) {
         String ssoToken = requestUtils.getCookieValue(request, "bssoToken");
         return businessUserService.getBusinessUserDetailsAsJson(ssoToken);
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "getDispensaryDetails", method = RequestMethod.POST)
     public @ResponseBody
     String doLogin(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("userName");
@@ -71,7 +70,7 @@ public class BusinessUserController {
         return gson.toJson(baseResponseDTO);
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    @RequestMapping(value = "logoutDispensary", method = RequestMethod.GET)
     public @ResponseBody
     String logout(HttpServletRequest request) {
         String ssoToken = requestUtils.getCookieValue(request, "bssoToken");

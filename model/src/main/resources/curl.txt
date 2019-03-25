@@ -24,27 +24,27 @@ curl -X GET \
 
 
 curl -X POST \
-  'http://localhost:8080/phantom/businessUser/registerDispensary?userType=1&userName=business_user&password=passbus&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&dispensaryId=3' \
+  'http://localhost:8080/phantom/registerDispensary?userType=1&userName=business_user&password=passbus&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&dispensaryId=3' \
   -H 'cache-control: no-cache'
 
 
 
 curl -X POST \
-  'http://localhost:8080/phantom/businessUser/login?userName=business_user&password=passbus' \
+  'http://localhost:8080/phantom/loginDispensary?userName=business_user&password=passbus' \
   -H 'cache-control: no-cache'
 
 
 
 
 curl -X GET \
-  http://localhost:8080/phantom/businessUser/getUserDetails \
+  http://localhost:8080/phantom/getDispensaryDetails \
   -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
   -H 'cache-control: no-cache'
 
 
 
 curl -X GET \
-  http://localhost:8080/phantom/businessUser/logout \
+  http://localhost:8080/phantom/logoutDispensary \
   -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
   -H 'cache-control: no-cache'
 
@@ -146,7 +146,7 @@ curl -X POST \
 
 
 
-  curl -X GET \
+curl -X GET \
     'http://localhost:8080/phantom/order/getStatus?orderId=1' \
     -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
     -H 'cache-control: no-cache'
@@ -154,7 +154,7 @@ curl -X POST \
 
 
 
-  curl -X GET \
+curl -X GET \
     http://localhost:8080/phantom/order/user/myOrders \
     -H 'Cookie: ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571' \
     -H 'cache-control: no-cache'
@@ -163,7 +163,67 @@ curl -X POST \
 
 
 
-  curl -X GET \
+curl -X GET \
     http://localhost:8080/phantom/order/disp/myOrders \
     -H 'Cookie: bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7' \
     -H 'cache-control: no-cache'
+
+    
+--API to ask any question on community
+Call Type : Post Call
+URL : http://localhost:8080/phantom/askQuestion?disId=123&strainId=123&question=test&ssoToken=181a161a-a50a-4749-b596-b7452c3393cf'
+
+
+--API to like any Question
+Call Type : GET Call
+URL : http://localhost:8080/phantom/likeQuestion?questionId=7704d5ff-62f6-4571-acfd-f06d01f7d4f4&ssoToken=181a161a-a50a-4749-b596-b7452c3393cf
+
+--API to follow any Question
+Call Type : GET Call
+URL : http://localhost:8080/phantom/followQuestion?questionId=7704d5ff-62f6-4571-acfd-f06d01f7d4f4&ssoToken=181a161a-a50a-4749-b596-b7452c3393cf
+
+--API to get all Questions on any dispensary and on a particular strain
+Call Type : GET Call
+URL : http://localhost:8080/phantom/getQuestion?ssoToken=test&disId=123&strainId=123
+
+--API to get top 20/30 Question on a particular dispansary
+Call Type : GET Call
+URL : http://localhost:8080/phantom/getQuestion?ssoToken=test&disId=123
+
+--API to get top 20/30 Question in general
+Call Type : GET Call
+URL : http://localhost:8080/phantom/getQuestion?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf
+
+--API to like any answer
+Call Type : GET Call
+URL : http://localhost:8080/phantom/likeAnswer?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&answerId=962d4912-494b-4130-a5fb-5764cd30a960
+
+--API to follow any answer
+Call Type : GET Call
+URL : http://localhost:8080/phantom/followAnswer?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&answerId=962d4912-494b-4130-a5fb-5764cd30a960
+
+--API to get all Answer on a question
+Call Type : GET Call
+URL : http://localhost:8080/phantom/getAnswer?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&questionId=7704d5ff-62f6-4571-acfd-f06d01f7d4f4
+
+--API to answer a question.Both User and dispensary can answer the question asked on their respective portals.
+
+When User is answering ssoToken will come.When dispensary will answer any question. bssoToken will come
+Call Type : Post Call
+
+URL :
+http://localhost:8080/phantom/answerQuestion?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&questionId=7704d5ff-62f6-4571-acfd-f06d01f7d4f4&answer=test
+http://localhost:8080/phantom/answerQuestion?bssoToken=181a161a-a50a-4749-b596-b7452c3393cf&questionId=7704d5ff-62f6-4571-acfd-f06d01f7d4f4&answer=test
+
+--API to find dispensary based on User Lat and long
+Call Type : GET Call
+URL : http://localhost:8080/phantom/user/findDispensary?lat=19.171960&long=72.872730
+
+--API to get all product list for dropdown
+Call Type : GET Call
+URL : http://localhost:8080/phantom/getProductList
+
+
+--API to get quote.When a customer want to place a request for a quotation for any product.This api will place user's request to nearby dispensary based on his location.
+Call Type : POST Call
+URL : http://localhost:8080/phantom/getQuote?ssoToken=181a161a-a50a-4749-b596-b7452c3393cf&locationLat=19.171960&locationLong=72.872730Z7product=anyproductfromdropdown&quantity=1&comments=test

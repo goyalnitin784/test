@@ -1,0 +1,23 @@
+To Install java
+
+wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm
+
+rpm -ivh jdk-8u131-linux-x64.rpm
+
+To install Git
+
+sudo yum install git
+wget https://services.gradle.org/distributions/gradle-5.0-bin.zip -P /tmp
+sudo unzip -d /opt/gradle /tmp/gradle-5.0-bin.zip
+ls /opt/gradle/gradle-5.0
+sudo vi /etc/profile.d/gradle.sh
+
+export GRADLE_HOME=/opt/gradle/gradle-5.0
+export PATH=${GRADLE_HOME}/bin:${PATH}
+
+sudo chmod +x /etc/profile.d/gradle.sh
+source /etc/profile.d/gradle.sh
+
+To download tomcat :
+https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.79/bin/apache-tomcat-7.0.79.tar.gz
+tar xvf apache-tomcat-7.0.79.tar.gz
