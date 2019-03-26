@@ -55,6 +55,11 @@ public class QService {
             return jsonObject.toString();
         }
         User user = userService.getUserDetails(quoteRequest.getSsoToken());
+        if (user == null) {
+            jsonObject.addProperty("status", 400);
+            jsonObject.addProperty("msg", "User Not Logged In");
+            return jsonObject.toString();
+        }
 
         try {
             QuoteRequestEntity quoteRequestEntity = new QuoteRequestEntity();
@@ -85,15 +90,15 @@ public class QService {
             jsonObject.addProperty("msg", "User not logged in");
             return jsonObject.toString();
         }
-        List<QuoteRequestEntity> quoteRequestEntityList = quoteRequestDao.getMyQuote((int)user.getUserId());
-        if(quoteRequestEntityList==null || quoteRequestEntityList.size()==0){
+        List<QuoteRequestEntity> quoteRequestEntityList = quoteRequestDao.getMyQuote((int) user.getUserId());
+        if (quoteRequestEntityList == null || quoteRequestEntityList.size() == 0) {
             jsonObject.addProperty("status", 200);
             jsonObject.addProperty("msg", "No Quote Present");
             return jsonObject.toString();
         }
         jsonObject.addProperty("status", 200);
         jsonObject.addProperty("msg", "");
-        jsonObject.add("data",new Gson().toJsonTree(quoteRequestEntityList));
+        jsonObject.add("data", new Gson().toJsonTree(quoteRequestEntityList));
         return jsonObject.toString();
     }
 
