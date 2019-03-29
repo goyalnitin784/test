@@ -51,7 +51,15 @@ public class DispensaryController {
     @RequestMapping(value = "findDispensary", method = RequestMethod.GET)
     public @ResponseBody
     String findDispensary(HttpServletRequest request, HttpServletResponse response) {
-        return dispensaryService.find(request.getParameter("lat"), request.getParameter("long"));
+        return dispensaryService.findDispensary(request.getParameter("lat"), request.getParameter("long"),
+                request.getParameter("records"),false);
+    }
+
+    @RequestMapping(value = "findFeaturedDispensary", method = RequestMethod.GET)
+    public @ResponseBody
+    String findFeaturedDispensary(HttpServletRequest request, HttpServletResponse response) {
+        return dispensaryService.findDispensary(request.getParameter("lat"), request.getParameter("long"),
+                request.getParameter("records"),true);
     }
 
     @RequestMapping(value = "addReviewForDispensary", method = RequestMethod.POST)
@@ -160,4 +168,19 @@ public class DispensaryController {
         String dispDealId = request.getParameter("dispDealId");
         return dealService.followDispDeal(dispDealId);
     }
+
+    @RequestMapping(value = "findDeals", method = RequestMethod.GET)
+    public @ResponseBody
+    String findDeals(HttpServletRequest request, HttpServletResponse response) {
+        return dealService.findDealsNearYou(request.getParameter("lat"), request.getParameter("long"),
+                request.getParameter("records"),false);
+    }
+
+    @RequestMapping(value = "findFeaturedDeals", method = RequestMethod.GET)
+    public @ResponseBody
+    String findFeaturedDeals(HttpServletRequest request, HttpServletResponse response) {
+        return dealService.findDealsNearYou(request.getParameter("lat"), request.getParameter("long"),
+                request.getParameter("records"),true);
+    }
+
 }

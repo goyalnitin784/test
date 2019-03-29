@@ -48,6 +48,12 @@ public class User {
     @Column(name = "confirmed_on")
     private Date confirmedOn;
 
+    @Column(name = "about_me")
+    private String aboutMe;
+
+    @Column(name = "experience")
+    private String experience;
+
     public long getUserId() {
         return userId;
     }
@@ -150,5 +156,21 @@ public class User {
 
     public void setConfirmedOn(Date confirmedOn) {
         this.confirmedOn = confirmedOn;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 }

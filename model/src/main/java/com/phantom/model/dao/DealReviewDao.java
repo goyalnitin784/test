@@ -2,6 +2,8 @@ package com.phantom.model.dao;
 
 import com.phantom.model.entity.DealReview;
 
+import java.util.List;
+
 public interface DealReviewDao extends GenericDAO<DealReview, Long> {
     void saveReview(DealReview dealReview);
 
@@ -18,4 +20,6 @@ public interface DealReviewDao extends GenericDAO<DealReview, Long> {
     boolean followDealReview(String uuid);
 
     boolean recommendForFuture(String uuid);
+
+    List<DealReview> getReviewsByUserId(int userId);
 }

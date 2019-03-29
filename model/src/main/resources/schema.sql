@@ -1128,7 +1128,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `user_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_details` (
+`user_details` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1139,9 +1139,11 @@ CREATE TABLE `user_details` (
   `profile_pic` varchar(100) DEFAULT NULL,
   `phone` varchar(20) NOT NULL,
   `is_age_above_21` int(11) NOT NULL DEFAULT '0',
-  `confirmed_on` timestamp NOT NULL DEFAULT current_timestamp(),
+  `confirmed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dob` varchar(20) NOT NULL,
   `email_address` varchar(50) NOT NULL,
+  `about_me` varchar(1024) DEFAULT NULL,
+  `experience` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

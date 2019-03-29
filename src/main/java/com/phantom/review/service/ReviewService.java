@@ -1,13 +1,23 @@
 package com.phantom.review.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DealReviewDao;
 import com.phantom.model.dao.DispensaryReviewDao;
+import com.phantom.model.dao.StrainReviewDao;
+import com.phantom.model.entity.DealReview;
+import com.phantom.model.entity.DispensaryReview;
+import com.phantom.model.entity.StrainReview;
 import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -18,6 +28,8 @@ public class ReviewService {
     private DispensaryReviewDao dispensaryReviewDao;
     @Autowired
     private DealReviewDao dealReviewDao;
+    @Autowired
+    private StrainReviewDao strainReviewDao;
 
     public String recommendDispReview(String dispReviewId) {
         String msg = "SUCCESS";
@@ -322,6 +334,66 @@ public class ReviewService {
             }
         } catch (Exception e) {
             logger.error("Exception occurred while recommending deal review for future ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String getMyReviews(int userId) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (userId == -1) {
+                code = "400";
+                msg = "User Not Logged In";
+            } else {
+                List<DispensaryReview> dispReviews = dispensaryReviewDao.getReviewsByUserId(userId);
+                List<DealReview> dealReviews = dealReviewDao.getReviewsByUserId(userId);
+                List<StrainReview> strainReviews = strainReviewDao.getReviewsByUserId(userId);
+                JsonObject reviewJson = new JsonObject();
+                if(!CollectionUtils.isEmpty(dispReviews)){
+                    reviewJson.add("dispReview",gson.toJsonTree(dispReviews));
+                }
+                if(!CollectionUtils.isEmpty(dealReviews)){
+                    reviewJson.add("dealReviews",gson.toJsonTree(dealReviews));
+                }
+                if(!CollectionUtils.isEmpty(strainReviews)){
+                    reviewJson.add("strainReviews",gson.toJsonTree(strainReviews));
+                }
+                response = reviewJson;
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while recommending deal review for future ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String makeStrainReviewPrivate(int userId, String strainReviewId) {
+        String msg = "SUCCESS";
+        String code = "200";
+        try {
+            if (userId == -1 || PhantomUtil.isNullOrEmpty(strainReviewId)) {
+                code = "400";
+                msg = userId == -1 ? "User Not Logged In" : "BAD REQUEST";
+            } else {
+                if (!strainReviewDao.makeReviewPrivate(strainReviewId)) {
+                    msg = "FAILED";
+                    code = "500";
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while making strain review private", e);
             msg = e.getMessage();
             code = "500";
         }

@@ -2,8 +2,12 @@ package com.phantom.model.dao.impl;
 
 import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.entity.DispensaryReview;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public class DispensaryReviewDaoImpl extends GenericHibernateDAO<DispensaryReview, Long> implements DispensaryReviewDao {
@@ -104,5 +108,12 @@ public class DispensaryReviewDaoImpl extends GenericHibernateDAO<DispensaryRevie
             logger.error("Exception came while updating dispensary review followers count : ", e);
         }
         return false;
+    }
+
+    @Override
+    public List<DispensaryReview> getReviewsByUserId(int userId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
+        criteria.add(Restrictions.eq("reviewerUserId", userId));
+        return findByCriteria(criteria);
     }
 }

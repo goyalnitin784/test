@@ -2,8 +2,12 @@ package com.phantom.model.dao.impl;
 
 import com.phantom.model.dao.DealReviewDao;
 import com.phantom.model.entity.DealReview;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public class DealReviewDaoImpl extends GenericHibernateDAO<DealReview, Long> implements DealReviewDao {
@@ -119,5 +123,12 @@ public class DealReviewDaoImpl extends GenericHibernateDAO<DealReview, Long> imp
             logger.error("Exception came while updating recommendForFuture count : ", e);
         }
         return false;
+    }
+
+    @Override
+    public List<DealReview> getReviewsByUserId(int userId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
+        criteria.add(Restrictions.eq("reviewerUserId",userId));
+        return findByCriteria(criteria);
     }
 }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface DispensaryDao extends GenericDAO<Dispensary, Long> {
     void saveDispensary(Dispensary dispensary);
-    List<Dispensary> findDOnLatLong(String lat, String longitude, String distance, int maxCount);
+    List<Dispensary> findDispOnLatLong(String lat, String longitude, String distance, int maxCount, boolean isFeaturedDispensary);
+    List<String> findDispIDNearYou(String lat, String longitude, String distance);
 }

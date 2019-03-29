@@ -2,6 +2,7 @@ package com.phantom.user.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DealReviewDao;
@@ -83,7 +84,7 @@ public class UserService {
     public User isValidUser(String userName, String password) {
         if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
             User user = userDao.getUserDetailsByUserName(userName);
-            if (password.equals(user.getPassword())) { // password matches
+            if (password.equals(user.getPassword()) && user.getIsAgeAbove21() == 1) { // password matches and user is above 21
                 return user;
             }
         }
@@ -219,6 +220,152 @@ public class UserService {
             }
         }
         return -1;  // not logged in
+    }
+
+    public String getAboutMe(String ssoToken){
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken)) {
+                msg = "User Not Logged In";
+                code = "400";
+            }else{
+                User user = getUserDetails(ssoToken);
+                if(user == null){
+                    msg = "User Not Logged In";
+                    code = "400";
+                }else{
+                    JsonObject userJson = new JsonObject();
+                    userJson.addProperty("profilePic",user.getProfilePic());
+                    userJson.addProperty("aboutMe",user.getAboutMe());
+                    userJson.addProperty("experience",user.getExperience());
+                    response = userJson;
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while fetching getAboutMe ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String addAboutMe(String ssoToken, String aboutMe){
+        String msg = "SUCCESS";
+        String code = "200";
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(aboutMe)) {
+                msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
+                code = "400";
+            }else{
+                User user = getUserDetails(ssoToken);
+                if(user == null){
+                    msg = "User Not Logged In";
+                    code = "400";
+                }else{
+                    user.setAboutMe(aboutMe);
+                    userDao.saveUser(user);
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while updating AboutMe ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String addExperience(String ssoToken, String experience){
+        String msg = "SUCCESS";
+        String code = "200";
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(experience)) {
+                msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
+                code = "400";
+            }else{
+                User user = getUserDetails(ssoToken);
+                if(user == null){
+                    msg = "User Not Logged In";
+                    code = "400";
+                }else{
+                    user.setExperience(experience);
+                    userDao.saveUser(user);
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while updating experience ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String addProfilePic(String ssoToken, String picPath){
+        String msg = "SUCCESS";
+        String code = "200";
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(picPath)) {
+                msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
+                code = "400";
+            }else{
+                User user = getUserDetails(ssoToken);
+                if(user == null){
+                    msg = "User Not Logged In";
+                    code = "400";
+                }else{
+                    user.setProfilePic(picPath);
+                    userDao.saveUser(user);
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while updating profile pic path ", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String getListofMypics(String ssoToken){
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (PhantomUtil.isNullOrEmpty(ssoToken)) {
+                msg = "User Not Logged In" ;
+                code = "400";
+            }else{
+                User user = getUserDetails(ssoToken);
+                if(user == null){
+                    msg = "User Not Logged In";
+                    code = "400";
+                }else{
+                    response = gson.toJsonTree(user.getProfilePic());
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while getting profile pics", e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
     }
 
 }

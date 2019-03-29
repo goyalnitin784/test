@@ -1,5 +1,6 @@
 package com.phantom.review.controller;
 
+import com.phantom.model.entity.Strain;
 import com.phantom.review.service.ReviewService;
 import com.phantom.user.service.UserService;
 import com.phantom.util.RequestUtils;
@@ -115,5 +116,26 @@ public class ReviewController {
         int userId = userService.getUserId(RequestUtils.getCookie(request, "ssoToken"));
         String dealReviewId = request.getParameter("dealReviewId");
         return reviewService.recommendForFuture(userId, dealReviewId);
+    }
+
+    @RequestMapping(value = "myReviews", method = RequestMethod.GET)
+    public @ResponseBody
+    String getMyReviews(HttpServletRequest request, HttpServletResponse response) {
+        int userId = userService.getUserId(RequestUtils.getCookie(request, "ssoToken"));
+        return reviewService.getMyReviews(userId);
+    }
+
+    @RequestMapping(value = "makeReviewPrivate", method = RequestMethod.GET)
+    public @ResponseBody
+    String makeReviewPrivate(HttpServletRequest request, HttpServletResponse response) {
+        int userId = userService.getUserId(RequestUtils.getCookie(request, "ssoToken"));
+        String reviewId = request.getParameter("reviewId");
+        if(Boolean.valueOf(request.getParameter("isDisReview"))){
+            return reviewService.makeDispReviewPrivate(userId,reviewId);
+        }
+        if(Boolean.valueOf(request.getParameter("isDealReview"))){
+            return reviewService.makeDealReviewPrivate(userId,reviewId);
+        }
+        return reviewService.makeStrainReviewPrivate(userId,reviewId);
     }
 }

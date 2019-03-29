@@ -2,6 +2,7 @@ package com.phantom.dispensary.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.phantom.dispensary.request.*;
 import com.phantom.dto.BaseResponseDTO;
@@ -138,13 +139,35 @@ public class DispensaryService {
         }
     }
 
-    public String find(String userLat, String userLong) {
+    public String findDispensary(String userLat, String userLong, String records, boolean isFeaturedDispensary) {
         String distanceInMiles = "20";
-        List<Dispensary> dispensaries = dispensaryDao.findDOnLatLong(userLat, userLong, distanceInMiles, 20);
-        if (dispensaries != null) {
-            return new Gson().toJson(dispensaries);
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            int maxCount = 500;
+            if (!PhantomUtil.isNullOrEmpty(userLat) && !PhantomUtil.isNullOrEmpty(userLong)) {
+                if (!PhantomUtil.isNullOrEmpty(records) || !records.equals("-1")) {
+                    maxCount = Integer.parseInt(records);
+                }
+                List<Dispensary> dispensaries = dispensaryDao.findDispOnLatLong(userLat, userLong, distanceInMiles, maxCount, isFeaturedDispensary);
+                if (dispensaries != null) {
+                    response = new Gson().toJsonTree(dispensaries);
+                }
+            } else {
+                msg = "BAD REQUEST";
+                code = "400";
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while finding featured dispensaries ",e);
+            msg = e.getMessage();
+            code = "500";
         }
-        return "";
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.setResponse(response);
+        return new Gson().toJson(baseResponseDTO);
     }
 
     public String addReviewForDispensary(DispReviewBean dispReviewBean) {
