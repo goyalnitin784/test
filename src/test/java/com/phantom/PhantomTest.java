@@ -129,7 +129,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void findD() {
-        String output = dispensaryService.find("19.171961", "72.872726");
+//        String output = dispensaryService.find("19.171961", "72.872726");
     }
 
 
@@ -159,7 +159,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         requestMap.put("price", "50");
 
         DispDealsBean dispDealsBean = new DispDealsBean(requestMap);
-        return dispensaryService.addDeals(dispDealsBean);
+        return dealService.addDeals(dispDealsBean);
 
     }
 

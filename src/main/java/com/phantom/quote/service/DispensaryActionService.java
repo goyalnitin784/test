@@ -25,7 +25,7 @@ public class DispensaryActionService {
     public void act(QuoteRequestEntity quoteRequestEntity) {
         String lat = quoteRequestEntity.getLocationLat();
         String longitude = quoteRequestEntity.getLocationLong();
-        List<Dispensary> dispensaryList = dispensaryDao.findDOnLatLong(lat, longitude, "30", 10);
+        List<Dispensary> dispensaryList = dispensaryDao.findDispOnLatLong(lat, longitude, "30", 10, false);
         if (dispensaryList != null && dispensaryList.size() > 0) {
             for (Dispensary dispensary : dispensaryList) {
                 QuoteRequestSentTo quoteRequestSentTo = new QuoteRequestSentTo();

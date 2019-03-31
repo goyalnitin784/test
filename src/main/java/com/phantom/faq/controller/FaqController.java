@@ -68,9 +68,9 @@ public class FaqController {
         }
     }
 
-    @RequestMapping(value = "getQuestion", method = RequestMethod.GET)
+    @RequestMapping(value = "getTopQuestion", method = RequestMethod.GET)
     public @ResponseBody
-    String getQuestion(HttpServletRequest request) {
+    String getTopQuestion(HttpServletRequest request) {
         String ssoToken = RequestUtils.getCookie(request, "ssoToken");
         String disId = request.getParameter("disId");
         String strainId = request.getParameter("strainId");
@@ -123,5 +123,12 @@ public class FaqController {
     String getAnswer(HttpServletRequest request) {
         String questionId = request.getParameter("questionId");
         return faqService.getAnswers(questionId);
+    }
+
+    @RequestMapping(value = "getDispQuestion", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispQuestion(HttpServletRequest request) {
+        String dispId = request.getParameter("dispId");
+        return faqService.getDispQuestions(dispId);
     }
 }

@@ -69,6 +69,9 @@ public class DispensaryDeals {
     @Column(name = "no_of_followers_count")
     private int followers;
 
+    @Column(name = "total_likes")
+    private int likes;
+
     public long getId() {
         return id;
     }
@@ -229,5 +232,12 @@ public class DispensaryDeals {
         this.followers = followers;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 }
 

@@ -1,11 +1,14 @@
 package com.phantom.faq.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.phantom.business.user.service.BusinessUserService;
+import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.AskCommunityAnswerDao;
 import com.phantom.model.dao.AskCommunityQuestionsDao;
+import com.phantom.model.dao.DispensaryDao;
 import com.phantom.model.dao.UserLikedQuestionDao;
 import com.phantom.model.entity.*;
 import com.phantom.user.service.UserService;
@@ -35,9 +38,12 @@ public class FaqService {
     @Autowired
     BusinessUserService businessUserService;
 
+    @Autowired
+    private DispensaryDao dispensaryDao;
+
     PhantomLogger logger = PhantomLogger.getLoggerObject(this.getClass());
 
-    public String askQuestion(String disId, String strainId, String question, String ssoToken) {
+    public String askQuestion(String dispUUID, String strainId, String question, String ssoToken) {
 
         JsonObject jsonObject = new JsonObject();
         if (PhantomUtil.isNullOrEmpty(ssoToken)) {
@@ -55,7 +61,7 @@ public class FaqService {
 
         AskCommunityQuestions askCommunityQuestions = new AskCommunityQuestions();
         askCommunityQuestions.setCreatedOn(new Date());
-        askCommunityQuestions.setDispensaryId(disId);
+        askCommunityQuestions.setDispensaryId((int) dispensaryDao.getDispId(dispUUID));
         askCommunityQuestions.setStrainId(strainId);
         askCommunityQuestions.setQuestion(question);
         askCommunityQuestions.setUserId((int) user.getUserId());
@@ -141,23 +147,30 @@ public class FaqService {
 
     }
 
-    public String getTopQuestions(String ssoToken, String dispId, String strainId) {
+    public String getTopQuestions(String ssoToken, String dispUUID, String strainId) {
 
         JsonObject jsonObject = new JsonObject();
-
-
-        int userId = 0;
-        if (!PhantomUtil.isNullOrEmpty(ssoToken)) {
-            User user = userService.getUserDetails(ssoToken);
-            if (user != null) {
-                userId = (int) user.getUserId();
+        try {
+            int userId = 0;
+            if (!PhantomUtil.isNullOrEmpty(ssoToken)) {
+                User user = userService.getUserDetails(ssoToken);
+                if (user != null) {
+                    userId = (int) user.getUserId();
+                }
             }
+            int count = 10;
+            int dispId = -1;
+            if (!PhantomUtil.isNullOrEmpty(dispUUID)) {
+                dispId = (int) dispensaryDao.getDispId(dispUUID);
+            }
+            List<AskCommunityQuestions> askCommunityQuestionsList = askCommunityQuestionsDao.getTopQuestions(userId, dispId, strainId, count);
+            jsonObject.addProperty("status", 200);
+            jsonObject.add("data", new Gson().toJsonTree(askCommunityQuestionsList));
+            return jsonObject.toString();
+        }catch (Exception e){
+            logger.error("Exception occurred while getting top questions ",e);
+            return null;
         }
-        int count = 10;
-        List<AskCommunityQuestions> askCommunityQuestionsList = askCommunityQuestionsDao.getTopQuestions(userId, dispId, strainId, count);
-        jsonObject.addProperty("status", 200);
-        jsonObject.add("data", new Gson().toJsonTree(askCommunityQuestionsList));
-        return jsonObject.toString();
     }
 
     public String answerQuestion(String ssoToken, String bssoToken, String questionId, String answer) {
@@ -290,5 +303,29 @@ public class FaqService {
         jsonObject.addProperty("status", 200);
         jsonObject.add("data", new Gson().toJsonTree(askCommunityQuestionsList));
         return jsonObject.toString();
+    }
+
+    public String getDispQuestions(String dispUUID) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (PhantomUtil.isNullOrEmpty(dispUUID)) {
+                code = "400";
+                msg = "BAD REQUEST";
+            } else {
+                int dispId = (int) dispensaryDao.getDispId(dispUUID);
+                response = new Gson().toJsonTree(askCommunityQuestionsDao.getQuestionsByDispId(dispId));
+            }
+        }catch (Exception e){
+            logger.error("Exception occured while getting dispensary questions for dispensary id : "+dispUUID, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return new Gson().toJson(baseResponseDTO);
     }
 }

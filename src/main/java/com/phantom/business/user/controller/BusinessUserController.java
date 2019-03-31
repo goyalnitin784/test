@@ -9,7 +9,9 @@ import com.phantom.model.dao.BusinessUserDao;
 import com.phantom.model.dao.BusinessUserSSOTokenMappingDao;
 import com.phantom.model.entity.BusinessUser;
 import com.phantom.model.entity.BusinessUserSSOTokenMapping;
+import com.phantom.model.entity.Strain;
 import com.phantom.response.GenericResponse;
+import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,30 +45,41 @@ public class BusinessUserController {
         return businessUserService.insertUserDetails(businessUserBean);
     }
 
-    @RequestMapping(value = "loginDispensary", method = RequestMethod.GET)
+    @RequestMapping(value = "getDispensaryDetails", method = RequestMethod.GET)
     public @ResponseBody
     String getBusinessUserDetails(HttpServletRequest request) {
         String ssoToken = requestUtils.getCookieValue(request, "bssoToken");
         return businessUserService.getBusinessUserDetailsAsJson(ssoToken);
     }
 
-    @RequestMapping(value = "getDispensaryDetails", method = RequestMethod.POST)
+    @RequestMapping(value = "loginDispensary", method = RequestMethod.POST)
     public @ResponseBody
     String doLogin(HttpServletRequest request, HttpServletResponse response) {
+        String msg = "SUCCESS";
+        String code = "200";
+
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
+        String agreeTotermnServices = request.getParameter("agreeTotermnServices");
+
+        if (PhantomUtil.isNullOrEmpty(agreeTotermnServices) || agreeTotermnServices.equalsIgnoreCase("false")) {
+            code = "400";
+            msg = "NOT AGGREED TO TERMS AND SERVICES";
+        }
+
         BusinessUser businessUser = businessUserService.isValidUser(userName, password);
-        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         if (businessUser != null) {
             String ssoToken = UUID.randomUUID().toString();
             businessUserService.setCookie(response, userName, ssoToken);
             businessUserService.setSSOToken(businessUser.getBusinessUserId(), businessUser.getUserName(), ssoToken);
-            baseResponseDTO.setCode("200");
-            baseResponseDTO.addMessage("SUCCESS");
         } else {
-            baseResponseDTO.setCode("500");
-            baseResponseDTO.addMessage("FAILED");
+            code = "500";
+            msg = "FAILED";
         }
+
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
         return gson.toJson(baseResponseDTO);
     }
 
@@ -76,5 +89,7 @@ public class BusinessUserController {
         String ssoToken = requestUtils.getCookieValue(request, "bssoToken");
         return businessUserService.logout(ssoToken);
     }
+
+    
 
 }

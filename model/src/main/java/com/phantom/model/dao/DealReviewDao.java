@@ -22,4 +22,6 @@ public interface DealReviewDao extends GenericDAO<DealReview, Long> {
     boolean recommendForFuture(String uuid);
 
     List<DealReview> getReviewsByUserId(int userId);
+
+    List<DealReview> getReviewsByDealId(String dealId);
 }

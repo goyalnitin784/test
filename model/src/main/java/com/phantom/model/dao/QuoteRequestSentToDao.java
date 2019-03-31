@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface QuoteRequestSentToDao extends GenericDAO<QuoteRequestSentTo,Long>{
 
-    List<QuoteRequestSentTo> getDispensaryQuoteInLastThreeDays(int dispensaryId);
+    List<QuoteRequestSentTo> getDispensaryQuote(int dispensaryId);
 }

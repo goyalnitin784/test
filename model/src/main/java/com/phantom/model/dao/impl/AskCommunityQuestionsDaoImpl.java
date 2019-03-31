@@ -4,6 +4,7 @@ import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.AskCommunityQuestionsDao;
 import com.phantom.model.entity.AskCommunityQuestions;
 import com.phantom.util.PhantomUtil;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -30,13 +31,13 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
     }
 
     @Override
-    public List<AskCommunityQuestions> getTopQuestions(int userId, String dispId, String strainId, int count) {
+    public List<AskCommunityQuestions> getTopQuestions(int userId, int dispId, String strainId, int count) {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(AskCommunityQuestions.class);
             if (userId != 0) {
                 criteria.add(Restrictions.eq("userId", userId));
             }
-            if (!PhantomUtil.isNullOrEmpty(dispId)) {
+            if (dispId !=-1 ) {
                 criteria.add(Restrictions.eq("dispensaryId", dispId));
             }
             if (!PhantomUtil.isNullOrEmpty(strainId)) {
@@ -89,5 +90,13 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
             logger.error("Exception came while saving ask community question",e);
         }
         return false;
+    }
+
+    @Override
+    public List<AskCommunityQuestions> getQuestionsByDispId(int dispId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AskCommunityQuestions.class);
+        criteria.add(Restrictions.eq("dispensaryId", dispId));
+        criteria.addOrder(Order.desc("createdOn"));
+        return findByCriteria(criteria);
     }
 }

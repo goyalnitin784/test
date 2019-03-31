@@ -42,4 +42,11 @@ public class DispensaryDaoImpl extends GenericHibernateDAO<Dispensary, Long> imp
         List<String> list = (List<String>)this.getHibernateTemplate().getSessionFactory().getCurrentSession().createNativeQuery("SELECT uuid,( 3959* acos( cos( radians(" + lat + ") )* cos(  radians( lattitude ))* cos(  radians( longitude ) - radians(" + longitude + ") )+ sin( radians(" + lat + ") )* sin( radians( lattitude ) )))AS distance FROM dispensary HAVING distance < " + distance + " ORDER BY distance ");
         return list;
     }
+
+    @Override
+    public long getDispId(String uuid) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Dispensary.class);
+        criteria.add(Restrictions.eq("uuid",uuid));
+        return findByCriteria(criteria).get(0).getId();
+    }
 }

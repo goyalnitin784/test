@@ -13,7 +13,7 @@ public class AskCommunityQuestions {
     private long questionId;
 
     @Column(name = "dispensary_id")
-    private String dispensaryId;
+    private int dispensaryId;
 
     @Column(name = "strain_id")
     private String strainId;
@@ -44,11 +44,11 @@ public class AskCommunityQuestions {
         this.questionId = questionId;
     }
 
-    public String getDispensaryId() {
+    public int getDispensaryId() {
         return dispensaryId;
     }
 
-    public void setDispensaryId(String dispensaryId) {
+    public void setDispensaryId(int dispensaryId) {
         this.dispensaryId = dispensaryId;
     }
 

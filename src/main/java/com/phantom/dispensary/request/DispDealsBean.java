@@ -2,7 +2,6 @@ package com.phantom.dispensary.request;
 
 import com.phantom.logging.PhantomLogger;
 import com.phantom.request.MapBasedRequest;
-import com.sun.org.apache.bcel.internal.generic.DADD;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +27,10 @@ public class DispDealsBean extends MapBasedRequest {
     private int isTrendingDeal = 0;
     private int isFeaturedDeal = 0;
     private int isActive = 1;
-    private int price;
+    private int price = -1;
     private String specialComments;
     private int followers = 0;
+    private int likes = 0;
     private String uuid = UUID.randomUUID().toString();
     private boolean isValidDeal = Boolean.TRUE;
 
@@ -54,18 +54,28 @@ public class DispDealsBean extends MapBasedRequest {
         dealImage1 = requestParameters.get("dealImage1");
         dealImage2 = requestParameters.get("dealImage2");
         specialComments = requestParameters.get("specialComments");
-
-        try {
-            validityBeginDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validityBeginDate"));
-            validEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validEndDate"));
-        } catch (Exception e) {
-        }
         if (requestParameters.get("price") != null) {
             price = Integer.parseInt(requestParameters.get("price"));
         }
-
+        if (requestParameters.get("isTrendingDeal") != null) {
+            isTrendingDeal = Integer.parseInt(requestParameters.get("isTrendingDeal"));
+        }
+        if (requestParameters.get("isFeaturedDeal") != null) {
+            isFeaturedDeal = Integer.parseInt(requestParameters.get("isFeaturedDeal"));
+        }
+        if (requestParameters.get("followers") != null) {
+            followers = Integer.parseInt(requestParameters.get("followers"));
+        }
         if (StringUtils.isEmpty(dealDesc) || StringUtils.isEmpty(dealName)) {
             isValidDeal = Boolean.FALSE;
+        }
+        try {
+            validityBeginDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validityBeginDate"));
+        } catch (Exception e) {
+        }
+        try {
+            validEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(requestParameters.get("validEndDate"));
+        } catch (Exception e) {
         }
     }
 
@@ -211,5 +221,13 @@ public class DispDealsBean extends MapBasedRequest {
 
     public void setValidDeal(boolean validDeal) {
         isValidDeal = validDeal;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

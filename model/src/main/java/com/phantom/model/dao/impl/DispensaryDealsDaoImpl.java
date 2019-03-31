@@ -66,4 +66,29 @@ public class DispensaryDealsDaoImpl extends GenericHibernateDAO<DispensaryDeals,
         }
         return null;
     }
+
+    @Override
+    public List<DispensaryDeals> findDispDeals(int dispId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryDeals.class);
+        criteria.add(Restrictions.eq("dispensaryId", dispId));
+        return findByCriteria(criteria);
+    }
+
+    @Override
+    public DispensaryDeals getDealsByDealId(String dealId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryDeals.class);
+        criteria.add(Restrictions.eq("uuid", dealId));
+        return findByCriteria(criteria).get(0);
+    }
+
+    @Override
+    public boolean updateTotalLikes(String uuid) {
+        Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryDeals set likes = likes + 1 where uuid = :uuid")
+                .setParameter("uuid", uuid);
+        int noOfUpdatedRows = updateQuery.executeUpdate();
+        if (noOfUpdatedRows > 0) {
+            return true;
+        }
+        return false;
+    }
 }

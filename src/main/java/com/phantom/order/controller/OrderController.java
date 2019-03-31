@@ -27,6 +27,15 @@ public class OrderController {
         return orderService.getStatus(orderId,ssoToken);
     }
 
+    @RequestMapping(value = "updateStatus", method = RequestMethod.GET)
+    public @ResponseBody
+    String updateStatus(HttpServletRequest request, HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+        String pickUpOrderStatus = request.getParameter("status");
+        String bssoToken = RequestUtils.getCookie(request,"bssoToken");
+        return orderService.updateStatus(orderId,bssoToken, pickUpOrderStatus);
+    }
+
     @RequestMapping(value = "user/myOrders", method = RequestMethod.GET)
     public @ResponseBody
     String getMyOrdersForUser (HttpServletRequest request, HttpServletResponse response){
@@ -39,6 +48,32 @@ public class OrderController {
     String getMyOrdersForDisp (HttpServletRequest request, HttpServletResponse response){
         int dispId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request,"bssoToken")) ;
         return orderService.getMyOrdersForDisp(dispId);
+    }
+
+    @RequestMapping(value = "getOrder", method = RequestMethod.GET)
+    public @ResponseBody
+    String getOrder(HttpServletRequest request, HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+        String bssoToken = RequestUtils.getCookie(request,"bssoToken");
+        return orderService.getOrder(orderId,bssoToken);
+    }
+
+    @RequestMapping(value = "updatePickUpDate", method = RequestMethod.GET)
+    public @ResponseBody
+    String updatePickUpDate(HttpServletRequest request, HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+        String pickUpDate = request.getParameter("pickUpDate");
+        String bssoToken = RequestUtils.getCookie(request,"bssoToken");
+        return orderService.updatePickUpDate(orderId,bssoToken,pickUpDate);
+    }
+
+    @RequestMapping(value = "updatePickUpTimeSlot", method = RequestMethod.GET)
+    public @ResponseBody
+    String updatePickUpTimeSlot(HttpServletRequest request, HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+        String timeSlot = request.getParameter("timeSlot");
+        String bssoToken = RequestUtils.getCookie(request,"bssoToken");
+        return orderService.updatePickUpTimeSlot(orderId,bssoToken,timeSlot);
     }
 
 }

@@ -12,4 +12,7 @@ public interface DispensaryDealsDao extends GenericDAO<DispensaryDeals, Long> {
     boolean updateFollowers(String uuid);
     List<DispensaryDeals> findDealsNearYou(String lat, String longitude, String distance, int maxCount,
                                            boolean isFeaturedDeal, List<String> dispId);
+    List<DispensaryDeals> findDispDeals(int dispId);
+    DispensaryDeals getDealsByDealId(String dealId);
+    boolean updateTotalLikes(String uuid);
 }

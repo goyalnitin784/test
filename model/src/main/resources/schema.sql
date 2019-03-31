@@ -180,7 +180,7 @@ CREATE TABLE `deal_review` (
   `recommend_for_future` int(11) DEFAULT NULL,
   `reviewed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `count_of_followers` int(11) DEFAULT NULL,
-  `deal_id` int(11) NOT NULL,
+  `dealId` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -281,6 +281,7 @@ CREATE TABLE `dispensary_deals` (
   `price` varchar(200) DEFAULT NULL,
   `special_comments` varchar(2000) DEFAULT NULL,
   `no_of_followers_count` int(11) DEFAULT NULL,
+  `total_likes` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

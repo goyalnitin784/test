@@ -138,4 +138,18 @@ public class ReviewController {
         }
         return reviewService.makeStrainReviewPrivate(userId,reviewId);
     }
+
+    @RequestMapping(value = "getDealReview", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDealReview(HttpServletRequest request, HttpServletResponse response) {
+        return reviewService.getDealReview(request.getParameter("dealId"));
+    }
+
+    @RequestMapping(value = "getDispensaryReview", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispensaryReview(HttpServletRequest request, HttpServletResponse response) {
+        return reviewService.
+                getDispensaryReview(request.getParameter("dispId"));
+    }
+
 }

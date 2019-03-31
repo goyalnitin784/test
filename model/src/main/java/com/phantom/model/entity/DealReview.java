@@ -14,8 +14,8 @@ public class DealReview {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "deal_id")
-    private int dealId;
+    @Column(name = "dealId")
+    private String dealId;
 
     @Column(name = "dispensary_id")
     private int dispensaryId;
@@ -76,11 +76,11 @@ public class DealReview {
         this.id = id;
     }
 
-    public int getDealId() {
+    public String getDealId() {
         return dealId;
     }
 
-    public void setDealId(int dealId) {
+    public void setDealId(String dealId) {
         this.dealId = dealId;
     }
 

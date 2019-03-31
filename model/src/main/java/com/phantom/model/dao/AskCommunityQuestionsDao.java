@@ -8,7 +8,7 @@ public interface AskCommunityQuestionsDao extends GenericDAO<AskCommunityQuestio
 
     AskCommunityQuestions getQuestion(String uuid);
 
-    List<AskCommunityQuestions> getTopQuestions(int userId, String dispId, String strainId, int count);
+    List<AskCommunityQuestions> getTopQuestions(int userId, int dispId, String strainId, int count);
 
     boolean updateQuestionLike(int userId, String questionId);
 
@@ -16,5 +16,6 @@ public interface AskCommunityQuestionsDao extends GenericDAO<AskCommunityQuestio
 
     boolean saveQuestion(AskCommunityQuestions askCommunityAnswer);
 
+    List<AskCommunityQuestions> getQuestionsByDispId(int dispId);
 
 }

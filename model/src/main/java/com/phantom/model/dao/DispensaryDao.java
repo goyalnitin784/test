@@ -8,4 +8,5 @@ public interface DispensaryDao extends GenericDAO<Dispensary, Long> {
     void saveDispensary(Dispensary dispensary);
     List<Dispensary> findDispOnLatLong(String lat, String longitude, String distance, int maxCount, boolean isFeaturedDispensary);
     List<String> findDispIDNearYou(String lat, String longitude, String distance);
+    long getDispId(String uuid);
 }

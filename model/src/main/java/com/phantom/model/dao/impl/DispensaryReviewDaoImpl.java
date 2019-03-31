@@ -3,6 +3,7 @@ package com.phantom.model.dao.impl;
 import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.entity.DispensaryReview;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,6 +115,15 @@ public class DispensaryReviewDaoImpl extends GenericHibernateDAO<DispensaryRevie
     public List<DispensaryReview> getReviewsByUserId(int userId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
         criteria.add(Restrictions.eq("reviewerUserId", userId));
+        criteria.addOrder(Order.desc("createdOn"));
+        return findByCriteria(criteria);
+    }
+
+    @Override
+    public List<DispensaryReview> getReviewsByDispId(int dispId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
+        criteria.add(Restrictions.eq("dispensaryId", dispId));
+        criteria.addOrder(Order.desc("createdOn"));
         return findByCriteria(criteria);
     }
 }

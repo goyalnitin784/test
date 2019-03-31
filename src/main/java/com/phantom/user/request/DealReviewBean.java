@@ -13,7 +13,7 @@ public class DealReviewBean extends MapBasedRequest {
     private static final PhantomLogger logger = PhantomLogger.getLoggerObject(DispReviewBean.class);
     private static final long serialVersionUID = 2941389692170682413L;
 
-    private int dealId;
+    private String dealId;
     private int reviewerUserId;
     private int dispensaryId;
     private String reviewDesc;
@@ -44,7 +44,6 @@ public class DealReviewBean extends MapBasedRequest {
     private void postConstruct() {
         try {
             dispensaryId = Integer.parseInt(requestParameters.get("dispId"));
-            dealId = Integer.parseInt(requestParameters.get("dealId"));
             overAllRating = Integer.parseInt(requestParameters.get("overAllRating"));
             valueForMoneyRating = Integer.parseInt(requestParameters.get("valueForMoneyRating"));
             dealCorrectnessRating = Integer.parseInt(requestParameters.get("dealCorrectnessRating"));
@@ -55,17 +54,18 @@ public class DealReviewBean extends MapBasedRequest {
         }
         if (isValidReview) {
             reviewDesc = requestParameters.get("reviewDesc");
-            if (PhantomUtil.isNullOrEmpty(reviewDesc)) {
+            dealId = requestParameters.get("dealId");
+            if (PhantomUtil.isNullOrEmpty(reviewDesc) || PhantomUtil.isNullOrEmpty(dealId)) {
                 isValidReview = Boolean.FALSE;
             }
         }
     }
 
-    public int getDealId() {
+    public String getDealId() {
         return dealId;
     }
 
-    public void setDealId(int dealId) {
+    public void setDealId(String dealId) {
         this.dealId = dealId;
     }
 

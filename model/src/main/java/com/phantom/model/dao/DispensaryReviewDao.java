@@ -22,4 +22,7 @@ public interface DispensaryReviewDao extends GenericDAO<DispensaryReview, Long> 
     boolean followDispReview(String uuid);
 
     List<DispensaryReview> getReviewsByUserId(int userId);
+
+    List<DispensaryReview> getReviewsByDispId(int dispId);
+
 }

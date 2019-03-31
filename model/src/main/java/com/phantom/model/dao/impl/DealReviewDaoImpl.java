@@ -131,4 +131,11 @@ public class DealReviewDaoImpl extends GenericHibernateDAO<DealReview, Long> imp
         criteria.add(Restrictions.eq("reviewerUserId",userId));
         return findByCriteria(criteria);
     }
+
+    @Override
+    public List<DealReview> getReviewsByDealId(String dealId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
+        criteria.add(Restrictions.eq("dealId",dealId));
+        return findByCriteria(criteria);
+    }
 }

@@ -2,6 +2,7 @@ package com.phantom.dispensary.request;
 
 import com.phantom.logging.PhantomLogger;
 import com.phantom.request.MapBasedRequest;
+import com.phantom.util.PhantomUtil;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,9 @@ public class DispMenuBean extends MapBasedRequest {
 
     private int dispensaryId;
     private String productName;
-    private int productCategoryTypeId;
-    private int strainCategoryTypeId;
-    private int strainId;
+    private int productCategoryTypeId = -1;
+    private int strainCategoryTypeId = -1;
+    private int strainId = -1;
     private String breeder;
     private String description;
     private String profileImage1;
@@ -40,30 +41,30 @@ public class DispMenuBean extends MapBasedRequest {
     }
 
     private void postConstruct() {
-        try {
+
+        if (!PhantomUtil.isNullOrEmpty(requestParameters.get("productCatTypeId"))) {
             productCategoryTypeId = Integer.parseInt(requestParameters.get("productCatTypeId"));
-            strainCategoryTypeId = Integer.parseInt(requestParameters.get("strainCatTypeId"));
-            strainId = Integer.parseInt(requestParameters.get("strainId"));
-
-        } catch (Exception e) {
-            logger.error("Exception occurred while adding dispensary menu ", e);
-            isValidMenu = Boolean.FALSE;
         }
-        if (isValidMenu) {
-            productName = requestParameters.get("productName");
-            breeder = requestParameters.get("breeder");
-            description = requestParameters.get("desc");
-            profileImage1 = requestParameters.get("image1");
-            profileImage2 = requestParameters.get("image2");
-            profileImage3 = requestParameters.get("image3");
-            otherDetails = requestParameters.get("otherDetails");
-            cbdLevel = requestParameters.get("cbdLevel");
-            thcLevel = requestParameters.get("thcLevel");
+        if (!PhantomUtil.isNullOrEmpty(requestParameters.get("strainCatTypeId"))) {
+            strainCategoryTypeId = Integer.parseInt(requestParameters.get("strainCatTypeId"));
+        }
+        if (!PhantomUtil.isNullOrEmpty(requestParameters.get("strainId"))) {
+            strainId = Integer.parseInt(requestParameters.get("strainId"));
+        }
+        productName = requestParameters.get("productName");
+        breeder = requestParameters.get("breeder");
+        description = requestParameters.get("desc");
+        profileImage1 = requestParameters.get("image1");
+        profileImage2 = requestParameters.get("image2");
+        profileImage3 = requestParameters.get("image3");
+        otherDetails = requestParameters.get("otherDetails");
+        cbdLevel = requestParameters.get("cbdLevel");
+        thcLevel = requestParameters.get("thcLevel");
 
-            if (StringUtils.isEmpty(productName) || StringUtils.isEmpty(breeder)
-                    || StringUtils.isEmpty(profileImage1) || StringUtils.isEmpty(profileImage2)) {
-                isValidMenu = Boolean.FALSE;
-            }
+        if (StringUtils.isEmpty(productName) || StringUtils.isEmpty(breeder)
+                || StringUtils.isEmpty(profileImage1) || StringUtils.isEmpty(profileImage2)
+                || productCategoryTypeId == -1 || strainCategoryTypeId == -1 || strainId == -1) {
+            isValidMenu = Boolean.FALSE;
         }
     }
 

@@ -84,7 +84,17 @@ public class DispensaryController {
         DispDealsBean dispDealsBean = new DispDealsBean(request);
         int businessUserId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
         dispDealsBean.setDispensaryId(businessUserId);
-        return dispensaryService.addDeals(dispDealsBean);
+        return dealService.addDeals(dispDealsBean);
+    }
+
+    @RequestMapping(value = "editDispensaryDeals", method = RequestMethod.POST)
+    public @ResponseBody
+    String editDispensaryDeals(HttpServletRequest request, HttpServletResponse response) {
+        DispDealsBean dispDealsBean = new DispDealsBean(request);
+        int businessUserId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        dispDealsBean.setDispensaryId(businessUserId);
+        dispDealsBean.setUuid(request.getParameter("dealId"));
+        return dealService.editDeals(dispDealsBean);
     }
 
     @RequestMapping(value = "followDispensary", method = RequestMethod.GET)
@@ -95,9 +105,9 @@ public class DispensaryController {
         return dispensaryService.followDispensary(dispensaryId, userId);
     }
 
-    @RequestMapping(value = "updatedispGallery", method = RequestMethod.GET)
+    @RequestMapping(value = "updateDispGallery", method = RequestMethod.GET)
     public @ResponseBody
-    String addDispGallery(HttpServletRequest request, HttpServletResponse response) {
+    String updateDispGallery(HttpServletRequest request, HttpServletResponse response) {
         int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
         String picPath = request.getParameter("picPath");
         return dispensaryService.updateDispGallery(dispensaryId, picPath);
@@ -111,6 +121,22 @@ public class DispensaryController {
         dispMenuBean.setDispensaryId(dispensaryId);
 
         return dispensaryService.addMenu(dispMenuBean);
+    }
+
+    @RequestMapping(value = "editDispensaryMenu", method = RequestMethod.POST)
+    public @ResponseBody
+    String editDispensaryMenu(HttpServletRequest request, HttpServletResponse response) {
+        DispMenuBean dispMenuBean = new DispMenuBean(request);
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        dispMenuBean.setDispensaryId(dispensaryId);
+        dispMenuBean.setUuid(request.getParameter("menuId"));
+        return dispensaryService.editMenu(dispMenuBean);
+    }
+
+    @RequestMapping(value = "getDispensaryMenu", method = RequestMethod.POST)
+    public @ResponseBody
+    String getDispensaryMenu(HttpServletRequest request, HttpServletResponse response) {
+        return dispensaryService.getDispensaryMenu(request.getParameter("dispId"));
     }
 
     @RequestMapping(value = "updateDispensaryMenuPrice", method = RequestMethod.POST)
@@ -143,7 +169,7 @@ public class DispensaryController {
         return dispensaryService.updateDispPickUpOrderDetails(dispOrderId, price, quantity, strainName);
     }
 
-    @RequestMapping(value = "dispUpdates", method = RequestMethod.POST)
+    @RequestMapping(value = "addDispUpdates", method = RequestMethod.POST)
     public @ResponseBody
     String addDispUpdates(HttpServletRequest request, HttpServletResponse response) {
         int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
@@ -183,4 +209,79 @@ public class DispensaryController {
                 request.getParameter("records"),true);
     }
 
+    @RequestMapping(value = "updateDispDesc", method = RequestMethod.POST)
+    public @ResponseBody
+    String updateDispDesc(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.updateDispDesc(request.getParameter("dispDesc"), dispensaryId);
+    }
+
+    @RequestMapping(value = "updateDispAddress", method = RequestMethod.POST)
+    public @ResponseBody
+    String updateDispAddress(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.updateDispAddress(request.getParameter("address"), dispensaryId);
+    }
+
+    @RequestMapping(value = "addDispOperationHours", method = RequestMethod.POST)
+    public @ResponseBody
+    String addDispOperationHours(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        DispensaryBean dispensaryBean = new DispensaryBean(request);
+        return dispensaryService.addDispOperationHours(dispensaryBean, dispensaryId);
+    }
+
+    @RequestMapping(value = "updateDispLocation", method = RequestMethod.GET)
+    public @ResponseBody
+    String updateDispLocation(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.updateDispLocation(request.getParameter("lat"),request.getParameter("long"), dispensaryId);
+    }
+
+    @RequestMapping(value = "addDispFacilities", method = RequestMethod.GET)
+    public @ResponseBody
+    String addDispFacilities(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.addDispFacilities(request.getParameter("facilities"), dispensaryId);
+    }
+
+    @RequestMapping(value = "getDispDeals", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispDeals(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dealService.getDispDeals(dispensaryId);
+    }
+
+    @RequestMapping(value = "makeDealActiveOrInactive", method = RequestMethod.GET)
+    public @ResponseBody
+    String makeDealActiveOrInactive(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dealService.makeDealActiveOrInactive(dispensaryId);
+    }
+
+    @RequestMapping(value = "getDispUpdates", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispUpdates(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.getDispUpdates(dispensaryId);
+    }
+
+    @RequestMapping(value = "editDispUpdates", method = RequestMethod.POST)
+    public @ResponseBody
+    String editDispUpdates(HttpServletRequest request, HttpServletResponse response) {
+        int dispensaryId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request, "bssoToken"));
+        return dispensaryService.editDispUpdates(dispensaryId,request.getParameter("updateId"),request.getParameter("updates"));
+    }
+
+    @RequestMapping(value = "getDispGallery", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDispGallery(HttpServletRequest request, HttpServletResponse response) {
+        return dispensaryService.getDispGallery(request.getParameter("dispId"));
+    }
+
+    @RequestMapping(value = "likeDispDeal", method = RequestMethod.GET)
+    public @ResponseBody String likeDispDeal(HttpServletRequest request, HttpServletResponse response){
+        String dispDealId = request.getParameter("dispDealId");
+        return dealService.likeDispDeal(dispDealId);
+    }
 }

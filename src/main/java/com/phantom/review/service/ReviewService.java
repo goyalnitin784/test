@@ -7,6 +7,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DealReviewDao;
+import com.phantom.model.dao.DispensaryDao;
 import com.phantom.model.dao.DispensaryReviewDao;
 import com.phantom.model.dao.StrainReviewDao;
 import com.phantom.model.entity.DealReview;
@@ -30,6 +31,8 @@ public class ReviewService {
     private DealReviewDao dealReviewDao;
     @Autowired
     private StrainReviewDao strainReviewDao;
+    @Autowired
+    private DispensaryDao dispensaryDao;
 
     public String recommendDispReview(String dispReviewId) {
         String msg = "SUCCESS";
@@ -402,4 +405,54 @@ public class ReviewService {
         baseResponseDTO.addMessage(msg);
         return gson.toJson(baseResponseDTO);
     }
+
+    public String getDealReview(String dealId) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (PhantomUtil.isNullOrEmpty(dealId)) {
+                code = "400";
+                msg = "BAD REQUEST";
+            } else {
+                List<DealReview> dealReviews = dealReviewDao.getReviewsByDealId(dealId);
+                response = gson.toJsonTree(dealReviews);
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting deal reviews for deal id "+ dealId, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String getDispensaryReview(String dispUUID) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (PhantomUtil.isNullOrEmpty(dispUUID)) {
+                code = "400";
+                msg = "BAD REQUEST";
+            } else {
+                int dispId = (int) dispensaryDao.getDispId(dispUUID);
+                List<DispensaryReview> dispensaryReviews = dispensaryReviewDao.getReviewsByDispId(dispId);
+                response = gson.toJsonTree(dispensaryReviews);
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting dispensary reviews for disp id "+ dispUUID, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
+    }
+
 }

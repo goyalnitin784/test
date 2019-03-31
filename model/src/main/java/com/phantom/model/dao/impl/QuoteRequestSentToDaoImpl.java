@@ -7,29 +7,21 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Transactional
-public class QuoteRequestSentToDaoImpl  extends GenericHibernateDAO<QuoteRequestSentTo, Long> implements QuoteRequestSentToDao {
+public class QuoteRequestSentToDaoImpl extends GenericHibernateDAO<QuoteRequestSentTo, Long> implements QuoteRequestSentToDao {
     @Override
-    public List<QuoteRequestSentTo> getDispensaryQuoteInLastThreeDays(int dispensaryId) {
+    public List<QuoteRequestSentTo> getDispensaryQuote(int dispensaryId) {
         try {
-            Date now = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DAY_OF_YEAR,-3);
             DetachedCriteria criteria = DetachedCriteria.forClass(QuoteRequestSentTo.class);
-            criteria.add(Restrictions.eq("dispensaryId",1));
-            criteria.add(Restrictions.gt("createdOn",calendar.getTime()));
+            criteria.add(Restrictions.eq("dispensaryId", 1));
             criteria.addOrder(Order.desc("createdOn"));
             return findByCriteria(criteria);
         } catch (Exception e) {
-            logger.error("Exception occurred while fetching user details by sso token ", e);
+            logger.error("Exception occurred while fetching quote for dispensary id " + dispensaryId, e);
             return null;
         }
     }
-
 
 }
