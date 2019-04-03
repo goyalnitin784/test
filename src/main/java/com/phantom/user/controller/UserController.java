@@ -48,7 +48,7 @@ public class UserController {
     public @ResponseBody
     String registerUser(HttpServletRequest request, HttpServletResponse response) {
         UserBean userBean = new UserBean(request);
-        businessUserService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
+        userService.setCookie(response, userBean.getUserName(), userBean.getSsoToken());
         return userService.insertUserDetails(userBean);
     }
 
