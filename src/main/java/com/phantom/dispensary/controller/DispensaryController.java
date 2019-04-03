@@ -133,7 +133,7 @@ public class DispensaryController {
         return dispensaryService.editMenu(dispMenuBean);
     }
 
-    @RequestMapping(value = "getDispensaryMenu", method = RequestMethod.POST)
+    @RequestMapping(value = "getDispensaryMenu", method = RequestMethod.GET)
     public @ResponseBody
     String getDispensaryMenu(HttpServletRequest request, HttpServletResponse response) {
         return dispensaryService.getDispensaryMenu(request.getParameter("dispId"));

@@ -85,7 +85,7 @@ URL :  http://localhost:8080/phantom/updateDispPickUpOrderDetails?dispOrderId=3&
 
 --API to add dispensary updates
 Call Type : Post Call
-URL :  http://localhost:8080/phantom/dispUpdates?updateDetails=nothin%20to%20update&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
+URL :  http://localhost:8080/phantom/addDispUpdates?updateDetails=nothin%20to%20update&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7
 
 
 --API to add deal review
@@ -156,7 +156,7 @@ http://localhost:8080/phantom/answerQuestion?bssoToken=181a161a-a50a-4749-b596-b
 
 --API to find dispensary based on User Lat and long
 Call Type : GET Call
-URL : http://localhost:8080/phantom/user/findDispensary?lat=19.171960&long=72.872730
+URL : http://localhost:8080/phantom/findDispensary?lat=19.171960&long=72.872730&records=10
 
 --API to get all product list for dropdown
 Call Type : GET Call
@@ -246,3 +246,68 @@ URL : http://localhost:8080/phantom/followDispReview?dealReviewId=e7053707-2d02-
 --API to recommend deal review for future
 Call Type : GET Call
 URL : http://localhost:8080/phantom/recommendForFuture?dealReviewId=e7053707-2d02-44b2-9fdf-6c974b6ca88c&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571
+
+
+--API to get featured dispensary
+Call Type : GET Call
+URL : http://localhost:8080/phantom/findFeaturedDispensary?lat=19.171960&long=72.872730&records=10
+
+
+--API to edit dispensary deals
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/editDispensaryDeals?dealId=d87019b7-5d7a-4ebf-b776-26aa0304b53a&dealName=new%20name&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to edit dispensary menu
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/editDispensaryMenu?menuId=e4dd4067-c3a5-407c-bd5f-f680408b3cc0&thcLevel=10&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to get dispensary menu
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/getDispensaryMenu?dispId=359a0d93-f886-4c92-8ff6-e6a11738d2a4'
+
+
+--API to find dispensary deals
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/findDeals?long=-17.87565&lat=65.77655&records=10'
+
+
+--API to find featured dispensary deals
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/findFeaturedDeals?long=-17.87565&lat=65.77655&records=10'
+
+
+--API to update dispensary description
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/updateDispDesc?dispDesc=%22this%20is%20update%20disp%20desc%20testing%22&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to update dispensary address
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/updateDispAddress?address=every%20where&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to add dispensary operation hours
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/addDispOperationHours?mondayOpenOn=rbhdskjsd&mondayClosedOn=optional&tuesdayOpenOn=optional&tuesdayClosedOn=optional&wednesdayOpenOn=optional&wednesdayClosedOn=optional&thursdayOpenOn=optional&thursdayClosedOn=optional&fridayOpenOn=optional&fridayClosedOn=optional&saturdayOpenOn=optional&saturdayClosedOn=optional&sundayOpenOn=optional&sundayClosedOn=optional&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to update dispensary location
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/updateDispLocation?long=-17.87565&lat=65.77655&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to add dispensary facilities
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/addDispFacilities?facilities=updated%20fac&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to get dispensary deals
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDispDeals&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+
+
+

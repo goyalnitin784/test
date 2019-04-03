@@ -153,7 +153,7 @@ public class RequestUtils {
                 }
             }
         }
-        return null;
+        return request.getParameter(key);
     }
 
     public void addCookie(HttpServletResponse response, String name,

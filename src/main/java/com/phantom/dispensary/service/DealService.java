@@ -125,7 +125,7 @@ public class DealService {
                 if(dispDealsBean.getLikes() != 0){
                     dispensaryDeals.setLikes(dispDealsBean.getLikes());
                 }
-
+                dispensaryDeals.setUuid(dispDealsBean.getUuid());
                 dispensaryDealsDao.saveDeals(dispensaryDeals);
                 response = gson.toJsonTree(dispensaryDealsDao.findDispDeals(dispDealsBean.getDispensaryId()));
             } else {

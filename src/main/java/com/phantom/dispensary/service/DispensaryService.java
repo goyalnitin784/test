@@ -343,10 +343,10 @@ public class DispensaryService {
             if (dispMenuBean.getDispensaryId() == -1) {
                 msg = "Business User Not Logged In";
                 code = "400";
-            } else if (PhantomUtil.isNullOrEmpty(dispMenuBean.getUuid())) {
+            } else if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getUuid())) {
                 DispensaryMenu dispensaryMenu = dispensaryMenuDao.getMenuByMenuId(dispMenuBean.getUuid());
 
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getProductName())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getProductName())) {
                     dispensaryMenu.setProductName(dispMenuBean.getProductName());
                 }
                 if (dispMenuBean.getProductCategoryTypeId() != -1) {
@@ -358,28 +358,28 @@ public class DispensaryService {
                 if (dispMenuBean.getStrainId() != -1) {
                     dispensaryMenu.setStrainId(dispMenuBean.getStrainId());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getBreeder())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getBreeder())) {
                     dispensaryMenu.setBreeder(dispMenuBean.getBreeder());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getDescription())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getDescription())) {
                     dispensaryMenu.setDescription(dispMenuBean.getDescription());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getProfileImage1())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getProfileImage1())) {
                     dispensaryMenu.setProfileImage1(dispMenuBean.getProfileImage1());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getProfileImage2())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getProfileImage2())) {
                     dispensaryMenu.setProfileImage2(dispMenuBean.getProfileImage2());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getProfileImage3())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getProfileImage3())) {
                     dispensaryMenu.setProfileImage3(dispMenuBean.getProfileImage3());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getOtherDetails())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getOtherDetails())) {
                     dispensaryMenu.setOtherDetails(dispMenuBean.getOtherDetails());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getCbdLevel())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getCbdLevel())) {
                     dispensaryMenu.setCbdLevel(dispMenuBean.getCbdLevel());
                 }
-                if (!PhantomUtil.isNullOrEmpty(dispensaryMenu.getThcLevel())) {
+                if (!PhantomUtil.isNullOrEmpty(dispMenuBean.getThcLevel())) {
                     dispensaryMenu.setThcLevel(dispMenuBean.getThcLevel());
                 }
 
@@ -718,13 +718,12 @@ public class DispensaryService {
         JsonElement response = null;
         try {
             if (dispId == -1 || PhantomUtil.isNullOrEmpty(updateId) || PhantomUtil.isNullOrEmpty(updateDetails)) {
-                msg = dispId == -1 ? "Business User Not Logged In" : "BAD REQUEST" ;
+                msg = dispId == -1 ? "Business User Not Logged In" : "BAD REQUEST";
                 code = "400";
             } else {
-                if(dispensaryUpdatesDao.editDispUpdates(updateId, updateDetails)){
+                if (dispensaryUpdatesDao.editDispUpdates(updateId, updateDetails)) {
                     response = gson.toJsonTree(dispensaryUpdatesDao.getUpdatesByDispId(dispId));
-                }
-                else{
+                } else {
                     msg = "FAILED";
                     code = "500";
                 }
@@ -754,7 +753,7 @@ public class DispensaryService {
                 response = gson.toJsonTree(dispensaryGalleryDao.getDispGalleryByDispId(dispId));
             }
         } catch (Exception e) {
-            logger.error("Exception occurred while getting dispensary gallery for dispensary id : "+dispensaryUUID, e);
+            logger.error("Exception occurred while getting dispensary gallery for dispensary id : " + dispensaryUUID, e);
             code = "500";
             msg = e.getMessage();
         }
@@ -765,7 +764,7 @@ public class DispensaryService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public String deleteDispGallery(int dispId,String dispGalleryUUID) {
+    public String deleteDispGallery(int dispId, String dispGalleryUUID) {
         String code = "200";
         String msg = "SUCCESS";
         JsonElement response = null;
@@ -774,15 +773,15 @@ public class DispensaryService {
                 msg = dispId == -1 ? "Business User Not Logged In" : "BAD REQUEST";
                 code = "400";
             } else {
-                if(dispensaryGalleryDao.deleteDispGallery(dispGalleryUUID)) {
+                if (dispensaryGalleryDao.deleteDispGallery(dispGalleryUUID)) {
                     response = gson.toJsonTree(dispensaryGalleryDao.getDispGalleryByDispId(dispId));
-                }else{
+                } else {
                     code = "500";
                     msg = "FAILED";
                 }
             }
         } catch (Exception e) {
-            logger.error("Exception occurred while deleting dispensary gallery for dispensary id : "+ dispId, e);
+            logger.error("Exception occurred while deleting dispensary gallery for dispensary id : " + dispId, e);
             code = "500";
             msg = e.getMessage();
         }
