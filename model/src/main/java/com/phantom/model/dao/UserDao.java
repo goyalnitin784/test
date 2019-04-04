@@ -9,5 +9,7 @@ public interface UserDao extends GenericDAO<User, Long> {
 
     User getUserDetailsByUserName(String userName);
 
+    User getUserDetailsByEmail(String email);
+
     void saveUser(User user);
 }

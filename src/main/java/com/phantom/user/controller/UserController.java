@@ -1,6 +1,7 @@
 package com.phantom.user.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.phantom.business.user.service.BusinessUserService;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
@@ -64,27 +65,26 @@ public class UserController {
     String doLogin(HttpServletRequest request, HttpServletResponse response) {
         String code = "200";
         String msg = "SUCCESS";
+        JsonElement res = null;
 
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        String agreeTotermnServices = request.getParameter("agreeTotermnServices");
-        if (PhantomUtil.isNullOrEmpty(agreeTotermnServices) || agreeTotermnServices.equalsIgnoreCase("false")) {
-            code = "400";
-            msg = "NOT AGGREED TO TERMS AND SERVICES";
+        String email = request.getParameter("email");
+
+        User user = userService.isValidUser(userName, password, email);
+        if (user != null) {
+            res = gson.toJsonTree(user);
+            String ssoToken = UUID.randomUUID().toString();
+            userService.setCookie(response, userName, ssoToken);
+            userService.setSSOToken(user.getUserId(), user.getUserName(), ssoToken);
         } else {
-            User user = userService.isValidUser(userName, password);
-            if (user != null) {
-                String ssoToken = UUID.randomUUID().toString();
-                userService.setCookie(response, userName, ssoToken);
-                userService.setSSOToken(user.getUserId(), user.getUserName(), ssoToken);
-            } else {
-                code = "500";
-                msg = "FAILED";
-            }
+            code = "500";
+            msg = "FAILED";
         }
         BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
         baseResponseDTO.setCode(code);
         baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(res);
         return gson.toJson(baseResponseDTO);
     }
 
@@ -112,37 +112,51 @@ public class UserController {
 
     @RequestMapping(value = "getAboutMe", method = RequestMethod.GET)
     public @ResponseBody
-    String getAboutMe(HttpServletRequest request,HttpServletResponse response) {
+    String getAboutMe(HttpServletRequest request, HttpServletResponse response) {
         return userService.getAboutMe(requestUtils.getCookieValue(request, "ssoToken"));
     }
 
     @RequestMapping(value = "addAboutMe", method = RequestMethod.POST)
     public @ResponseBody
-    String addAboutMe(HttpServletRequest request,HttpServletResponse response) {
-        return userService.addAboutMe(requestUtils.getCookieValue(request, "ssoToken"),request.getParameter("aboutMe"));
+    String addAboutMe(HttpServletRequest request, HttpServletResponse response) {
+        return userService.addAboutMe(requestUtils.getCookieValue(request, "ssoToken"), request.getParameter("aboutMe"));
     }
 
     @RequestMapping(value = "addExperience", method = RequestMethod.POST)
     public @ResponseBody
-    String addExperience(HttpServletRequest request,HttpServletResponse response) {
-        return userService.addExperience(requestUtils.getCookieValue(request, "ssoToken"),request.getParameter("experience"));
+    String addExperience(HttpServletRequest request, HttpServletResponse response) {
+        return userService.addExperience(requestUtils.getCookieValue(request, "ssoToken"), request.getParameter("experience"));
     }
 
     @RequestMapping(value = "addProfilePic", method = RequestMethod.GET)
     public @ResponseBody
-    String addProfilePic(HttpServletRequest request,HttpServletResponse response) {
-        return userService.addProfilePic(requestUtils.getCookieValue(request, "ssoToken"),request.getParameter("picPath"));
+    String addProfilePic(HttpServletRequest request, HttpServletResponse response) {
+        return userService.addProfilePic(requestUtils.getCookieValue(request, "ssoToken"), request.getParameter("picPath"));
     }
 
     @RequestMapping(value = "getMyQuotesList", method = RequestMethod.GET)
     public @ResponseBody
-    String getMyQuotesList(HttpServletRequest request,HttpServletResponse response) {
-        return userService.addProfilePic(requestUtils.getCookieValue(request, "ssoToken"),request.getParameter("picPath"));
+    String getMyQuotesList(HttpServletRequest request, HttpServletResponse response) {
+        return userService.addProfilePic(requestUtils.getCookieValue(request, "ssoToken"), request.getParameter("picPath"));
     }
 
     @RequestMapping(value = "getListofMypics", method = RequestMethod.GET)
     public @ResponseBody
-    String getListofMypics(HttpServletRequest request,HttpServletResponse response) {
+    String getListofMypics(HttpServletRequest request, HttpServletResponse response) {
         return userService.getListofMypics(requestUtils.getCookieValue(request, "ssoToken"));
+    }
+
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    public @ResponseBody
+    String changePassword(HttpServletRequest request, HttpServletResponse response) {
+        int userId = userService.getUserId(requestUtils.getCookieValue(request, "ssoToken"));
+        return userService.changePassword(userId, request.getParameter("password"));
+    }
+
+    @RequestMapping(value = "changePhoneNo", method = RequestMethod.POST)
+    public @ResponseBody
+    String changePhoneNo(HttpServletRequest request, HttpServletResponse response) {
+        int userId = userService.getUserId(requestUtils.getCookieValue(request, "ssoToken"));
+        return userService.changePhoneNo(userId, request.getParameter("phone"));
     }
 }

@@ -10,7 +10,7 @@ URL :  http://localhost:8080/phantom/user/getUserDetails?ssoToken=7ba6b0d1-4798-
 
 --API to login User
 Call Type : Post Call
-URL :  http://localhost:8080/phantom/user/login?userName=yoyo4&password=pass4
+URL :  http://localhost:8080/phantom/user/login?userName=yoyo4&password=pass4&email=pqr@xyz.com
 
 
 --API to logout User
@@ -110,7 +110,7 @@ URL :  http://localhost:8080/phantom/order/disp/myOrders?bssoToken=d239bbff-039d
     
 --API to ask any question on community
 Call Type : Post Call
-URL : http://localhost:8080/phantom/askQuestion?disId=123&strainId=123&question=test&ssoToken=181a161a-a50a-4749-b596-b7452c3393cf'
+URL : 'http://localhost:8080/phantom/askQuestion?disId=561dbccc-5b89-48e0-be44-20800d963432&strainId=123&question=test&ssoToken=181a161a-a50a-4749-b596-b7452c3393cf'
 
 
 --API to like any Question
@@ -123,11 +123,11 @@ URL : http://localhost:8080/phantom/followQuestion?questionId=7704d5ff-62f6-4571
 
 --API to get all Questions on any dispensary and on a particular strain
 Call Type : GET Call
-URL : http://localhost:8080/phantom/getQuestion?ssoToken=test&disId=123&strainId=123
+URL : http://localhost:8080/phantom/getQuestion?ssoToken=test&disId=27ca0f16-637b-4b87-8350-5bcb9eef8c37&strainId=123
 
 --API to get top 20/30 Question on a particular dispansary
 Call Type : GET Call
-URL : http://localhost:8080/phantom/getQuestion?ssoToken=test&disId=123
+URL : http://localhost:8080/phantom/getTopQuestion?ssoToken=test&disId=27ca0f16-637b-4b87-8350-5bcb9eef8c37
 
 --API to get top 20/30 Question in general
 Call Type : GET Call
@@ -305,9 +305,102 @@ URL : 'http://localhost:8080/phantom/addDispFacilities?facilities=updated%20fac&
 
 --API to get dispensary deals
 Call Type : GET Call
-URL : 'http://localhost:8080/phantom/getDispDeals&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+URL : 'http://localhost:8080/phantom/getDispDeals?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
 
 
+--API to get user questions on strain
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getQuestionByUserOnStrain?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to get user questions on dispensary
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getQuestionByUserOnDisp?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to change user phone number
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/user/changePhoneNo?phone=999999999&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to change user password
+Call Type : POST Call
+URL : 'http://localhost:8080/phantom/user/changePassword?password=newPassword&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to make deal active or inactive
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/makeDealActiveOrInactive?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to get dispensary updates
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDispUpdates?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to edit dispensary updates
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/editDispUpdates?updateId=fcc2a331-f36b-4c77-bd88-42256fa70ce4&updates=edit%20update&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to get dispensary gallery
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDispGallery?dispId=c0892383-35b5-4aa2-9e50-f3aec5e4e910'
+
+
+--API to like dispensary deal
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/likeDispDeal?dispDealId=d87019b7-5d7a-4ebf-b776-26aa0304b53a'
+
+
+--API to get dispensary questions
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDispQuestion?dispId=561dbccc-5b89-48e0-be44-20800d963432'
+
+
+--API to update order status
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/order/updateStatus?orderId=699959c4-7538-4fb3-8c4b-c95599bc6f1a&status=almost%20there&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to get order
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/order/getOrder?orderId=699959c4-7538-4fb3-8c4b-c95599bc6f1a&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to update order pickup date
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/order/updatePickUpDate?orderId=699959c4-7538-4fb3-8c4b-c95599bc6f1a&pickUpDate=2019-04-05&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to update order pickup time slot
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/order/updatePickUpTimeSlot?orderId=699959c4-7538-4fb3-8c4b-c95599bc6f1a&timeSlot=test%20time&bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7'
+
+
+--API to follow deal review
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/followDealReview?dealReviewId=6d065189-592e-4b48-8b67-669658c7093d&ssoToken=1f98df79-0202-4d2f-971d-c93aaae611e9'
+
+
+--API to get my reviews
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/myReviews?ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to make review(deal/dispensary/strain) private
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/makeReviewPrivate?reviewId=6d065189-592e-4b48-8b67-669658c7093d&isDealReview=true&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to get deal review
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDealReview?dealId=123&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
+
+
+--API to get dispensary review
+Call Type : GET Call
+URL : 'http://localhost:8080/phantom/getDispensaryReview?dispId=3&ssoToken=7ba6b0d1-4798-4954-b014-9ce6d230e571'
 
 
 

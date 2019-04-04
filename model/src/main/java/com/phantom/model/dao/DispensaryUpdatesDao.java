@@ -9,5 +9,7 @@ public interface DispensaryUpdatesDao extends GenericDAO<DispensaryUpdates, Long
 
     List<DispensaryUpdates> getUpdatesByDispId(int dispId);
 
+    List<DispensaryUpdates> getUpdatesByUpdateId(String uuid);
+
     boolean editDispUpdates(String uuid, String dispUpdates);
 }

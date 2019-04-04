@@ -3,6 +3,7 @@ package com.phantom.faq.controller;
 import com.google.gson.JsonObject;
 import com.phantom.faq.service.FaqService;
 import com.phantom.logging.PhantomLogger;
+import com.phantom.user.service.UserService;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ public class FaqController {
 
     @Autowired
     FaqService faqService;
+    @Autowired
+    private UserService userService;
 
     PhantomLogger logger = PhantomLogger.getLoggerObject(this.getClass());
 
@@ -130,5 +133,19 @@ public class FaqController {
     String getDispQuestion(HttpServletRequest request) {
         String dispId = request.getParameter("dispId");
         return faqService.getDispQuestions(dispId);
+    }
+
+    @RequestMapping(value = "getQuestionByUserOnDisp", method = RequestMethod.GET)
+    public @ResponseBody
+    String getQuestionByUserOnDisp(HttpServletRequest request) {
+        int userId = userService.getUserId(RequestUtils.getCookie(request, "ssoToken"));
+        return faqService.getQuestionByUserOnDisp(userId);
+    }
+
+    @RequestMapping(value = "getQuestionByUserOnStrain", method = RequestMethod.GET)
+    public @ResponseBody
+    String getQuestionByUserOnStrain(HttpServletRequest request) {
+        int userId = userService.getUserId(RequestUtils.getCookie(request, "ssoToken"));
+        return faqService.getQuestionByUserOnStrain(userId);
     }
 }

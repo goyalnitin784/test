@@ -2,6 +2,7 @@ package com.phantom.user.request;
 
 
 import com.phantom.request.MapBasedRequest;
+import com.phantom.util.PhantomUtil;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ public class UserBean extends MapBasedRequest {
     private static final long serialVersionUID = 7682719590873299457L;
 
     private long userId;
-    private int userType;
+    private int userType = 0;
     private String title = "";
     private String firstName = "";
     private String lastName = "";
@@ -23,6 +24,7 @@ public class UserBean extends MapBasedRequest {
     private String email;
     private String dob;
     private String ssoToken = UUID.randomUUID().toString();
+    private int isAgreeToTC = 1;
     private boolean isValidUser = false;
 
     public UserBean(HttpServletRequest request) {
@@ -35,7 +37,12 @@ public class UserBean extends MapBasedRequest {
         postConstruct();
     }
     private void postConstruct() {
-        userType = Integer.parseInt(requestParameters.get("userType"));
+        if(!PhantomUtil.isNullOrEmpty(requestParameters.get("userType"))) {
+            userType = Integer.parseInt(requestParameters.get("userType"));
+        }
+        if(!PhantomUtil.isNullOrEmpty(requestParameters.get("isAgreeToTC"))) {
+            isAgreeToTC = Integer.parseInt(requestParameters.get("isAgreeToTC"));
+        }
         userName = requestParameters.get("userName");
         password = requestParameters.get("password");
         title = requestParameters.get("title");

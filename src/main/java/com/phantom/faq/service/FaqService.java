@@ -328,4 +328,50 @@ public class FaqService {
         baseResponseDTO.addMessage(msg);
         return new Gson().toJson(baseResponseDTO);
     }
+
+    public String getQuestionByUserOnDisp(int userId) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (userId == -1) {
+                code = "400";
+                msg = "User Not Logged In";
+            } else {
+                response = new Gson().toJsonTree(askCommunityQuestionsDao.getQuestionsByUserIdOnDisp(userId));
+            }
+        }catch (Exception e){
+            logger.error("Exception occured while getting dispensary questions for user id : "+userId, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return new Gson().toJson(baseResponseDTO);
+    }
+
+    public String getQuestionByUserOnStrain(int userId) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if (userId == -1) {
+                code = "400";
+                msg = "User Not Logged In";
+            } else {
+                response = new Gson().toJsonTree(askCommunityQuestionsDao.getQuestionsByUserIdOnStrain(userId));
+            }
+        }catch (Exception e){
+            logger.error("Exception occured while getting strain questions for user id : "+userId, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        return new Gson().toJson(baseResponseDTO);
+    }
 }

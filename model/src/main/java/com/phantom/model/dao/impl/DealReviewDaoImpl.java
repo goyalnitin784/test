@@ -127,15 +127,25 @@ public class DealReviewDaoImpl extends GenericHibernateDAO<DealReview, Long> imp
 
     @Override
     public List<DealReview> getReviewsByUserId(int userId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
-        criteria.add(Restrictions.eq("reviewerUserId",userId));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
+            criteria.add(Restrictions.eq("reviewerUserId", userId));
+            return findByCriteria(criteria);
+        }catch (Exception e){
+            logger.error("Exception occurred while getting deal review for user id : "+userId, e);
+            return null;
+        }
     }
 
     @Override
     public List<DealReview> getReviewsByDealId(String dealId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
-        criteria.add(Restrictions.eq("dealId",dealId));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DealReview.class);
+            criteria.add(Restrictions.eq("dealId", dealId));
+            return findByCriteria(criteria);
+        }catch (Exception e){
+            logger.error("Exception occurred while getting deal review for deal id : "+dealId, e);
+            return null;
+        }
     }
 }

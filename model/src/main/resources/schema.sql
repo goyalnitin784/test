@@ -1129,7 +1129,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `user_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-`user_details` (
+CREATE TABLE `user_details` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1145,6 +1145,7 @@ DROP TABLE IF EXISTS `user_details`;
   `email_address` varchar(50) NOT NULL,
   `about_me` varchar(1024) DEFAULT NULL,
   `experience` varchar(1024) DEFAULT NULL,
+  `is_agree_to_tc` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

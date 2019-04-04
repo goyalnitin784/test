@@ -28,6 +28,15 @@ public class UserDaoImpl extends GenericHibernateDAO<User, Long> implements User
         return user;
     }
 
+    @Override
+    public User getUserDetailsByEmail(String email) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+        criteria.add(Restrictions.eq("email", email));
+        criteria.addOrder(Order.desc("createdOn"));
+        User user = findByCriteria(criteria).get(0);
+        return user;
+    }
+
     public void saveUser(User user) {
         try{
             super.saveOrUpdate(user);

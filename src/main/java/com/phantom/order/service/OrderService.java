@@ -2,6 +2,7 @@ package com.phantom.order.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.phantom.dto.BaseResponseDTO;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DispensaryPickUpOrderDao;
@@ -12,6 +13,7 @@ import com.phantom.util.PhantomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.RectangularShape;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -174,7 +176,7 @@ public class OrderService {
     public String updatePickUpDate(String orderId, String bssoToken, String pickUpDate) {
         String code = "200";
         String msg = "SUCCESS";
-        JsonElement response = null;
+        JsonObject response = new JsonObject();
         try {
             if (PhantomUtil.isNullOrEmpty(orderId) || PhantomUtil.isNullOrEmpty(pickUpDate)) {
                 code = "400";
@@ -187,6 +189,8 @@ public class OrderService {
                 if(!dispensaryPickUpOrderDao.updatePickUpDate(orderId, date)){
                     code = "500";
                     msg = "FAILED";
+                }else{
+                    response.addProperty("pickUpDate",pickUpDate);
                 }
             }
         } catch (Exception e) {
@@ -204,7 +208,7 @@ public class OrderService {
     public String updatePickUpTimeSlot(String orderId, String bssoToken, String timeSlot) {
         String code = "200";
         String msg = "SUCCESS";
-        JsonElement response = null;
+        JsonObject response = new JsonObject();
         try {
             if (PhantomUtil.isNullOrEmpty(orderId) || PhantomUtil.isNullOrEmpty(timeSlot)) {
                 code = "400";
@@ -216,6 +220,8 @@ public class OrderService {
                 if(!dispensaryPickUpOrderDao.updateTimeSlot(orderId, timeSlot)){
                     code = "500";
                     msg = "FAILED";
+                }else{
+                    response.addProperty("pickUpTimeSlot",timeSlot);
                 }
             }
         } catch (Exception e) {

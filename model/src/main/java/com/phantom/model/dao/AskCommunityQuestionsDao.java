@@ -18,4 +18,9 @@ public interface AskCommunityQuestionsDao extends GenericDAO<AskCommunityQuestio
 
     List<AskCommunityQuestions> getQuestionsByDispId(int dispId);
 
+    List getQuestionsByUserIdOnDisp(int userId);
+
+    List getQuestionsByUserIdOnStrain(int userId);
+
+
 }

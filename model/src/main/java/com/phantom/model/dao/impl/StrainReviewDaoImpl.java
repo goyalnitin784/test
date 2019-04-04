@@ -16,9 +16,14 @@ public class StrainReviewDaoImpl  extends GenericHibernateDAO<StrainReview, Long
 
     @Override
     public List<StrainReview> getReviewsByUserId(int userId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(StrainReview.class);
-        criteria.add(Restrictions.eq("reviewerUserId", userId));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(StrainReview.class);
+            criteria.add(Restrictions.eq("reviewerUserId", userId));
+            return findByCriteria(criteria);
+        }catch (Exception e){
+            logger.error("Exception occurred while getting strain review for user id : "+userId, e);
+            return null;
+        }
     }
 
     @Override

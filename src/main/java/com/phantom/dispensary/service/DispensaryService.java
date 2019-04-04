@@ -674,7 +674,12 @@ public class DispensaryService {
                 code = "400";
             } else {
                 long dispId = dispensaryDao.getDispId(dispUUID);
-                response = gson.toJsonTree(dispensaryMenuDao.getMenuByDispId((int) dispId));
+                if(dispId != -1) {
+                    response = gson.toJsonTree(dispensaryMenuDao.getMenuByDispId((int) dispId));
+                }else {
+                    msg = "Dispensary Id is Wrong";
+                    code = "400";
+                }
             }
         } catch (Exception e) {
             logger.error("Exception occurred while getting dispensary menu list for dispensary id : " + dispUUID, e);
@@ -750,7 +755,12 @@ public class DispensaryService {
                 code = "400";
             } else {
                 int dispId = (int) dispensaryDao.getDispId(dispensaryUUID);
-                response = gson.toJsonTree(dispensaryGalleryDao.getDispGalleryByDispId(dispId));
+                if(dispId!=-1) {
+                    response = gson.toJsonTree(dispensaryGalleryDao.getDispGalleryByDispId(dispId));
+                }else {
+                    msg = "Dispensary Id is Wrong";
+                    code = "400";
+                }
             }
         } catch (Exception e) {
             logger.error("Exception occurred while getting dispensary gallery for dispensary id : " + dispensaryUUID, e);

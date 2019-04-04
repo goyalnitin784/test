@@ -284,6 +284,7 @@ public class DealService {
                     for(DispensaryDeals deal : deals){
                         int isActive = deal.getIsActive()== 0 ? 1 : 0;
                         deal.setIsActive(isActive);
+                        dispensaryDealsDao.saveDeals(deal);
                     }
                 }
             } else {

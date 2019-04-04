@@ -23,16 +23,34 @@ public class DispensaryUpdatesDaoImpl extends GenericHibernateDAO<DispensaryUpda
 
     @Override
     public List<DispensaryUpdates> getUpdatesByDispId(int dispId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryUpdates.class);
-        criteria.add(Restrictions.eq("dispensaryId", dispId));
-        criteria.addOrder(Order.desc("createdOn"));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryUpdates.class);
+            criteria.add(Restrictions.eq("dispensaryId", dispId));
+            criteria.addOrder(Order.desc("createdOn"));
+            return findByCriteria(criteria);
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting dispensary updates for disp id : " + dispId, e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<DispensaryUpdates> getUpdatesByUpdateId(String uuid) {
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryUpdates.class);
+            criteria.add(Restrictions.eq("uuid", uuid));
+            criteria.addOrder(Order.desc("createdOn"));
+            return findByCriteria(criteria);
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting dispensary updates for update id : " + uuid, e);
+            return null;
+        }
     }
 
     @Override
     public boolean editDispUpdates(String uuid, String dispUpdates) {
-        Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryUpdates set updateDetails = :dispUpdates where uuid = :uuid")
-                .setParameter("updateDetails",dispUpdates)
+        Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery("update DispensaryUpdates set updateDetails = :updateDetails where uuid = :uuid")
+                .setParameter("updateDetails", dispUpdates)
                 .setParameter("uuid", uuid);
         int noOfUpdatedRows = updateQuery.executeUpdate();
         if (noOfUpdatedRows > 0) {

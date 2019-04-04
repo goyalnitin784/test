@@ -16,6 +16,7 @@ import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
 import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,9 +48,9 @@ public class UserService {
             UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
             User user = userDao.findById(userSSOTokenMapping.getUserId());
             return user;
-        }catch (Exception e){
-         logger.error("Exception occurred while fetching user details ",e);
-         return null;
+        } catch (Exception e) {
+            logger.error("Exception occurred while fetching user details ", e);
+            return null;
         }
     }
 
@@ -60,17 +61,17 @@ public class UserService {
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken)) {
                 msg = "User Not Logged In";
-                code = "404";
+                code = "400";
             }
             UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
             if (userSSOTokenMapping == null) {
                 msg = "User Not Logged In";
-                code = "404";
+                code = "400";
             } else {
                 response = gson.toJsonTree(userDao.findById(userSSOTokenMapping.getUserId()));
             }
         } catch (Exception e) {
-            logger.error("Exception occurred while fetching user details ",e);
+            logger.error("Exception occurred while fetching user details ", e);
             msg = e.getMessage();
             code = "500";
         }
@@ -81,21 +82,32 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public User isValidUser(String userName, String password) {
-        if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
-            User user = userDao.getUserDetailsByUserName(userName);
-            if (password.equals(user.getPassword()) && user.getIsAgeAbove21() == 1) { // password matches and user is above 21
-                return user;
+    public User isValidUser(String userName, String password, String email) {
+        try {
+            if (!PhantomUtil.isNullOrEmpty(password)) {
+                User user = null;
+                if (!PhantomUtil.isNullOrEmpty(userName)) {
+                    user = userDao.getUserDetailsByUserName(userName);
+                }else{
+                    user = userDao.getUserDetailsByEmail(email);
+                }
+                if (user!=null && password.equals(user.getPassword())) { // password matches and user is above 21
+                    return user;
+                }
             }
+        } catch (Exception e) {
+            logger.error("Exception occurred while login user with username : " + userName + " or email " + email, e);
         }
         return null;
     }
 
     public String insertUserDetails(UserBean userBean) {
-        String msg = "SUCCESS";
+        String msg = "Successfully Registered";
         String code = "200";
         try {
-            if (userBean.isValidUser()) {
+            if (isUserAlreadyExist(userBean.getEmail())) {
+                msg = "emailAddressAlreadyExists";
+            } else if (userBean.isValidUser()) {
                 User user = new User();
                 user.setUserName(userBean.getUserName());
                 user.setPassword(userBean.getPassword());
@@ -119,7 +131,7 @@ public class UserService {
                 setSSOToken(userBean.getUserId(), userBean.getUserName(), userBean.getSsoToken());
             } else {
                 msg = "BAD REQUEST";
-                code = "404";
+                code = "400";
             }
 
         } catch (Exception e) {
@@ -151,8 +163,8 @@ public class UserService {
         String code = "200";
         try {
             if (dealReviewBean.getReviewerUserId() == -1) {
-                code = "404";
-                msg = "User Not Logged In" ;
+                code = "400";
+                msg = "User Not Logged In";
             } else if (dealReviewBean.isValidReview()) {
                 DealReview dealReview = new DealReview();
                 dealReview.setReviewerUserId(dealReview.getReviewerUserId());
@@ -172,7 +184,7 @@ public class UserService {
 
                 dealReviewDao.saveReview(dealReview);
             } else {
-                code = "404";
+                code = "400";
                 msg = "BAD REQUEST";
             }
         } catch (Exception e) {
@@ -187,20 +199,22 @@ public class UserService {
     }
 
     public String logout(String ssoToken) {
-        String msg = "SUCCESS";
+        String msg = "User Successfully Logged Out";
         String code = "200";
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken)) {
                 msg = "User Not Logged In";
-                code = "404";
+                code = "400";
             }
             UserSSOTokenMapping userSSOTokenMapping = userSSOTokenMappingDao.getUserDetailsBySSOToken(ssoToken);
             if (userSSOTokenMapping == null) {
                 msg = "User Not Logged In";
-                code = "404";
+                code = "400";
             }
-            userSSOTokenMapping.setIsActive(0);
-            userSSOTokenMappingDao.saveSSOToken(userSSOTokenMapping);
+            else {
+                userSSOTokenMapping.setIsActive(0);
+                userSSOTokenMappingDao.saveSSOToken(userSSOTokenMapping);
+            }
         } catch (Exception e) {
             logger.error("Exception occurred while logging out user ", e);
             msg = e.getMessage();
@@ -222,7 +236,7 @@ public class UserService {
         return -1;  // not logged in
     }
 
-    public String getAboutMe(String ssoToken){
+    public String getAboutMe(String ssoToken) {
         String msg = "SUCCESS";
         String code = "200";
         JsonElement response = null;
@@ -230,20 +244,20 @@ public class UserService {
             if (PhantomUtil.isNullOrEmpty(ssoToken)) {
                 msg = "User Not Logged In";
                 code = "400";
-            }else{
+            } else {
                 User user = getUserDetails(ssoToken);
-                if(user == null){
+                if (user == null) {
                     msg = "User Not Logged In";
                     code = "400";
-                }else{
+                } else {
                     JsonObject userJson = new JsonObject();
-                    userJson.addProperty("profilePic",user.getProfilePic());
-                    userJson.addProperty("aboutMe",user.getAboutMe());
-                    userJson.addProperty("experience",user.getExperience());
+                    userJson.addProperty("profilePic", user.getProfilePic());
+                    userJson.addProperty("aboutMe", user.getAboutMe());
+                    userJson.addProperty("experience", user.getExperience());
                     response = userJson;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while fetching getAboutMe ", e);
             msg = e.getMessage();
             code = "500";
@@ -255,24 +269,24 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public String addAboutMe(String ssoToken, String aboutMe){
+    public String addAboutMe(String ssoToken, String aboutMe) {
         String msg = "SUCCESS";
         String code = "200";
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(aboutMe)) {
                 msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
                 code = "400";
-            }else{
+            } else {
                 User user = getUserDetails(ssoToken);
-                if(user == null){
+                if (user == null) {
                     msg = "User Not Logged In";
                     code = "400";
-                }else{
+                } else {
                     user.setAboutMe(aboutMe);
                     userDao.saveUser(user);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while updating AboutMe ", e);
             msg = e.getMessage();
             code = "500";
@@ -283,24 +297,24 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public String addExperience(String ssoToken, String experience){
+    public String addExperience(String ssoToken, String experience) {
         String msg = "SUCCESS";
         String code = "200";
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(experience)) {
                 msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
                 code = "400";
-            }else{
+            } else {
                 User user = getUserDetails(ssoToken);
-                if(user == null){
+                if (user == null) {
                     msg = "User Not Logged In";
                     code = "400";
-                }else{
+                } else {
                     user.setExperience(experience);
                     userDao.saveUser(user);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while updating experience ", e);
             msg = e.getMessage();
             code = "500";
@@ -311,24 +325,24 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public String addProfilePic(String ssoToken, String picPath){
+    public String addProfilePic(String ssoToken, String picPath) {
         String msg = "SUCCESS";
         String code = "200";
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken) || PhantomUtil.isNullOrEmpty(picPath)) {
                 msg = PhantomUtil.isNullOrEmpty(ssoToken) ? "User Not Logged In" : "BAD REQUEST";
                 code = "400";
-            }else{
+            } else {
                 User user = getUserDetails(ssoToken);
-                if(user == null){
+                if (user == null) {
                     msg = "User Not Logged In";
                     code = "400";
-                }else{
+                } else {
                     user.setProfilePic(picPath);
                     userDao.saveUser(user);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while updating profile pic path ", e);
             msg = e.getMessage();
             code = "500";
@@ -339,24 +353,24 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
-    public String getListofMypics(String ssoToken){
+    public String getListofMypics(String ssoToken) {
         String msg = "SUCCESS";
         String code = "200";
         JsonElement response = null;
         try {
             if (PhantomUtil.isNullOrEmpty(ssoToken)) {
-                msg = "User Not Logged In" ;
+                msg = "User Not Logged In";
                 code = "400";
-            }else{
+            } else {
                 User user = getUserDetails(ssoToken);
-                if(user == null){
+                if (user == null) {
                     msg = "User Not Logged In";
                     code = "400";
-                }else{
+                } else {
                     response = gson.toJsonTree(user.getProfilePic());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Exception occurred while getting profile pics", e);
             msg = e.getMessage();
             code = "500";
@@ -365,6 +379,76 @@ public class UserService {
         baseResponseDTO.addMessage(msg);
         baseResponseDTO.setCode(code);
         baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public boolean isUserAlreadyExist(String email) {
+        try {
+            return userDao.getUserDetailsByEmail(email) != null ? Boolean.TRUE : Boolean.FALSE;
+        } catch (Exception e) {
+            return Boolean.FALSE;
+        }
+    }
+
+    public String changePassword(int userId, String newPassword){
+        String msg = "Password changed successfully";
+        String code = "200";
+        JsonElement response = null;
+        try{
+            if(userId == -1 || PhantomUtil.isNullOrEmpty(newPassword)){
+                msg = userId == -1 ? "User Not Logged In" : "BAD REQUEST";
+                code = "400";
+            }else {
+                User user = userDao.findById(new Long(userId));
+                if(user != null){
+                    user.setPassword(newPassword);
+                    userDao.saveUser(user);
+                    response = gson.toJsonTree(user);
+                }else{
+                    msg = "User Not Present";
+                    code = "400";
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while changing password for userId : "+userId, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
+    }
+
+    public String changePhoneNo(int userId, String newPhoneNo){
+        String msg = "Phone Number Changed Successfully";
+        String code = "200";
+        JsonElement response = null;
+        try{
+            if(userId == -1 || PhantomUtil.isNullOrEmpty(newPhoneNo)){
+                msg = userId == -1 ? "User Not Logged In" : "BAD REQUEST";
+                code = "400";
+            }else {
+                User user = userDao.findById(new Long(userId));
+                if(user != null){
+                    user.setPhoneNo(newPhoneNo);
+                    userDao.saveUser(user);
+                    response = gson.toJsonTree(user);
+                }else{
+                    msg = "User Not Present";
+                    code = "400";
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while changing password for userId : "+userId, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
         return gson.toJson(baseResponseDTO);
     }
 

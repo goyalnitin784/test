@@ -139,7 +139,7 @@ public class ReviewController {
         return reviewService.makeStrainReviewPrivate(userId,reviewId);
     }
 
-    @RequestMapping(value = "getDealReview", method = RequestMethod.GET)
+        @RequestMapping(value = "getDealReview", method = RequestMethod.GET)
     public @ResponseBody
     String getDealReview(HttpServletRequest request, HttpServletResponse response) {
         return reviewService.getDealReview(request.getParameter("dealId"));
@@ -148,8 +148,7 @@ public class ReviewController {
     @RequestMapping(value = "getDispensaryReview", method = RequestMethod.GET)
     public @ResponseBody
     String getDispensaryReview(HttpServletRequest request, HttpServletResponse response) {
-        return reviewService.
-                getDispensaryReview(request.getParameter("dispId"));
+        return reviewService.getDispensaryReview(request.getParameter("dispId"));
     }
 
 }

@@ -113,17 +113,27 @@ public class DispensaryReviewDaoImpl extends GenericHibernateDAO<DispensaryRevie
 
     @Override
     public List<DispensaryReview> getReviewsByUserId(int userId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
-        criteria.add(Restrictions.eq("reviewerUserId", userId));
-        criteria.addOrder(Order.desc("createdOn"));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
+            criteria.add(Restrictions.eq("reviewerUserId", userId));
+            criteria.addOrder(Order.desc("createdOn"));
+            return findByCriteria(criteria);
+        }catch (Exception e){
+            logger.error("Exception came while getting dispensary review for user id : "+userId, e);
+            return null;
+        }
     }
 
     @Override
     public List<DispensaryReview> getReviewsByDispId(int dispId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
-        criteria.add(Restrictions.eq("dispensaryId", dispId));
-        criteria.addOrder(Order.desc("createdOn"));
-        return findByCriteria(criteria);
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(DispensaryReview.class);
+            criteria.add(Restrictions.eq("dispensaryId", dispId));
+            criteria.addOrder(Order.desc("createdOn"));
+            return findByCriteria(criteria);
+        }catch (Exception e){
+            logger.error("Exception came while getting dispensary review for disp id : "+dispId, e);
+            return null;
+        }
     }
 }

@@ -92,7 +92,8 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
         try {
             String userName = "imvk";
             String password = "123456";
-            if (userService.isValidUser(userName, password) != null) {
+            String email="";
+            if (userService.isValidUser(userName, password, email) != null) {
                 Reporter.log("Successfully login");
             } else {
                 Reporter.log("Login Failed");

@@ -45,8 +45,13 @@ public class DispensaryDaoImpl extends GenericHibernateDAO<Dispensary, Long> imp
 
     @Override
     public long getDispId(String uuid) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Dispensary.class);
-        criteria.add(Restrictions.eq("uuid",uuid));
-        return findByCriteria(criteria).get(0).getId();
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(Dispensary.class);
+            criteria.add(Restrictions.eq("uuid", uuid));
+            return findByCriteria(criteria).get(0).getId();
+        }catch (Exception e){
+            logger.error("Exception occurred while getting disp id for disp uuid : "+uuid, e);
+            return -1;
+        }
     }
 }

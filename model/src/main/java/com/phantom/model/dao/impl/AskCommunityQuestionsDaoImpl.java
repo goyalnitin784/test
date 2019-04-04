@@ -4,7 +4,6 @@ import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.AskCommunityQuestionsDao;
 import com.phantom.model.entity.AskCommunityQuestions;
 import com.phantom.util.PhantomUtil;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -37,7 +36,7 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
             if (userId != 0) {
                 criteria.add(Restrictions.eq("userId", userId));
             }
-            if (dispId !=-1 ) {
+            if (dispId != -1) {
                 criteria.add(Restrictions.eq("dispensaryId", dispId));
             }
             if (!PhantomUtil.isNullOrEmpty(strainId)) {
@@ -82,12 +81,12 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
         return false;
     }
 
-    public boolean saveQuestion(AskCommunityQuestions q){
-        try{
+    public boolean saveQuestion(AskCommunityQuestions q) {
+        try {
             super.saveOrUpdate(q);
             return true;
-        }catch (Exception e){
-            logger.error("Exception came while saving ask community question",e);
+        } catch (Exception e) {
+            logger.error("Exception came while saving ask community question", e);
         }
         return false;
     }
@@ -98,5 +97,31 @@ public class AskCommunityQuestionsDaoImpl extends GenericHibernateDAO<AskCommuni
         criteria.add(Restrictions.eq("dispensaryId", dispId));
         criteria.addOrder(Order.desc("createdOn"));
         return findByCriteria(criteria);
+    }
+
+    @Override
+    public List getQuestionsByUserIdOnDisp(int userId) {
+        try {
+            Query query = getHibernateTemplate().getSessionFactory().getCurrentSession()
+                    .createQuery("from AskCommunityQuestions where userId = :userId and dispensaryId is not null order by createdOn desc")
+                    .setParameter("userId", userId);
+            return query.getResultList();
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting questions for user id : " + userId);
+            return null;
+        }
+    }
+
+    @Override
+    public List getQuestionsByUserIdOnStrain(int userId) {
+        try {
+            Query query = getHibernateTemplate().getSessionFactory().getCurrentSession()
+                    .createQuery("from AskCommunityQuestions where userId = :userId and strainId is not null order by createdOn desc")
+                    .setParameter("userId", userId);
+            return query.getResultList();
+        } catch (Exception e) {
+            logger.error("Exception occurred while getting questions for user id : " + userId);
+            return null;
+        }
     }
 }
