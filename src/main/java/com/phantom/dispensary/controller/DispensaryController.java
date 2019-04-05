@@ -7,6 +7,7 @@ import com.phantom.dispensary.service.DealService;
 import com.phantom.dispensary.service.DispensaryService;
 import com.phantom.logging.PhantomLogger;
 import com.phantom.user.service.UserService;
+import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
 import com.phantom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,12 @@ public class DispensaryController {
     public @ResponseBody
     String addDispensary(HttpServletRequest request, HttpServletResponse response) {
         DispensaryBean dispensaryBean = new DispensaryBean(request);
-        boolean isUpdated = false;
-        if (dispensaryBean.isValidDispensary()) {
-            isUpdated = dispensaryService.updateDispensaryDetails(dispensaryBean);
+        boolean shouldEdit = Boolean.FALSE;
+        if(! PhantomUtil.isNullOrEmpty(request.getParameter("dispId"))){
+            shouldEdit = Boolean.FALSE;
+            dispensaryBean.setUuid(request.getParameter("dispId"));
         }
-        return new ResponseUtils().getResponseByFlag(isUpdated);
+        return dispensaryService.updateDispensaryDetails(dispensaryBean, shouldEdit);
     }
 
     @RequestMapping(value = "findDispensary", method = RequestMethod.GET)
@@ -283,5 +285,11 @@ public class DispensaryController {
     public @ResponseBody String likeDispDeal(HttpServletRequest request, HttpServletResponse response){
         String dispDealId = request.getParameter("dispDealId");
         return dealService.likeDispDeal(dispDealId);
+    }
+
+    @RequestMapping(value = "getDispensaryDetails", method = RequestMethod.GET)
+    public @ResponseBody String getDispensaryDetails(HttpServletRequest request, HttpServletResponse response){
+        int dispId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request,"bssoToken"));
+        return dispensaryService.getDispensaryDetails(dispId);
     }
 }

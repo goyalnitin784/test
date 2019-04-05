@@ -404,3 +404,6 @@ URL : 'http://localhost:8080/phantom/getDispensaryReview?dispId=3&ssoToken=7ba6b
 
 
 
+--API to get Dispensary Details
+Call Type : Get Call
+URL :  http://localhost:8080/phantom/user/getDispensaryDetails?bssoToken=d239bbff-039d-4d16-b02e-6a5a67fc05d7

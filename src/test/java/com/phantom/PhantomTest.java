@@ -122,7 +122,7 @@ public class PhantomTest extends AbstractTestNGSpringContextTests {
             requestMap.put("timeZone", "GMT-5");
 
             DispensaryBean dispensaryBean = new DispensaryBean(requestMap);
-            dispensaryService.updateDispensaryDetails(dispensaryBean);
+            dispensaryService.updateDispensaryDetails(dispensaryBean, Boolean.FALSE);
         } catch (Exception e) {
             logger.error("Exception occurred while testing addDispensary controller ", e);
         }

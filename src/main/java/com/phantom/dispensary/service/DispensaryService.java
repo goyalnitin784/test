@@ -91,55 +91,137 @@ public class DispensaryService {
         }
     }
 
-    public boolean updateDispensaryDetails(DispensaryBean dispensaryBean) {
+    public String updateDispensaryDetails(DispensaryBean dispensaryBean, boolean shouldEdit) {
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        if(dispensaryBean.isValidDispensary() || shouldEdit) {
+            try {
+                Dispensary dispensary = shouldEdit ? dispensaryDao.getDispensaryByDispUuid(dispensaryBean.getUuid()) : new Dispensary();
+                if(dispensary!=null) {
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getDispensaryName())) {
+                        dispensary.setDispensaryName(dispensaryBean.getDispensaryName());
+                    }
+                    if(dispensaryBean.getIsActive() != 0) {
+                        dispensary.setIsActive(dispensaryBean.getIsActive());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getDispensaryProfilePic())) {
+                        dispensary.setDispensaryProfilePic(dispensaryBean.getDispensaryProfilePic());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getDispensaryDesc())) {
+                        dispensary.setDispensaryDesc(dispensaryBean.getDispensaryDesc());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getPhoneNo())) {
+                        dispensary.setPhoneNo(dispensaryBean.getPhoneNo());
+                    }
+                    if(!shouldEdit) {
+                        dispensary.setEmail(dispensaryBean.getEmail());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getWebsite())) {
+                        dispensary.setWebsite(dispensaryBean.getWebsite());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getAddress())) {
+                        dispensary.setAddress(dispensaryBean.getAddress());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getLongitude())) {
+                        dispensary.setLongitude(dispensaryBean.getLongitude());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getLatitude())) {
+                        dispensary.setLatitude(dispensaryBean.getLatitude());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getCity())) {
+                        dispensary.setCity(dispensaryBean.getCity());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getState())) {
+                        dispensary.setState(dispensaryBean.getState());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getCountry())) {
+                        dispensary.setCountry(dispensaryBean.getCountry());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getDispensaryProfilePic())) {
+                        dispensary.setFacilities(dispensaryBean.getFacilities());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getTimeZone())) {
+                        dispensary.setTimeZone(dispensaryBean.getTimeZone());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getMondayOpenOn())) {
+                        dispensary.setMondayOpenOn(dispensaryBean.getMondayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getMondayClosedOn())) {
+                        dispensary.setMondayClosedOn(dispensaryBean.getMondayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getTuesdayOpenOn())) {
+                        dispensary.setTuesdayOpenOn(dispensaryBean.getTuesdayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getTuesdayClosedOn())) {
+                        dispensary.setTuesdayClosedOn(dispensaryBean.getTuesdayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getWednesdayOpenOn())) {
+                        dispensary.setWednesdayOpenOn(dispensaryBean.getWednesdayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getWednesdayClosedOn())) {
+                        dispensary.setWednesdayClosedOn(dispensaryBean.getWednesdayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getThursdayOpenOn())) {
+                        dispensary.setThursdayOpenOn(dispensaryBean.getThursdayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getThursdayClosedOn())) {
+                        dispensary.setThursdayClosedOn(dispensaryBean.getThursdayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getFridayOpenOn())) {
+                        dispensary.setFridayOpenOn(dispensaryBean.getFridayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getFridayClosedOn())) {
+                        dispensary.setFridayClosedOn(dispensaryBean.getFridayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getSaturdayOpenOn())) {
+                        dispensary.setSaturdayOpenOn(dispensaryBean.getSaturdayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getSaturdayClosedOn())) {
+                        dispensary.setSaturdayClosedOn(dispensaryBean.getSaturdayClosedOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getSundayOpenOn())) {
+                        dispensary.setSundayOpenOn(dispensaryBean.getSundayOpenOn());
+                    }
+                    if(!PhantomUtil.isNullOrEmpty(dispensaryBean.getSundayClosedOn())) {
+                        dispensary.setSundayClosedOn(dispensaryBean.getSundayClosedOn());
+                    }
+                    if(dispensaryBean.getIsVerifiedListing()!=0) {
+                        dispensary.setIsVerifiedListing(dispensaryBean.getIsVerifiedListing());
+                    }
+                    if(dispensaryBean.getIsTrendingDispensary()!=0) {
+                        dispensary.setIsTrendingDispensary(dispensaryBean.getIsTrendingDispensary());
+                    }
+                    if(dispensaryBean.getIsFeaturedDispensary()!=0) {
+                        dispensary.setIsFeaturedDispensary(dispensaryBean.getIsFeaturedDispensary());
+                    }
+                    dispensary.setDateOfJoining(dispensaryBean.getDateOfJoining());
+                    dispensary.setFollowersCount(dispensaryBean.getFollowersCount());
+                    if(!shouldEdit) {
+                        dispensary.setUuid(dispensaryBean.getUuid());
+                    }
+                    // persisting dispensary data
+                    dispensaryDao.saveDispensary(dispensary);
+                    response = gson.toJsonTree(dispensary);
+                }else{
+                    msg = "Dispensary Is Not Exist";
+                    code = "400";
+                }
 
-        try {
-            Dispensary dispensary = new Dispensary();
-
-            dispensary.setDispensaryName(dispensaryBean.getDispensaryName());
-            dispensary.setIsActive(dispensaryBean.getIsActive());
-            dispensary.setDispensaryProfilePic(dispensaryBean.getDispensaryProfilePic());
-            dispensary.setDispensaryDesc(dispensaryBean.getDispensaryDesc());
-            dispensary.setPhoneNo(dispensaryBean.getPhoneNo());
-            dispensary.setEmail(dispensaryBean.getEmail());
-            dispensary.setWebsite(dispensaryBean.getWebsite());
-            dispensary.setAddress(dispensaryBean.getAddress());
-            dispensary.setLongitude(dispensaryBean.getLongitude());
-            dispensary.setLatitude(dispensaryBean.getLatitude());
-            dispensary.setCity(dispensaryBean.getCity());
-            dispensary.setState(dispensaryBean.getState());
-            dispensary.setCountry(dispensaryBean.getCountry());
-            dispensary.setFacilities(dispensaryBean.getFacilities());
-            dispensary.setTimeZone(dispensaryBean.getTimeZone());
-            dispensary.setMondayOpenOn(dispensaryBean.getMondayOpenOn());
-            dispensary.setMondayClosedOn(dispensaryBean.getMondayClosedOn());
-            dispensary.setTuesdayOpenOn(dispensaryBean.getTuesdayOpenOn());
-            dispensary.setTuesdayClosedOn(dispensaryBean.getTuesdayClosedOn());
-            dispensary.setWednesdayOpenOn(dispensaryBean.getWednesdayOpenOn());
-            dispensary.setWednesdayClosedOn(dispensaryBean.getWednesdayClosedOn());
-            dispensary.setThursdayOpenOn(dispensaryBean.getThursdayOpenOn());
-            dispensary.setThursdayClosedOn(dispensaryBean.getThursdayClosedOn());
-            dispensary.setFridayOpenOn(dispensaryBean.getFridayOpenOn());
-            dispensary.setFridayClosedOn(dispensaryBean.getFridayClosedOn());
-            dispensary.setSaturdayOpenOn(dispensaryBean.getSaturdayOpenOn());
-            dispensary.setSaturdayClosedOn(dispensaryBean.getSaturdayClosedOn());
-            dispensary.setSundayOpenOn(dispensaryBean.getSundayOpenOn());
-            dispensary.setSundayClosedOn(dispensaryBean.getSundayClosedOn());
-            dispensary.setIsVerifiedListing(dispensaryBean.getIsVerifiedListing());
-            dispensary.setIsTrendingDispensary(dispensaryBean.getIsTrendingDispensary());
-            dispensary.setIsFeaturedDispensary(dispensaryBean.getIsFeaturedDispensary());
-            dispensary.setDateOfJoining(dispensaryBean.getDateOfJoining());
-            dispensary.setFollowersCount(dispensaryBean.getFollowersCount());
-            dispensary.setUuid(dispensaryBean.getUuid());
-
-            // persisting dispensary data
-            dispensaryDao.saveDispensary(dispensary);
-            return Boolean.TRUE;
-
-        } catch (Exception e) {
-            logger.error("Exception occurred while adding dispensary : " + dispensaryBean.getDispensaryName(), e);
-            return Boolean.FALSE;
+            } catch (Exception e) {
+                logger.error("Exception occurred while adding dispensary : " + dispensaryBean.getDispensaryName(), e);
+                msg = e.getMessage();
+                code = "500";
+            }
+        }else{
+            msg = "BAD REQUEST";
+            code = "400";
         }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setCode(code);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setResponse(response);
+        return gson.toJson(baseResponseDTO);
     }
 
     public String findDispensary(String userLat, String userLong, String records, boolean isFeaturedDispensary) {
@@ -802,4 +884,33 @@ public class DispensaryService {
         return gson.toJson(baseResponseDTO);
     }
 
+    public String getDispensaryDetails(int dispId){
+        String msg = "SUCCESS";
+        String code = "200";
+        JsonElement response = null;
+        try {
+            if(dispId == -1){
+                msg = "Business User Not Logged In";
+                code = "400";
+            }
+            else {
+                Dispensary dispensary = dispensaryDao.findById((long) dispId);
+                if (dispensary != null) {
+                    response = new Gson().toJsonTree(dispensary);
+                } else {
+                    msg = "Dispensary Details Not Exist";
+                    code = "400";
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while getting user details for disp id : "+dispId);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return new Gson().toJson(baseResponseDTO);
+    }
 }
