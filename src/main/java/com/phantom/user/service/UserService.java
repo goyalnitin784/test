@@ -451,4 +451,34 @@ public class UserService {
         return gson.toJson(baseResponseDTO);
     }
 
+    public String forgotPassword(String email, String userName, String newPassword){
+        String msg = "Password Changed Successfully";
+        String code = "200";
+        JsonElement response = null;
+        try{
+            if((PhantomUtil.isNullOrEmpty(email) && PhantomUtil.isNullOrEmpty(userName)) || PhantomUtil.isNullOrEmpty(newPassword)){
+                msg = "BAD REQUEST";
+                code = "400";
+            }else {
+                User user = PhantomUtil.isNullOrEmpty(email) ? userDao.getUserDetailsByUserName(userName) : userDao.getUserDetailsByEmail(email);
+                if(user != null){
+                    user.setPassword(newPassword);
+                    userDao.saveUser(user);
+                    response = gson.toJsonTree(user);
+                }else{
+                    msg = "User Not Present";
+                    code = "400";
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while changing password for user : "+userName +" and email : "+email, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
+    }
 }

@@ -158,4 +158,13 @@ public class UserController {
         int userId = userService.getUserId(requestUtils.getCookieValue(request, "ssoToken"));
         return userService.changePhoneNo(userId, request.getParameter("phone"));
     }
+
+    @RequestMapping(value = "forgotPassword", method = RequestMethod.POST)
+    public @ResponseBody
+    String forgotPassword(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        String username = request.getParameter("userName");
+        String newPassword = request.getParameter("password");
+        return userService.forgotPassword(email,username, newPassword);
+    }
 }

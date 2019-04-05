@@ -90,6 +90,14 @@ public class BusinessUserController {
         return businessUserService.logout(ssoToken);
     }
 
+    @RequestMapping(value = "forgotDispPassword", method = RequestMethod.POST)
+    public @ResponseBody
+    String forgotPassword(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        String username = request.getParameter("userName");
+        String newPassword = request.getParameter("password");
+        return businessUserService.forgotPassword(email,username, newPassword);
+    }
     
 
 }

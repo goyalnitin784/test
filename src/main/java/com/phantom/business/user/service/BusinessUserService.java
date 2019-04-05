@@ -9,6 +9,7 @@ import com.phantom.model.dao.BusinessUserDao;
 import com.phantom.model.dao.BusinessUserSSOTokenMappingDao;
 import com.phantom.model.entity.BusinessUser;
 import com.phantom.model.entity.BusinessUserSSOTokenMapping;
+import com.phantom.model.entity.User;
 import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,6 +166,38 @@ public class BusinessUserService {
             }
         }
         return -1;  // not logged in
+    }
+
+    public String forgotPassword(String email, String userName, String newPassword){
+        String msg = "Password Changed Successfully";
+        String code = "200";
+        JsonElement response = null;
+        try{
+            if((PhantomUtil.isNullOrEmpty(email) && PhantomUtil.isNullOrEmpty(userName)) || PhantomUtil.isNullOrEmpty(newPassword)){
+                msg = "BAD REQUEST";
+                code = "400";
+            }else {
+                BusinessUser businessUser = PhantomUtil.isNullOrEmpty(email) ? businessUserDao.getBusinessUserDetailsByUserName(userName) :
+                        businessUserDao.getBusinessUserDetailsByEmail(email);
+                if(businessUser != null){
+                    businessUser.setPassword(newPassword);
+                    businessUserDao.saveBusinessUser(businessUser);
+                    response = gson.toJsonTree(businessUser);
+                }else{
+                    msg = "Business User Not Present";
+                    code = "400";
+                }
+            }
+        }catch (Exception e){
+            logger.error("Exception occurred while changing password for business user : "+userName +" and email : "+email, e);
+            msg = e.getMessage();
+            code = "500";
+        }
+        BaseResponseDTO baseResponseDTO = new BaseResponseDTO();
+        baseResponseDTO.setResponse(response);
+        baseResponseDTO.addMessage(msg);
+        baseResponseDTO.setCode(code);
+        return gson.toJson(baseResponseDTO);
     }
 
 }

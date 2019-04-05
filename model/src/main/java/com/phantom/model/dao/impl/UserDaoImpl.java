@@ -21,20 +21,30 @@ public class UserDaoImpl extends GenericHibernateDAO<User, Long> implements User
 
     @Override
     public User getUserDetailsByUserName(String userName) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-        criteria.add(Restrictions.eq("userName", userName));
-        criteria.addOrder(Order.desc("createdOn"));
-        User user = findByCriteria(criteria).get(0);
-        return user;
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+            criteria.add(Restrictions.eq("userName", userName));
+            criteria.addOrder(Order.desc("createdOn"));
+            User user = findByCriteria(criteria).get(0);
+            return user;
+        }catch (Exception e){
+            logger.error("Exception occurred while getting user details for user name :"+userName, e);
+            return null;
+        }
     }
 
     @Override
     public User getUserDetailsByEmail(String email) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-        criteria.add(Restrictions.eq("email", email));
-        criteria.addOrder(Order.desc("createdOn"));
-        User user = findByCriteria(criteria).get(0);
-        return user;
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+            criteria.add(Restrictions.eq("email", email));
+            criteria.addOrder(Order.desc("createdOn"));
+            User user = findByCriteria(criteria).get(0);
+            return user;
+        }catch (Exception e){
+            logger.error("Exception occurred while getting user details for email :"+email, e);
+            return null;
+        }
     }
 
     public void saveUser(User user) {

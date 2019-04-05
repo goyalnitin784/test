@@ -20,11 +20,16 @@ public class BusinessUserDaoImpl extends GenericHibernateDAO<BusinessUser, Long>
 
     @Override
     public BusinessUser getBusinessUserDetailsByUserName(String userName) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(BusinessUser.class);
-        criteria.add(Restrictions.eq("userName", userName));
-        criteria.addOrder(Order.desc("createdOn"));
-        BusinessUser businessUser = findByCriteria(criteria).get(0);
-        return businessUser;
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(BusinessUser.class);
+            criteria.add(Restrictions.eq("userName", userName));
+            criteria.addOrder(Order.desc("createdOn"));
+            BusinessUser businessUser = findByCriteria(criteria).get(0);
+            return businessUser;
+        }catch (Exception e){
+            logger.error("Exception occurred while getting business user details for user name : "+userName);
+            return null;
+        }
     }
 
     @Override
@@ -33,6 +38,20 @@ public class BusinessUserDaoImpl extends GenericHibernateDAO<BusinessUser, Long>
             super.saveOrUpdate(businessUser);
         }catch (Exception e){
             logger.error("Exception came while saving object",e);
+        }
+    }
+
+    @Override
+    public BusinessUser getBusinessUserDetailsByEmail(String email) {
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(BusinessUser.class);
+            criteria.add(Restrictions.eq("email", email));
+            criteria.addOrder(Order.desc("createdOn"));
+            BusinessUser businessUser = findByCriteria(criteria).get(0);
+            return businessUser;
+        }catch (Exception e){
+            logger.error("Exception occurred while getting business user details for email : "+email);
+            return null;
         }
     }
 }

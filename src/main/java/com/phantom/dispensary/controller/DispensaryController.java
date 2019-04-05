@@ -287,9 +287,4 @@ public class DispensaryController {
         return dealService.likeDispDeal(dispDealId);
     }
 
-    @RequestMapping(value = "getDispensaryDetails", method = RequestMethod.GET)
-    public @ResponseBody String getDispensaryDetails(HttpServletRequest request, HttpServletResponse response){
-        int dispId = businessUserService.getBusinessUserId(RequestUtils.getCookie(request,"bssoToken"));
-        return dispensaryService.getDispensaryDetails(dispId);
-    }
 }
