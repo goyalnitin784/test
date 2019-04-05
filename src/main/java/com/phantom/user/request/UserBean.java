@@ -19,12 +19,12 @@ public class UserBean extends MapBasedRequest {
     private String lastName = "";
     private String userName;
     private String password;
-    private String profilePic;
+    private String picId;
     private String phoneNo;
     private String email;
     private String dob;
     private String ssoToken = UUID.randomUUID().toString();
-    private int isAgreeToTC = 1;
+    private int isAgreeToTC = 0;
     private boolean isValidUser = false;
 
     public UserBean(HttpServletRequest request) {
@@ -41,14 +41,18 @@ public class UserBean extends MapBasedRequest {
             userType = Integer.parseInt(requestParameters.get("userType"));
         }
         if(!PhantomUtil.isNullOrEmpty(requestParameters.get("isAgreeToTC"))) {
-            isAgreeToTC = Integer.parseInt(requestParameters.get("isAgreeToTC"));
+            try{
+                isAgreeToTC = Integer.parseInt(requestParameters.get("isAgreeToTC"));
+            }catch (Exception e){
+
+            }
         }
         userName = requestParameters.get("userName");
         password = requestParameters.get("password");
         title = requestParameters.get("title");
         firstName = requestParameters.get("firstName");
         lastName = requestParameters.get("lastName");
-        profilePic = requestParameters.get("profilePic");
+        picId = requestParameters.get("picId");
         phoneNo = requestParameters.get("phoneNo");
         email = requestParameters.get("email");
         dob = requestParameters.get("dob");
@@ -80,12 +84,12 @@ public class UserBean extends MapBasedRequest {
         this.password = password;
     }
 
-    public String getProfilePic() {
-        return profilePic;
+    public String getPicId() {
+        return picId;
     }
 
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+    public void setPicId(String picId) {
+        this.picId = picId;
     }
 
     public String getPhoneNo() {
@@ -160,13 +164,21 @@ public class UserBean extends MapBasedRequest {
         this.userId = userId;
     }
 
+    public int getIsAgreeToTC() {
+        return isAgreeToTC;
+    }
+
+    public void setIsAgreeToTC(int isAgreeToTC) {
+        this.isAgreeToTC = isAgreeToTC;
+    }
+
     @Override
     public String toString() {
         return "UserBean{" +
                 "userType=" + userType +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", profilePic='" + profilePic + '\'' +
+                ", picId='" + picId + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 ", email='" + email + '\'' +
                 ", dob='" + dob + '\'' +

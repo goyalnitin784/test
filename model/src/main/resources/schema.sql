@@ -1169,3 +1169,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-03-17 18:28:47
+
+alter table user_details add column term_condition_flag int(2) default 0;

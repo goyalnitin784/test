@@ -22,7 +22,7 @@ public class User {
     private String password;
 
     @Column(name = "profile_pic")
-    private String profilePic;
+    private String profilePicId;
 
     @Column(name = "phone")
     private String phoneNo;
@@ -35,6 +35,9 @@ public class User {
 
     @Column(name = "is_age_above_21")
     private int isAgeAbove21;
+
+    @Column(name = "term_condition_flag")
+    private int termConditionFlag;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -86,12 +89,12 @@ public class User {
         this.password = password;
     }
 
-    public String getProfilePic() {
-        return profilePic;
+    public String getProfilePicId() {
+        return profilePicId;
     }
 
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+    public void setProfilePicId(String profilePic) {
+        this.profilePicId = profilePic;
     }
 
     public String getPhoneNo() {
@@ -172,5 +175,13 @@ public class User {
 
     public void setExperience(String experience) {
         this.experience = experience;
+    }
+
+    public int getTermConditionFlag() {
+        return termConditionFlag;
+    }
+
+    public void setTermConditionFlag(int termConditionFlag) {
+        this.termConditionFlag = termConditionFlag;
     }
 }

@@ -8,7 +8,6 @@ import com.phantom.logging.PhantomLogger;
 import com.phantom.model.dao.DealReviewDao;
 import com.phantom.model.dao.UserDao;
 import com.phantom.model.dao.UserSSOTokenMappingDao;
-import com.phantom.model.entity.BusinessUserSSOTokenMapping;
 import com.phantom.model.entity.DealReview;
 import com.phantom.model.entity.User;
 import com.phantom.model.entity.UserSSOTokenMapping;
@@ -16,7 +15,6 @@ import com.phantom.user.request.DealReviewBean;
 import com.phantom.user.request.UserBean;
 import com.phantom.util.PhantomUtil;
 import com.phantom.util.RequestUtils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -114,10 +112,11 @@ public class UserService {
                 user.setDob(userBean.getDob());
                 user.setEmail(userBean.getEmail());
                 user.setPhoneNo(userBean.getPhoneNo());
-                user.setProfilePic(userBean.getProfilePic());
+                user.setProfilePicId(userBean.getPicId());
                 user.setUserType(userBean.getUserType());
                 user.setDob(userBean.getDob());
                 user.setIsAgeAbove21(0);
+                user.setTermConditionFlag(userBean.getIsAgreeToTC());
                 if (!StringUtils.isEmpty(userBean.getDob())) {
                     LocalDate birthDate = LocalDate.parse(userBean.getDob());
                     int age = Period.between(birthDate, LocalDate.now()).getYears();
@@ -251,7 +250,7 @@ public class UserService {
                     code = "400";
                 } else {
                     JsonObject userJson = new JsonObject();
-                    userJson.addProperty("profilePic", user.getProfilePic());
+                    userJson.addProperty("profilePic", user.getProfilePicId());
                     userJson.addProperty("aboutMe", user.getAboutMe());
                     userJson.addProperty("experience", user.getExperience());
                     response = userJson;
@@ -338,7 +337,7 @@ public class UserService {
                     msg = "User Not Logged In";
                     code = "400";
                 } else {
-                    user.setProfilePic(picPath);
+                    user.setProfilePicId(picPath);
                     userDao.saveUser(user);
                 }
             }
@@ -367,7 +366,7 @@ public class UserService {
                     msg = "User Not Logged In";
                     code = "400";
                 } else {
-                    response = gson.toJsonTree(user.getProfilePic());
+                    response = gson.toJsonTree(user.getProfilePicId());
                 }
             }
         } catch (Exception e) {

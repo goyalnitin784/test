@@ -1,6 +1,6 @@
 --API to register User
 Call Type : Post Call
-URL :   http://localhost:8080/phantom/user/register?userType=1&userName=yoyo4&password=pass4&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&profilePic=%22image%22
+URL :   http://localhost:8080/phantom/user/register?userType=1&userName=yoyo4&password=pass4&phoneNo=1234567899&email=pqr@xyz.com&dob=1998-03-20&picId=%22image%22
 
 
 --API to get User Details
