@@ -36,7 +36,7 @@ public class User {
     @Column(name = "is_age_above_21")
     private int isAgeAbove21;
 
-    @Column(name = "term_condition_flag")
+    @Column(name = "is_agree_to_tc")
     private int termConditionFlag;
 
     @Column(name = "created_on")
