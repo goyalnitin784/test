@@ -18,7 +18,7 @@
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <context:component-scan base-package="com.phantom"/>
+    <context:component-scan base-package="com.airtel"/>
 
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -14,7 +14,6 @@ repositories {
 dependencies {
 	compile project(':core')
  	compile project(':model')
-	compile project(':cache')
 	compile 'org.springframework:spring-webmvc:4.3.10.RELEASE'
 	compile 'javax.servlet:jstl:1.2'
 	compile 'org.springframework:spring-test:4.3.10.RELEASE'

@@ -1,4 +1,4 @@
-rootProject.name = 'phantom'
+rootProject.name = 'test-application'
 include 'core'
 include 'model'
 include 'cache'

@@ -17,31 +17,9 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <beans:bean name="corePropertyManager" class="com.phantom.prop.service.ChainedAppPropertyManager">
-        <beans:constructor-arg index="0" >
-            <beans:list>
-                <beans:ref bean="centralPropertyChain"/>
-            </beans:list>
-        </beans:constructor-arg>
-    </beans:bean>
 
-
-    <beans:bean name="centralPropertyChain" class="com.phantom.prop.service.ChainedAppPropertyManager">
-        <beans:constructor-arg index="0" >
-            <beans:list>
-                <beans:ref bean="applicationPropertyManager" />
-                <beans:ref bean="threadPoolPropertyManager"/>
-            </beans:list>
-        </beans:constructor-arg>
-    </beans:bean>
-
-    <beans:bean name="applicationPropertyManager" class="com.phantom.prop.service.ReloadableApplicationPropertyManager">
+    <beans:bean name="propertyManager" class="com.airtel.prop.service.PropertyManager">
         <beans:constructor-arg index="0" value="properties/${environment}/application.properties"/>
-    </beans:bean>
-
-
-    <beans:bean name="threadPoolPropertyManager" class="com.phantom.prop.service.ReloadableApplicationPropertyManager">
-        <beans:constructor-arg index="0" value="properties/${environment}/thread-pool.properties"/>
     </beans:bean>
 
 
