@@ -29,6 +29,9 @@ public class MyLogger implements Serializable {
     public void info(String s) {
         logger.info(s);
     }
+    public void debug(String s) {
+        logger.debug(s);
+    }
 
     public void error(String s, Exception e) {
         logger.error(s, e);

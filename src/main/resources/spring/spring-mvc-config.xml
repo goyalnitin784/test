@@ -30,5 +30,14 @@
     <default-servlet-handler/>
     <annotation-driven />
 
+    <interceptors>
+        <interceptor>
+            <mapping path="/get-common-word" />
+            <exclude-mapping path="/healthCheck" />
+            <beans:bean class="com.airtel.interceptor.CommonWordRequestValidationInterceptor">
+            </beans:bean>
+        </interceptor>
+    </interceptors>
+
 
 </beans:beans>

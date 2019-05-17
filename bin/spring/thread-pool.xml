@@ -24,5 +24,4 @@
         <beans:property name="queueCapacity" value="10" />
     </beans:bean>
 
-
 </beans:beans>

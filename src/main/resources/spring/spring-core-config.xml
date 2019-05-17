@@ -17,6 +17,7 @@
     <context:component-scan base-package="com.airtel"/>
 
     <beans:import resource="thread-pool.xml"/>
+    <beans:import resource="word-decorator.xml"/>
 
     <beans:bean id="transformerPropertyPlaceHolder"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

@@ -42,4 +42,8 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
+    <bean id="testDao" class="com.airtel.model.dao.impl.TestDaoImpl">
+    </bean>
+
+
 </beans>
